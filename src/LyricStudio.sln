@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LyricStudio", "Desktop\LyricStudio\LyricStudio.csproj", "{B4E155D9-924F-4B53-9F25-32B7C1309660}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fischless.Win32", "Common\Fischless.Win32\Fischless.Win32.csproj", "{09D97087-CFCC-4434-AF23-2FE2CE8AD28A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{3E585265-7E72-4832-9230-F2B54423EB13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1A1A92E3-AE80-42B2-BBDF-091182E174BD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fischless.Design", "Common\Fischless.Design\Fischless.Design.csproj", "{D675D649-30A4-4A79-B611-9D36370E6BCB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{D19DAE13-8D40-429A-A48E-A9AF0F9C2105}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fischless.Globalization", "Common\Fischless.Globalization\Fischless.Globalization.csproj", "{820D960A-7CB0-45A1-B365-CDD6CF8B3AC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4E155D9-924F-4B53-9F25-32B7C1309660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E155D9-924F-4B53-9F25-32B7C1309660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E155D9-924F-4B53-9F25-32B7C1309660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E155D9-924F-4B53-9F25-32B7C1309660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D97087-CFCC-4434-AF23-2FE2CE8AD28A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D97087-CFCC-4434-AF23-2FE2CE8AD28A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D97087-CFCC-4434-AF23-2FE2CE8AD28A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D97087-CFCC-4434-AF23-2FE2CE8AD28A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D675D649-30A4-4A79-B611-9D36370E6BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D675D649-30A4-4A79-B611-9D36370E6BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D675D649-30A4-4A79-B611-9D36370E6BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D675D649-30A4-4A79-B611-9D36370E6BCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{820D960A-7CB0-45A1-B365-CDD6CF8B3AC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{820D960A-7CB0-45A1-B365-CDD6CF8B3AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{820D960A-7CB0-45A1-B365-CDD6CF8B3AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{820D960A-7CB0-45A1-B365-CDD6CF8B3AC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B4E155D9-924F-4B53-9F25-32B7C1309660} = {D19DAE13-8D40-429A-A48E-A9AF0F9C2105}
+		{09D97087-CFCC-4434-AF23-2FE2CE8AD28A} = {3E585265-7E72-4832-9230-F2B54423EB13}
+		{D675D649-30A4-4A79-B611-9D36370E6BCB} = {3E585265-7E72-4832-9230-F2B54423EB13}
+		{820D960A-7CB0-45A1-B365-CDD6CF8B3AC7} = {3E585265-7E72-4832-9230-F2B54423EB13}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9133D3BC-6E58-439B-812B-FB1C2E4D4C70}
+	EndGlobalSection
+EndGlobal

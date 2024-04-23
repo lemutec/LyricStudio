@@ -1,0 +1,41 @@
+<UserControl x:Class="LyricStudio.Views.MainView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fui="urn:fischless.design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:views="clr-namespace:LyricStudio.Views"
+             xmlns:vm="using:LyricStudio.ViewModels"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <Grid>
+        <ui:NavigationView x:Name="NavigationView"
+                           IsBackButtonVisible="False"
+                           IsBackEnabled="False"
+                           IsPaneOpen="False"
+                           IsSettingsVisible="False"
+                           OpenPaneLength="200"
+                           PaneDisplayMode="Auto">
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="主页" Tag="{x:Type views:HomePage}">
+                    <ui:NavigationViewItem.IconSource>
+                        <ui:SymbolIconSource Symbol="Home" />
+                    </ui:NavigationViewItem.IconSource>
+                </ui:NavigationViewItem>
+                <ui:NavigationViewItem Content="插件" Tag="{x:Type views:PluginPage}">
+                    <ui:NavigationViewItem.IconSource>
+                        <ui:SymbolIconSource Symbol="Pin" />
+                    </ui:NavigationViewItem.IconSource>
+                </ui:NavigationViewItem>
+            </ui:NavigationView.MenuItems>
+            <ui:NavigationView.PaneFooter />
+            <ui:Frame x:Name="FrameView">
+                <ui:Frame.NavigationPageFactory>
+                    <fui:ViewLocator />
+                </ui:Frame.NavigationPageFactory>
+            </ui:Frame>
+        </ui:NavigationView>
+    </Grid>
+</UserControl>

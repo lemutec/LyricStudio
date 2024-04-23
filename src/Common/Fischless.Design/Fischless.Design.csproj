@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>12.0</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AvaloniaVersion>11.1.0-beta1</AvaloniaVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+		<Watch Include="**\*.axaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Watch Remove="Stylings\Stylings.axaml" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="FluentAvaloniaUI" Version="2.1.0-preview2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Fischless.Win32\Fischless.Win32.csproj" />
+	</ItemGroup>
+</Project>
