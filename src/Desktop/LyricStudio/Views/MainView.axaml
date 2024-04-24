@@ -24,6 +24,11 @@
                         <ui:SymbolIconSource Symbol="Home" />
                     </ui:NavigationViewItem.IconSource>
                 </ui:NavigationViewItem>
+                <ui:NavigationViewItem Content="MediaInfo" Tag="{x:Type views:MediaInfoPage}">
+                    <ui:NavigationViewItem.IconSource>
+                        <ui:SymbolIconSource Symbol="Tag" />
+                    </ui:NavigationViewItem.IconSource>
+                </ui:NavigationViewItem>
                 <ui:NavigationViewItem Content="插件" Tag="{x:Type views:PluginPage}">
                     <ui:NavigationViewItem.IconSource>
                         <ui:SymbolIconSource Symbol="Pin" />

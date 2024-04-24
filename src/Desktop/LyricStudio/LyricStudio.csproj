@@ -7,27 +7,25 @@
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ApplicationIcon>Assets\Images\Favicon.ico</ApplicationIcon>
+		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\**" />
 		<Watch Include="**\*.axaml" />
 	</ItemGroup>
 	<PropertyGroup>
-		<AvaloniaVersion>11.1.0-beta1</AvaloniaVersion>
+		<AvaloniaVersion>11.0.10</AvaloniaVersion>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Watch Remove="Views\MainView.axaml" />
-	  <Watch Remove="Views\Pages\PluginPage.axaml" />
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
 		<PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
 		<PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.18" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
 		<PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
 		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-		<PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.0.10.6" />
-		<PackageReference Include="FluentAvaloniaUI" Version="2.1.0-preview2" />
+		<PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.0.10.7" />
+		<PackageReference Include="FluentAvaloniaUI" Version="2.0.5" />
 		<PackageReference Include="Live.Avalonia" Version="1.4.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
@@ -47,6 +45,9 @@
 	  <ProjectReference Include="..\..\Common\Fischless.Design\Fischless.Design.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Update="Views\Pages\MediaInfoPage.axaml.cs">
+	    <DependentUpon>MediaInfoPage.axaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Pages\PluginPage.axaml.cs">
 	    <DependentUpon>PluginPage.axaml</DependentUpon>
 	  </Compile>

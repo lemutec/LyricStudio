@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Fischless.Globalization;
 using Fischless.Win32.Helpers;
 using LyricStudio.Models.Messages;
 using LyricStudio.ViewModels;
@@ -9,15 +8,15 @@ using System.Linq;
 
 namespace LyricStudio.Views;
 
-public partial class HomePage : UserControl
+public partial class MediaInfoPage : UserControl
 {
-    public HomePageViewModel ViewModel { get; }
+    public MediaInfoPageViewModel ViewModel { get; }
 
-    public HomePage() : this(App.GetService<HomePageViewModel>())
+    public MediaInfoPage() : this(App.GetService<MediaInfoPageViewModel>())
     {
     }
 
-    public HomePage(HomePageViewModel viewModel)
+    public MediaInfoPage(MediaInfoPageViewModel viewModel)
     {
         DataContext = ViewModel = viewModel;
         InitializeComponent();
@@ -28,11 +27,10 @@ public partial class HomePage : UserControl
     {
         if (e.GetFileNames() is { } fileNames)
         {
-            WeakReferenceMessenger.Default.Send(new FileDropMessage(fileNames.ToArray()));
+            if (fileNames.Any())
+            {
+                ViewModel.Reload(fileNames.First());
+            }
         }
-    }
-
-    private void OnTimeClickBarTapped(object? sender, TappedEventArgs e)
-    {
     }
 }

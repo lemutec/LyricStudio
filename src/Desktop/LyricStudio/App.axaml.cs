@@ -16,6 +16,7 @@ using Serilog;
 using Serilog.Events;
 using System;
 using System.IO;
+using System.Resources;
 using System.Threading.Tasks;
 
 namespace LyricStudio;
@@ -48,6 +49,9 @@ public partial class App : Application
 
             MuiLanguage.SetupLanguage(ConfigurationKeys.Language.Get());
 
+            ResourceManager resourceManager = new("Fischless.Globalization.Properties.Resources", typeof(MuiLanguage).Assembly);
+            resourceManager.GetString("AboutProgram", new System.Globalization.CultureInfo("en"));
+
             services.AddSingleton(services);
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddLogging(c => c.AddSerilog(Log.Logger));
@@ -55,6 +59,7 @@ public partial class App : Application
             services.AddView<MainWindow, MainWindowViewModel>();
             services.AddView<MainView, MainViewViewModel>();
             services.AddView<HomePage, HomePageViewModel>();
+            services.AddView<MediaInfoPage, MediaInfoPageViewModel>();
             services.AddView<PluginPage, PluginPageViewModel>();
         })
         .Build();

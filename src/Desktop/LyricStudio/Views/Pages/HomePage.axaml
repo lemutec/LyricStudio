@@ -183,8 +183,8 @@
                                 Tapped="OnTimeClickBarTapped" />
                         <ProgressBar Name="TimeBackground"
                                      Height="30"
-                                     Background="#2B2B2B"
-                                     Foreground="LightBlue"
+                                     Background="#112B2B2B"
+                                     Foreground="#0078D4"
                                      Maximum="1"
                                      Value="0.5" />
                         <controls:AudioVisualizationView Height="14"
@@ -202,6 +202,8 @@
                                    VerticalAlignment="Center"
                                    FontWeight="Normal"
                                    Text="01:00" />
+                        <!--  #9E4848  -->
+                        <!--  #D69D85  -->
                         <TextBlock Name="CurrentLrcText"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -209,18 +211,27 @@
                                    Text="一条大河波浪宽"
                                    TextDecorations="{x:Null}" />
                     </Grid>
-                    <ListBox Grid.Row="1" Margin="0,8,0,0" />
+                    <Border Grid.Row="1"
+                            Margin="0,8,0,0"
+                            Background="Transparent"
+                            BorderBrush="#10AAAAAA"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                        <Grid>
+                            <ListBox Background="Transparent" />
+                        </Grid>
+                    </Border>
                     <TextBox Grid.Row="2"
                              Margin="0,8,0,0"
                              Background="Transparent"
                              BorderThickness="1"
                              Text=""
                              Watermark="当前歌词">
-                        <!--<TextBox.Styles>
+                        <TextBox.Styles>
                             <StaticResource ResourceKey="StaticTextBoxStyle" />
                             <StaticResource ResourceKey="StaticTextBoxStylePointerOver" />
                             <StaticResource ResourceKey="StaticTextBoxStyleFocused" />
-                        </TextBox.Styles>-->
+                        </TextBox.Styles>
                     </TextBox>
                 </Grid>
             </Grid>

@@ -12,7 +12,7 @@ public sealed class NavigationService : INavigationService
     public NavigationView NavigationView { get; set; } = null!;
     public Frame Frame { get; private set; } = null!;
     public Type NavigateFrom { get; set; } = typeof(HomePage);
-    public NavigationTransitionInfo ContentTransitions { get; set; } = new DrillInNavigationTransitionInfo();
+    public NavigationTransitionInfo ContentTransitions { get; set; } = null;// new DrillInNavigationTransitionInfo();
 
     public void SetFrame(Frame frame)
         => Frame = frame;

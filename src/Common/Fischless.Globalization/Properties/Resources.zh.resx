@@ -103,4 +103,7 @@
   <data name="Version" xml:space="preserve">
     <value>版本</value>
   </data>
+  <data name="MediaInfoDropHint" xml:space="preserve">
+    <value>请拖放媒体文件到此处</value>
+  </data>
 </root>

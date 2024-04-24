@@ -7,7 +7,7 @@ using System.Resources;
 
 namespace Fischless.Globalization;
 
-public static class MuiLanguage
+public static partial class MuiLanguage
 {
     public static string MuiLanguageName { get; private set; } = string.Empty;
 
@@ -50,6 +50,7 @@ public static class MuiLanguage
             }
         }
 
+#if !PREVIEW
         try
         {
             I18NExtension.Culture = new CultureInfo(name);
@@ -58,6 +59,9 @@ public static class MuiLanguage
         {
             _ = e;
         }
+#else
+        Culture = new CultureInfo(name);
+#endif
         return false;
     }
 
@@ -65,7 +69,11 @@ public static class MuiLanguage
     {
         try
         {
+#if !PREVIEW
             return I18NExtension.Translate(key);
+#else
+            return Translate(key);
+#endif
         }
         catch (Exception e)
         {

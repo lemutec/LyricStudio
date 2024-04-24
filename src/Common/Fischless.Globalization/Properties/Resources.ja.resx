@@ -103,4 +103,7 @@
   <data name="Version" xml:space="preserve">
     <value>バージョン</value>
   </data>
+  <data name="MediaInfoDropHint" xml:space="preserve">
+    <value>ここにメディアファイルをドラッグ＆ドロップしてください</value>
+  </data>
 </root>

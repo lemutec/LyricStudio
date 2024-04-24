@@ -70,6 +70,15 @@ namespace Fischless.Globalization.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please drag and drop a media file here ....
+        /// </summary>
+        public static string MediaInfoDropHint {
+            get {
+                return ResourceManager.GetString("MediaInfoDropHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version.
         /// </summary>
         public static string Version {
