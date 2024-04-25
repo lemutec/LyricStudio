@@ -184,7 +184,7 @@
                         <ProgressBar Name="TimeBackground"
                                      Height="30"
                                      Background="#112B2B2B"
-                                     Foreground="#0078D4"
+                                     Foreground="#AA0078D4"
                                      Maximum="1"
                                      Value="0.5" />
                         <controls:AudioVisualizationView Height="14"
@@ -202,12 +202,10 @@
                                    VerticalAlignment="Center"
                                    FontWeight="Normal"
                                    Text="01:00" />
-                        <!--  #9E4848  -->
-                        <!--  #D69D85  -->
                         <TextBlock Name="CurrentLrcText"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   Foreground="#9E4848"
+                                   Foreground="#FFFFFF"
                                    Text="一条大河波浪宽"
                                    TextDecorations="{x:Null}" />
                     </Grid>

@@ -42,6 +42,8 @@ public sealed class AudioVisualizationView : Control
 
 file static class AudioVisualizationRender
 {
+    public const string ThemeColor = "#50009C00";
+
     public static void RenderAsSpectrum(this DrawingContext context, Rect rect, List<AudioVolume> volumes)
     {
         if (volumes == null || volumes.Count == 0)
@@ -53,15 +55,14 @@ file static class AudioVisualizationRender
         double xScale = width / volumes.Count;
         double yScale = height / 100d;
 
-        Pen pen = new(new SolidColorBrush(Color.Parse("#0078D4")), 1);
+        Pen pen = new(new SolidColorBrush(Color.Parse(ThemeColor)), 1);
 
         for (int i = 0; i < volumes.Count; i++)
         {
             double x = i * xScale;
             double y = volumes[i].Volume * yScale;
 
-            context.DrawLine(pen, new Point(x, height / 2f), new Point(x, height / 2f - y));
-            context.DrawLine(pen, new Point(x, height / 2f), new Point(x, height / 2f + y));
+            context.DrawLine(pen, new Point(x, height / 2f - y), new Point(x, height / 2f + y));
         }
     }
 
@@ -76,7 +77,7 @@ file static class AudioVisualizationRender
         double xScale = width / volumes[^1].Time;
         double yScale = height / 100d;
 
-        Pen pen = new(new SolidColorBrush(Color.Parse("#0078D4")), 1);
+        Pen pen = new(new SolidColorBrush(Color.Parse(ThemeColor)), 1);
 
         Point previousPoint = new(0, height);
         foreach (var volume in volumes)
@@ -101,7 +102,7 @@ file static class AudioVisualizationRender
         double xScale = width / volumes.Count;
         double yScale = height / 100d;
 
-        Pen pen = new(new SolidColorBrush(Color.Parse("#0078D4")), 1);
+        Pen pen = new(new SolidColorBrush(Color.Parse(ThemeColor)), 1);
 
         for (int i = 0; i < volumes.Count; i++)
         {

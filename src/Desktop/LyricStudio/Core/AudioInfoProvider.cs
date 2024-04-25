@@ -19,10 +19,10 @@ internal static class AudioInfoProvider
         long totalSamples = audioFile.Length / (audioFile.WaveFormat.BitsPerSample / 8);
 
         // Assume the dBFS (decibels relative to full scale) value corresponding to maximum possible volume is 0 dBFS
-        const float maxDBFS = 0.0f;
+        const float maxDBFS = 0f;
 
-        // Assume the dBFS value corresponding to minimum possible volume is -60 dBFS (a common level for quiet audio)
-        const float minDBFS = -60.0f;
+        // Assume the dBFS value corresponding to minimum possible volume is -30 dBFS (a common level for quiet audio)
+        const float minDBFS = -30f;
 
         // Calculate the range of dBFS values
         const float dbRange = maxDBFS - minDBFS;
@@ -43,7 +43,7 @@ internal static class AudioInfoProvider
             }
 
             // Calculate the root mean square (RMS) of the audio block
-            float sum = 0;
+            float sum = 0f;
             for (int i = 0; i < bytesRead / (audioFile.WaveFormat.BitsPerSample / 8); i++)
             {
                 // Sum of squares
@@ -53,13 +53,13 @@ internal static class AudioInfoProvider
 
             // Convert volume to decibels (dB)
             // Avoid divide by zero error
-            float volumeInDB = 20.0f * (float)Math.Log10(rms + float.Epsilon);
+            float volumeInDB = 20f * (float)Math.Log10(rms + float.Epsilon);
 
             // Map the dB value to the range of 0 to 100
             float mappedVolume = ((volumeInDB - minDBFS) / dbRange) * 100;
 
             // Ensure volume is within the range of 0 to 100
-            mappedVolume = Math.Max(0, Math.Min(100, mappedVolume));
+            mappedVolume = Math.Max(0f, Math.Min(100f, mappedVolume));
 
             yield return new AudioVolume
             {
