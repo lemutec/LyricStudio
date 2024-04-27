@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Fischless.Globalization;
 using Fischless.Win32.Helpers;
 using LyricStudio.Models.Messages;
 using LyricStudio.ViewModels;

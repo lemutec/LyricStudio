@@ -437,8 +437,8 @@ public partial class LangExtension : MarkupExtension, IAddChild
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
+        // TODO: ProvideValueInternal(serviceProvider);
         return MuiLanguage.Mui(Key?.ToString() ?? string.Empty);
-        //return ProvideValueInternal(serviceProvider);
     }
 
     private void ResetBinding(StyledElement element)
