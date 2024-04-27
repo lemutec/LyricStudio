@@ -9,6 +9,8 @@ namespace Fischless.Globalization;
 
 public static partial class MuiLanguage
 {
+    public static CultureInfo Culture { get; set; }
+
     public static string MuiLanguageName { get; private set; } = string.Empty;
 
     public static ResourceManager ResourceManager { get; } = new("Fischless.Globalization.Properties.Resources", typeof(Resources).Assembly);
@@ -50,18 +52,15 @@ public static partial class MuiLanguage
             }
         }
 
-#if !PREVIEW
         try
         {
             I18NExtension.Culture = new CultureInfo(name);
+            Culture = new CultureInfo(name);
         }
         catch (Exception e)
         {
             _ = e;
         }
-#else
-        Culture = new CultureInfo(name);
-#endif
         return false;
     }
 
@@ -69,11 +68,7 @@ public static partial class MuiLanguage
     {
         try
         {
-#if !PREVIEW
-            return I18NExtension.Translate(key);
-#else
-            return Translate(key);
-#endif
+            return Translate(key) ?? I18NExtension.Translate(key);
         }
         catch (Exception e)
         {
@@ -90,6 +85,12 @@ public static partial class MuiLanguage
     public static string Mui(string key, params object[] args)
     {
         return string.Format(Mui(key)?.ToString(), args);
+    }
+
+    internal static string? Translate(string key, string? fallbackValue = null)
+    {
+        string? value = ResourceManager?.GetString(key, Culture ?? Thread.CurrentThread.CurrentUICulture ?? Thread.CurrentThread.CurrentCulture);
+        return value ?? fallbackValue;
     }
 }
 

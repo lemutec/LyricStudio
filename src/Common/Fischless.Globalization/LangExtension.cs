@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Globalization;
 using System.Reflection;
@@ -18,25 +19,17 @@ using System.Runtime.CompilerServices;
 
 namespace Fischless.Globalization;
 
-public static partial class MuiLanguage
-{
-    public static CultureInfo Culture { get; set; }
-
-    public static string? Translate(string key, string? fallbackValue = null)
-    {
-        string? value = ResourceManager?.GetString(key, Culture);
-        return value ?? fallbackValue;
-    }
-}
-
+/// <summary>
+/// namespace Avalonia.Markup.Xaml.MarkupExtensions;
+/// </summary>
 [DebuggerDisplay("Key = {Key}, Keys = {Keys}")]
-public sealed class LangExtension : MarkupExtension, IAddChild
+public partial class LangExtension : MarkupExtension, IAddChild
 {
-    private class ResourceChangedNotifier : INotifyPropertyChanged
+    private class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
     {
         [CompilerGenerated]
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ExpandoObject _003Csource_003EP;
+        private ExpandoObject _003Csource_003EP = source;
 
         private ResourceProvider? lastRegister;
 
@@ -46,12 +39,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
 
         public void ForceUpdate()
         {
-            OnPropertyChanged("Source");
-        }
-
-        public ResourceChangedNotifier(ExpandoObject source)
-        {
-            _003Csource_003EP = source;
+            OnPropertyChanged(nameof(Source));
         }
 
         private void OnPropertyChanged(string propertyName)
@@ -67,7 +55,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
             {
                 if (lastRegister == provider2)
                 {
-                    OnPropertyChanged("Source");
+                    OnPropertyChanged(nameof(Source));
                 }
             };
         }
@@ -79,7 +67,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
     {
         [CompilerGenerated]
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IReadOnlyList<bool> _003CisBindingList_003EP;
+        private readonly IReadOnlyList<bool> _003CisBindingList_003EP;
 
         public IValueConverter? Converter { get; set; }
 
@@ -120,8 +108,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
 
         private static string GetValue(object source, string? key)
         {
-            object value;
-            return (key == null) ? string.Empty : (((IDictionary<string, object>)source).TryGetValue(key, out value) ? ((value as string) ?? key) : key);
+            return (key == null) ? string.Empty : (((IDictionary<string, object>)source).TryGetValue(key, out object value) ? ((value as string) ?? key) : key);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -130,7 +117,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
         }
     }
 
-    private readonly AvaloniaObject proxy = new AvaloniaObject();
+    private readonly AvaloniaObject proxy = new();
 
     private static readonly AvaloniaProperty KeyProperty;
 
@@ -143,7 +130,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     [DefaultValue(null)]
     [Content]
-    public Collection<IBinding> Keys { get; } = new Collection<IBinding>();
+    public Collection<IBinding> Keys { get; } = [];
 
     public static CultureInfo Culture
     {
@@ -156,14 +143,8 @@ public sealed class LangExtension : MarkupExtension, IAddChild
     [DefaultValue(null)]
     public object? Key
     {
-        get
-        {
-            return proxy.GetValue(KeyProperty);
-        }
-        set
-        {
-            proxy.SetValue(KeyProperty, value);
-        }
+        get => proxy.GetValue(KeyProperty);
+        set => proxy.SetValue(KeyProperty, value);
     }
 
     [DefaultValue(null)]
@@ -176,19 +157,16 @@ public sealed class LangExtension : MarkupExtension, IAddChild
 
     static LangExtension()
     {
-        KeyProperty = AvaloniaProperty.RegisterAttached<I18NExtension, AvaloniaObject, object>("Key");
-        TargetPropertyProperty = AvaloniaProperty.RegisterAttached<I18NExtension, AvaloniaObject, AvaloniaProperty>("TargetProperty");
+        KeyProperty = AvaloniaProperty.RegisterAttached<LangExtension, AvaloniaObject, object>("Key");
+        TargetPropertyProperty = AvaloniaProperty.RegisterAttached<LangExtension, AvaloniaObject, AvaloniaProperty>("TargetProperty");
         ExpandoObject expandoObject = (ExpandoObject)(Target = new ExpandoObject());
         Notifier = new ResourceChangedNotifier(expandoObject);
         ExpandoObjectPropertyAccessorPlugin.Register(expandoObject);
         List<Action> updateActions = [];
         lock (ResourceProvider.Providers)
         {
-            foreach (ResourceProvider provider in ResourceProvider.Providers)
-            {
-                Action item = RegisterLanguageSource(provider, lazyInit: true);
-                updateActions.Add(item);
-            }
+            updateActions.AddRange(
+                ResourceProvider.Providers.Select(provider => RegisterLanguageSource(provider, true)));
 
             ResourceProvider.Providers.CollectionChanged += (object? _, NotifyCollectionChangedEventArgs e) =>
             {
@@ -227,7 +205,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
 
     private object ProvideValueInternal(IServiceProvider serviceProvider)
     {
-        if (!(serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget provideValueTarget))
+        if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
         {
             return this;
         }
@@ -235,18 +213,18 @@ public sealed class LangExtension : MarkupExtension, IAddChild
         StyledElement styledElement = provideValueTarget.TargetObject as StyledElement;
         if (styledElement == null)
         {
-            if (!(provideValueTarget.TargetObject is I18NExtension))
+            if (provideValueTarget.TargetObject is not LangExtension)
             {
                 return this;
             }
 
             FieldInfo field = provideValueTarget.GetType().GetField("ParentsStack");
-            if ((object)field == null)
+            if (field is null)
             {
                 return this;
             }
 
-            if (!(field.GetValue(provideValueTarget) is IList<object> source))
+            if (field.GetValue(provideValueTarget) is not IList<object> source)
             {
                 return this;
             }
@@ -254,7 +232,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
             styledElement = source.Last() as StyledElement;
         }
 
-        if (!(provideValueTarget.TargetProperty is AvaloniaProperty targetProperty))
+        if (provideValueTarget.TargetProperty is not AvaloniaProperty targetProperty)
         {
             return this;
         }
@@ -274,15 +252,15 @@ public sealed class LangExtension : MarkupExtension, IAddChild
         if (targetObject is StyledElement styledElement)
         {
             SetTargetProperty(styledElement, targetProperty);
-            styledElement.DataContextChanged += I18NExtension_DataContextChanged;
+            styledElement.DataContextChanged += OnDataContextChanged;
         }
     }
 
-    private void I18NExtension_DataContextChanged(object? sender, EventArgs e)
+    private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (sender is StyledElement styledElement)
         {
-            styledElement.DataContextChanged -= I18NExtension_DataContextChanged;
+            styledElement.DataContextChanged -= OnDataContextChanged;
             ResetBinding(styledElement);
         }
     }
@@ -306,7 +284,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
     private IBinding CreateBinding()
     {
         Binding keyBinding = null;
-        if (!(Key is string text))
+        if (Key is not string text)
         {
             return MapMultiBinding(keyBinding);
         }
@@ -331,8 +309,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
 
     public static string? Translate(string key, string? fallbackValue = null)
     {
-        object value;
-        return Target.TryGetValue(key, out value) ? ((value as string) ?? fallbackValue) : fallbackValue;
+        return Target.TryGetValue(key, out object value) ? ((value as string) ?? fallbackValue) : fallbackValue;
     }
 
     private static Action RegisterLanguageSource(ResourceProvider provider, bool lazyInit)
@@ -388,6 +365,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
         Key = binding;
     }
 
+    [SuppressMessage("Usage", "CA2208:Instantiate argument exceptions correctly")]
     private MultiBinding MapMultiBinding(Binding? keyBinding)
     {
         MultiBinding multiBinding = CreateMultiBinding();
@@ -404,9 +382,9 @@ public sealed class LangExtension : MarkupExtension, IAddChild
         {
             IBinding binding = key;
             IBinding binding2 = binding;
-            if (!(binding2 is LanguageBinding languageBinding))
+            if (binding2 is not LanguageBinding languageBinding)
             {
-                if (!(binding2 is BindingBase item2))
+                if (binding2 is not BindingBase item2)
                 {
                     throw new ArgumentException(string.Format("{0} only accept {1} or {2} current type is {3}", "Keys", typeof(LanguageBinding), typeof(Binding), key.GetType()));
                 }
@@ -428,7 +406,7 @@ public sealed class LangExtension : MarkupExtension, IAddChild
                 });
             }
 
-            list.Add(!(key is LanguageBinding));
+            list.Add(key is not LanguageBinding);
         }
 
         multiBinding.Converter = new MultiValueLangConverter(list.ToArray())
@@ -459,12 +437,13 @@ public sealed class LangExtension : MarkupExtension, IAddChild
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        return ProvideValueInternal(serviceProvider);
+        return MuiLanguage.Mui(Key?.ToString() ?? string.Empty);
+        //return ProvideValueInternal(serviceProvider);
     }
 
     private void ResetBinding(StyledElement element)
     {
-        if (!(Key is string) || !Keys.All((IBinding x) => x is LanguageBinding))
+        if (Key is not string || !Keys.All((IBinding x) => x is LanguageBinding))
         {
             AvaloniaProperty targetProperty = GetTargetProperty(element);
             SetTargetProperty(element, null);
@@ -487,11 +466,11 @@ public sealed class LangExtension : MarkupExtension, IAddChild
     }
 }
 
-public sealed class ExpandoObjectPropertyAccessorPlugin : IPropertyAccessorPlugin
+public sealed class ExpandoObjectPropertyAccessorPlugin(ExpandoObject target) : IPropertyAccessorPlugin
 {
     private class ExpandoAccessor : IPropertyAccessor, IDisposable
     {
-        private static readonly Dictionary<string, ExpandoAccessor> Accessors = new Dictionary<string, ExpandoAccessor>();
+        private static readonly Dictionary<string, ExpandoAccessor> Accessors = [];
 
         private static ExpandoObject? source;
 
@@ -501,10 +480,7 @@ public sealed class ExpandoObjectPropertyAccessorPlugin : IPropertyAccessorPlugi
 
         public static ExpandoObject? Source
         {
-            get
-            {
-                return source;
-            }
+            get => source;
             set
             {
                 if (source != null)
@@ -549,7 +525,7 @@ public sealed class ExpandoObjectPropertyAccessorPlugin : IPropertyAccessorPlugi
             }
         }
 
-        private static void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private static void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (!Accessors.TryGetValue(e.PropertyName, out ExpandoAccessor value))
             {
@@ -581,12 +557,7 @@ public sealed class ExpandoObjectPropertyAccessorPlugin : IPropertyAccessorPlugi
 
     [CompilerGenerated]
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private ExpandoObject _003Ctarget_003EP;
-
-    public ExpandoObjectPropertyAccessorPlugin(ExpandoObject target)
-    {
-        _003Ctarget_003EP = target;
-    }
+    private ExpandoObject _003Ctarget_003EP = target;
 
     public bool Match(object obj, string propertyName)
     {
@@ -598,16 +569,9 @@ public sealed class ExpandoObjectPropertyAccessorPlugin : IPropertyAccessorPlugi
         return ExpandoAccessor.Create(propertyName);
     }
 
-    [Obsolete("Obsoleted for preview version")]
     public static void Register(ExpandoObject target)
     {
-        if (Assembly.GetAssembly(typeof(IPropertyAccessorPlugin))
-                .GetType("Avalonia.Data.Core.ExpressionObserver")
-                .GetField("PropertyAccessors", BindingFlags.Public | BindingFlags.Static)!
-                .GetValue(null) is IList<IPropertyAccessorPlugin> { } plugins)
-        {
-            plugins.Add(new ExpandoObjectPropertyAccessorPlugin(target));
-            ExpandoAccessor.Source = target;
-        }
+        BindingPlugins.PropertyAccessors.Add(new ExpandoObjectPropertyAccessorPlugin(target));
+        ExpandoAccessor.Source = target;
     }
 }

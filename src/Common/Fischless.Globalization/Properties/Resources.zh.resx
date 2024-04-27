@@ -106,4 +106,16 @@
   <data name="MediaInfoDropHint" xml:space="preserve">
     <value>请拖放媒体文件到此处</value>
   </data>
+  <data name="MediaInfo" xml:space="preserve">
+    <value>媒体信息</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="Plugin" xml:space="preserve">
+    <value>插件</value>
+  </data>
+  <data name="CurrentLyric" xml:space="preserve">
+    <value>当前歌词</value>
+  </data>
 </root>

@@ -104,6 +104,18 @@
     <value>Version</value>
   </data>
   <data name="MediaInfoDropHint" xml:space="preserve">
-    <value>Please drag and drop a media file here ...</value>
+    <value>Please drag and drop a media file here</value>
+  </data>
+  <data name="MediaInfo" xml:space="preserve">
+    <value>MediaInfo</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
+  <data name="Plugin" xml:space="preserve">
+    <value>Plugin</value>
+  </data>
+  <data name="CurrentLyric" xml:space="preserve">
+    <value>Current lyric</value>
   </data>
 </root>

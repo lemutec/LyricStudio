@@ -70,11 +70,47 @@ namespace Fischless.Globalization.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please drag and drop a media file here ....
+        ///   Looks up a localized string similar to Current lyric.
+        /// </summary>
+        public static string CurrentLyric {
+            get {
+                return ResourceManager.GetString("CurrentLyric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home Page.
+        /// </summary>
+        public static string HomePage {
+            get {
+                return ResourceManager.GetString("HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MediaInfo.
+        /// </summary>
+        public static string MediaInfo {
+            get {
+                return ResourceManager.GetString("MediaInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please drag and drop a media file here.
         /// </summary>
         public static string MediaInfoDropHint {
             get {
                 return ResourceManager.GetString("MediaInfoDropHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin.
+        /// </summary>
+        public static string Plugin {
+            get {
+                return ResourceManager.GetString("Plugin", resourceCulture);
             }
         }
         

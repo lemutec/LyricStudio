@@ -106,4 +106,16 @@
   <data name="MediaInfoDropHint" xml:space="preserve">
     <value>ここにメディアファイルをドラッグ＆ドロップしてください</value>
   </data>
+  <data name="MediaInfo" xml:space="preserve">
+    <value>メディア情報</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>ホームページ</value>
+  </data>
+  <data name="Plugin" xml:space="preserve">
+    <value>プラグイン</value>
+  </data>
+  <data name="CurrentLyric" xml:space="preserve">
+    <value>歌詞</value>
+  </data>
 </root>
