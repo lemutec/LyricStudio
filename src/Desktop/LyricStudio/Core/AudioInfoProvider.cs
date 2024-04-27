@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using LyricStudio.Models.Audios;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 
@@ -61,7 +62,7 @@ internal static class AudioInfoProvider
             // Ensure volume is within the range of 0 to 100
             mappedVolume = Math.Max(0f, Math.Min(100f, mappedVolume));
 
-            yield return new AudioVolume
+            yield return new AudioVolume()
             {
                 DB = volumeInDB,
                 Time = currentTimeOffset,
@@ -69,13 +70,4 @@ internal static class AudioInfoProvider
             };
         }
     }
-}
-
-public class AudioVolume
-{
-    public float Volume { get; init; }
-    public float DB { get; init; }
-    public float Time { get; init; }
-
-    public override string ToString() => $"[{Time}] {Volume} (in {DB}DB)";
 }

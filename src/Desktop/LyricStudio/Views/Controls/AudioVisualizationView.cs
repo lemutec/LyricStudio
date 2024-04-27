@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
-using LyricStudio.Core;
+using LyricStudio.Models.Audios;
 using System.Collections.Generic;
 
 namespace LyricStudio.Views.Controls;
@@ -42,7 +42,7 @@ public sealed class AudioVisualizationView : Control
 
 file static class AudioVisualizationRender
 {
-    public const string ThemeColor = "#50009C00";
+    public const string ThemeColor = "#AA009C00";
 
     public static void RenderAsSpectrum(this DrawingContext context, Rect rect, List<AudioVolume> volumes)
     {

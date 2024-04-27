@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fui="urn:fischless.design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mui="urn:fischless.globalization"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:views="clr-namespace:LyricStudio.Views"
              xmlns:vm="using:LyricStudio.ViewModels"
@@ -19,17 +20,17 @@
                            OpenPaneLength="200"
                            PaneDisplayMode="Auto">
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="主页" Tag="{x:Type views:HomePage}">
+                <ui:NavigationViewItem Content="{mui:Lang HomePage}" Tag="{x:Type views:HomePage}">
                     <ui:NavigationViewItem.IconSource>
                         <ui:SymbolIconSource Symbol="Home" />
                     </ui:NavigationViewItem.IconSource>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="MediaInfo" Tag="{x:Type views:MediaInfoPage}">
+                <ui:NavigationViewItem Content="{mui:Lang MediaInfo}" Tag="{x:Type views:MediaInfoPage}">
                     <ui:NavigationViewItem.IconSource>
                         <ui:SymbolIconSource Symbol="Tag" />
                     </ui:NavigationViewItem.IconSource>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="插件" Tag="{x:Type views:PluginPage}">
+                <ui:NavigationViewItem Content="{mui:Lang Plugin}" Tag="{x:Type views:PluginPage}">
                     <ui:NavigationViewItem.IconSource>
                         <ui:SymbolIconSource Symbol="Pin" />
                     </ui:NavigationViewItem.IconSource>

@@ -8,5 +8,5 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
-    <!--<StyleInclude Source="Controls/XXX/XXX.axaml" />-->
+    <StyleInclude Source="avares://Fischless.Design/Controls/TextBox/StaticTextBox.axaml" />
 </Styles>

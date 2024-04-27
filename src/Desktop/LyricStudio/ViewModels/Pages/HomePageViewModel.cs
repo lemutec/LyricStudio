@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Fischless.Win32;
 using LyricStudio.Core;
 using LyricStudio.Core.MusicTag;
+using LyricStudio.Models.Audios;
 using LyricStudio.Models.Messages;
 using System;
 using System.Collections.Generic;

@@ -16,16 +16,11 @@
         <TextBox x:Name="MediaInfoBox"
                  Background="Transparent"
                  BorderThickness="0"
+                 Classes="static"
                  FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                  FontSize="12"
                  Text="{Binding MediaInfo}"
                  TextWrapping="Wrap"
-                 Watermark="{mui:Lang Key=MediaInfoDropHint}">
-            <TextBox.Styles>
-                <StaticResource ResourceKey="StaticTextBoxStyle" />
-                <StaticResource ResourceKey="StaticTextBoxStylePointerOver" />
-                <StaticResource ResourceKey="StaticTextBoxStyleFocused" />
-            </TextBox.Styles>
-        </TextBox>
+                 Watermark="{mui:Lang MediaInfoDropHint}" />
     </Grid>
 </UserControl>
