@@ -116,8 +116,6 @@ public static class SettingsExtensions
         return key.DefaultValue;
     }
 
-#pragma warning disable CS0618
-
     /// <summary>
     /// Get setting value as type specified by key, or get default value.
     /// </summary>
@@ -127,8 +125,6 @@ public static class SettingsExtensions
     /// <returns>Setting value, or default value.</returns>
     public static T GetValueOrDefault<T>(this ISettings? settings, SettingKey<T> key) =>
         (T)settings.GetValueOrDefault((SettingKey)key);
-
-#pragma warning restore CS0618
 
     /// <summary>
     /// Check whether the value is False or not.

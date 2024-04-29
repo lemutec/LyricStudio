@@ -7,9 +7,18 @@ namespace LyricStudio.Core;
 
 internal static class AudioInfoProvider
 {
+    /// <summary>
+    /// In Seconds
+    /// </summary>
+    public static double GetTotalTime(string fileName)
+    {
+        using AudioFileReader audioFile = new(fileName);
+        return audioFile.TotalTime.TotalSeconds;
+    }
+
     public static IEnumerable<AudioVolume> GetAudioVolume(string fileName)
     {
-        using var audioFile = new AudioFileReader(fileName);
+        using AudioFileReader audioFile = new(fileName);
         const int blockSize = 1024;
         float[] buffer = new float[blockSize];
 

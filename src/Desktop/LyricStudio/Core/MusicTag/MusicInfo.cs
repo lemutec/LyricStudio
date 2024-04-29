@@ -21,6 +21,8 @@ public class MusicInfo
 
     public double BitRate { get; set; }
 
+    public double TotalTime { get; set; }
+
     public List<AudioVolume> Volumes { get; set; }
 
     public MusicInfoStatus Status { get; set; }

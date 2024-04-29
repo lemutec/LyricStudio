@@ -1,8 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Fischless.Win32;
 using LyricStudio.Core;
+using LyricStudio.Core.Configuration;
 using LyricStudio.Core.MusicTag;
+using LyricStudio.Core.Player;
+using LyricStudio.Models;
 using LyricStudio.Models.Audios;
 using LyricStudio.Models.Messages;
 using System;
@@ -16,6 +20,45 @@ namespace LyricStudio.ViewModels;
 
 public partial class HomePageViewModel : ObservableObject, IDisposable
 {
+    [SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance")]
+    private IAudioPlayer audioPlayer = null!;
+
+    [ObservableProperty]
+    private bool isPlaying = false;
+
+    [ObservableProperty]
+    private double currentTime = default;
+
+    [ObservableProperty]
+    private double totalTime = default;
+
+    [ObservableProperty]
+    private double position = default;
+
+    [ObservableProperty]
+    private double volume = ConfigurationKeys.Volume.Get();
+
+    partial void OnVolumeChanged(double value)
+    {
+        ConfigurationKeys.Volume.Set(value);
+        Config.Configer?.Save(AppConfig.SettingsFile);
+        if (audioPlayer != null)
+        {
+            audioPlayer.Volume = (int)(value * 100d);
+        }
+    }
+
+    [ObservableProperty]
+    private double rate = 1d;
+
+    partial void OnRateChanged(double value)
+    {
+        if (audioPlayer != null)
+        {
+            audioPlayer.Rate = value;
+        }
+    }
+
     [ObservableProperty]
     private string tagName = string.Empty;
 
@@ -66,6 +109,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     private async Task OpenFilesAsync(params string[] fileNames)
     {
         IsReading = true;
+        Stop();
 
         try
         {
@@ -76,6 +120,8 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
             {
                 return;
             }
+
+            TagAlbumImage = null!;
 
             if (lyricFile == null)
             {
@@ -118,6 +164,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                     {
                         musicInfo.BitRate = MediaInfoAudio.GetAudioBitRate(musicFile) / 1000d;
                         musicInfo.Volumes = AudioInfoProvider.GetAudioVolume(musicFile).ToList();
+                        musicInfo.TotalTime = AudioInfoProvider.GetTotalTime(musicFile);
                     }
                     return musicInfo;
                 });
@@ -131,7 +178,17 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                     TagDuration = musicInfo.Duration;
                     TagBitRate = $"{musicInfo.BitRate} kbps";
                     Volumes = musicInfo.Volumes;
+                    TotalTime = musicInfo.TotalTime;
                 }
+
+                if (audioPlayer != null)
+                {
+                    audioPlayer.PositionChanged -= OnPositionChanged;
+                    audioPlayer.Dispose();
+                    audioPlayer = null!;
+                }
+                audioPlayer = new AudioPlayer(musicFile);
+                audioPlayer.PositionChanged += OnPositionChanged;
             }
 
             SyncWindowTitle();
@@ -161,5 +218,97 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         }
 
         WeakReferenceMessenger.Default.Send(new GlobalMessage(this, GlobalCommand.ChangeMainWindowTitle, fileName));
+    }
+
+    [RelayCommand]
+    public void Play()
+    {
+        if (audioPlayer == null)
+        {
+            return;
+        }
+
+        switch (audioPlayer.State)
+        {
+            case AudioPlayerState.Buffering:
+            case AudioPlayerState.Opening:
+            case AudioPlayerState.Error:
+                break;
+
+            case AudioPlayerState.Playing:
+            case AudioPlayerState.Ended:
+                IsPlaying = false;
+                audioPlayer.Pause();
+                break;
+
+            case AudioPlayerState.None:
+            case AudioPlayerState.Paused:
+            case AudioPlayerState.Stopped:
+                IsPlaying = true;
+                audioPlayer.Volume = (int)(Volume * 100d);
+                audioPlayer.Rate = Rate;
+                IsPlaying = true;
+                audioPlayer.Play();
+                break;
+        }
+    }
+
+    [RelayCommand]
+    public void Stop()
+    {
+        if (audioPlayer == null)
+        {
+            return;
+        }
+
+        CurrentTime = default;
+        Position = default;
+        IsPlaying = false;
+        audioPlayer.Stop();
+    }
+
+    [RelayCommand]
+    public void ShortShiftLeft()
+    {
+        SeekInSeconds(CurrentTime - 2d);
+    }
+
+    [RelayCommand]
+    public void ShortShiftRight()
+    {
+        SeekInSeconds(CurrentTime + 2d);
+    }
+
+    [RelayCommand]
+    public void LongShiftLeft()
+    {
+        SeekInSeconds(CurrentTime - 5d);
+    }
+
+    [RelayCommand]
+    public void LongShiftRight()
+    {
+        SeekInSeconds(CurrentTime + 5d);
+    }
+
+    public void SeekInSeconds(double second)
+    {
+        if (audioPlayer == null)
+        {
+            return;
+        }
+
+        audioPlayer.SeekTo(second);
+    }
+
+    public void SeekInPosition(double position)
+    {
+        SeekInSeconds(position * TotalTime);
+    }
+
+    private void OnPositionChanged(object? sender, double position)
+    {
+        CurrentTime = position * TotalTime;
+        Position = position;
     }
 }

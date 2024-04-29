@@ -1,9 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Fischless.Win32.Helpers;
 using LyricStudio.Models.Messages;
 using LyricStudio.ViewModels;
+using System;
 using System.Linq;
 
 namespace LyricStudio.Views;
@@ -31,7 +33,15 @@ public partial class HomePage : UserControl
         }
     }
 
-    private void OnTimeClickBarTapped(object? sender, TappedEventArgs e)
+    private void OnTimeClickBarPointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        if (sender is Border timeClickBar)
+        {
+            Point relativePoint = e.GetPosition(timeClickBar);
+            double relativeX = relativePoint.X;
+            double relativePosition = relativeX / timeClickBar.Bounds.Width;
+
+            ViewModel.SeekInPosition(relativePosition);
+        }
     }
 }

@@ -2,11 +2,13 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:LyricStudio.Views.Controls"
+             xmlns:converters="using:LyricStudio.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fui="urn:fischless.design"
              xmlns:li="using:LoadingIndicators.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mui="urn:fischless.globalization"
+             xmlns:player="using:LyricStudio.Core.Player"
              xmlns:styles="clr-namespace:Avalonia.Styling;assembly=Avalonia"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
@@ -15,6 +17,7 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
         <fui:BoolInvertConverter x:Key="BoolInvertConverter" />
         <fui:IsNullOrEmptyStringConverter x:Key="IsNullOrEmptyStringConverter" />
         <fui:IsNullOrEmptyStringInvertConverter x:Key="IsNullOrEmptyStringInvertConverter" />
@@ -24,7 +27,7 @@
     <Grid>
         <Grid ColumnDefinitions="Auto, *">
             <Grid Grid.Column="0">
-                <Grid RowDefinitions="Auto, Auto, Auto">
+                <Grid RowDefinitions="Auto, Auto, *">
                     <Border Grid.Row="0"
                             Width="168"
                             Height="168"
@@ -61,6 +64,7 @@
                                             Width="34"
                                             Height="34"
                                             Padding="1"
+                                            Command="{Binding ShortShiftLeftCommand}"
                                             CornerRadius="9">
                                         <Button.Content>
                                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -73,11 +77,19 @@
                                             Height="34"
                                             Margin="8,0,0,0"
                                             Padding="1"
+                                            Command="{Binding PlayCommand}"
                                             CornerRadius="9">
                                         <Button.Content>
-                                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                         FontSize="16"
-                                                         Glyph="{x:Static fui:FontSymbols.Play}" />
+                                            <Grid>
+                                                <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                             FontSize="16"
+                                                             Glyph="{x:Static fui:FontSymbols.Play}"
+                                                             IsVisible="{Binding IsPlaying, Converter={StaticResource BoolInvertConverter}}" />
+                                                <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                             FontSize="16"
+                                                             Glyph="{x:Static fui:FontSymbols.Pause}"
+                                                             IsVisible="{Binding IsPlaying}" />
+                                            </Grid>
                                         </Button.Content>
                                     </Button>
                                     <Button Grid.Column="2"
@@ -85,6 +97,7 @@
                                             Height="34"
                                             Margin="8,0,0,0"
                                             Padding="1"
+                                            Command="{Binding ShortShiftRightCommand}"
                                             CornerRadius="9">
                                         <Button.Content>
                                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -101,6 +114,7 @@
                                             Width="34"
                                             Height="34"
                                             Padding="1"
+                                            Command="{Binding LongShiftLeftCommand}"
                                             CornerRadius="9">
                                         <Button.Content>
                                             <Grid>
@@ -120,6 +134,7 @@
                                             Height="34"
                                             Margin="8,0,0,0"
                                             Padding="1"
+                                            Command="{Binding StopCommand}"
                                             CornerRadius="9">
                                         <Button.Content>
                                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -132,6 +147,7 @@
                                             Height="34"
                                             Margin="8,0,0,0"
                                             Padding="1"
+                                            Command="{Binding LongShiftRightCommand}"
                                             CornerRadius="9">
                                         <Button.Content>
                                             <Grid>
@@ -158,13 +174,16 @@
                                     <Slider Grid.Column="1"
                                             Width="88"
                                             Margin="8,-6,0,0"
-                                            Maximum="2"
-                                            Minimum="0.5" />
+                                            Maximum="1"
+                                            Minimum="0"
+                                            TickFrequency="0.1"
+                                            Value="{Binding Volume, Mode=TwoWay}" />
                                     <TextBlock Grid.Column="2"
+                                               Width="20"
                                                Margin="8,0,0,0"
                                                VerticalAlignment="Center"
                                                Foreground="#FFAAAAAA"
-                                               Text="0.5" />
+                                               Text="{Binding Volume, StringFormat='{}{0:N1}'}}" />
                                 </Grid>
                                 <Grid Grid.Row="3"
                                       Height="35"
@@ -179,22 +198,24 @@
                                     <Slider Grid.Column="1"
                                             Width="88"
                                             Margin="8,-8,0,0"
-                                            Maximum="1"
-                                            Minimum="0" />
+                                            Maximum="2"
+                                            Minimum="0.5"
+                                            TickFrequency="0.1"
+                                            Value="{Binding Rate, Mode=TwoWay}" />
                                     <TextBlock Grid.Column="2"
+                                               Width="20"
                                                Margin="8,0,0,0"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
                                                Foreground="#FFAAAAAA"
-                                               Text="0.5" />
+                                               Text="{Binding Rate, StringFormat='{}{0:F1}'}" />
                                 </Grid>
                             </Grid>
                         </Border>
                     </Grid>
                     <Border Grid.Row="2"
                             Width="168"
-                            Height="168"
-                            Margin="8,8,0,0"
+                            Margin="8,8,0,8"
                             Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
                             BorderBrush="#10AAAAAA"
                             BorderThickness="1"
@@ -208,7 +229,6 @@
                             <ScrollViewer Width="168" IsVisible="{Binding IsReading, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}">
                                 <Grid Margin="8"
                                       HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
                                       RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
                                     <TextBlock Grid.Row="0"
                                                Margin="0,0,0,0"
@@ -251,39 +271,34 @@
             <Grid Grid.Column="1" Margin="16,8,8,8">
                 <Grid RowDefinitions="Auto, *, Auto">
                     <Grid Grid.Row="0">
-                        <Border Name="TimeClickBar"
-                                Height="30"
-                                Background="Transparent"
-                                BorderBrush="#10AAAAAA"
-                                BorderThickness="1"
-                                Tapped="OnTimeClickBarTapped" />
-                        <ProgressBar Name="TimeBackground"
-                                     Height="30"
+                        <ProgressBar Height="30"
                                      Background="#112B2B2B"
                                      Foreground="#AA0078D4"
                                      Maximum="1"
-                                     Value="0.5" />
+                                     Value="{Binding Position}" />
                         <controls:AudioVisualizationView Height="14"
                                                          Opacity="0.1"
                                                          Volumes="{Binding Volumes}" />
-                        <TextBlock Name="CurrentTimeText"
-                                   Margin="5,0,0,0"
+                        <TextBlock Margin="5,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    FontWeight="Normal"
-                                   Text="00:00" />
-                        <TextBlock Name="TotalTimeText"
-                                   Margin="0,0,5,0"
+                                   Text="{Binding CurrentTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
+                        <TextBlock Margin="0,0,5,0"
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center"
                                    FontWeight="Normal"
-                                   Text="01:00" />
-                        <TextBlock Name="CurrentLrcText"
-                                   HorizontalAlignment="Center"
+                                   Text="{Binding TotalTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
+                        <TextBlock HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Foreground="#FFFFFF"
-                                   Text="一条大河波浪宽"
+                                   Text=""
                                    TextDecorations="{x:Null}" />
+                        <Border Height="30"
+                                Background="Transparent"
+                                BorderBrush="#10AAAAAA"
+                                BorderThickness="1"
+                                PointerPressed="OnTimeClickBarPointerPressed" />
                     </Grid>
                     <Border Grid.Row="1"
                             Margin="0,8,0,0"
