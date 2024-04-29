@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Fischless.Win32;
-using LyricStudio.Core;
+using LyricStudio.Core.AudioTrack;
 using LyricStudio.Core.Configuration;
 using LyricStudio.Core.MusicTag;
 using LyricStudio.Core.Player;

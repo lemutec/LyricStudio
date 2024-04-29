@@ -3,7 +3,7 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 
-namespace LyricStudio.Core;
+namespace LyricStudio.Core.AudioTrack;
 
 internal static class AudioInfoProvider
 {
@@ -66,7 +66,7 @@ internal static class AudioInfoProvider
             float volumeInDB = 20f * (float)Math.Log10(rms + float.Epsilon);
 
             // Map the dB value to the range of 0 to 100
-            float mappedVolume = ((volumeInDB - minDBFS) / dbRange) * 100;
+            float mappedVolume = (volumeInDB - minDBFS) / dbRange * 100;
 
             // Ensure volume is within the range of 0 to 100
             mappedVolume = Math.Max(0f, Math.Min(100f, mappedVolume));
