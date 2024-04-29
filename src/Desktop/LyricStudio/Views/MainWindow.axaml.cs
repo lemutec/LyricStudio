@@ -22,7 +22,14 @@ public partial class MainWindow : FluentWindow
         {
             if (msg.Command == nameof(GlobalCommand.ChangeMainWindowTitle))
             {
-                Title = "Lyric Studio - " + msg.Param.ToString();
+                if (string.IsNullOrWhiteSpace(msg.Param?.ToString()))
+                {
+                    Title = AppConfig.PackName;
+                }
+                else
+                {
+                    Title = $"{msg.Param} - {AppConfig.PackName}";
+                }
             }
         });
     }

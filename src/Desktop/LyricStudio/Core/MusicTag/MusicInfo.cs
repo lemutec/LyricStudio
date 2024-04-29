@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LyricStudio.Models.Audios;
+using System;
+using System.Collections.Generic;
 
 namespace LyricStudio.Core.MusicTag;
 
@@ -18,6 +20,8 @@ public class MusicInfo
     public int Duration { get; set; }
 
     public double BitRate { get; set; }
+
+    public List<AudioVolume> Volumes { get; set; }
 
     public MusicInfoStatus Status { get; set; }
 

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LyricStudio.ViewModels;
 
@@ -19,16 +20,19 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     private string tagName = string.Empty;
 
     [ObservableProperty]
+    private string tagArtist = string.Empty;
+
+    [ObservableProperty]
     private string tagAlbumName = string.Empty;
 
     [ObservableProperty]
     private byte[] tagAlbumImage = null!;
 
     [ObservableProperty]
-    private string lyricFilePath = string.Empty;
+    private string lyricFilePath = null!;
 
     [ObservableProperty]
-    private string musicFilePath = string.Empty;
+    private string musicFilePath = null!;
 
     [ObservableProperty]
     private int tagDuration = 0;
@@ -40,38 +44,16 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     private List<AudioVolume> volumes = [];
 
     [ObservableProperty]
-    private bool isSaved = false;
+    private bool isSaved = true;
+
+    [ObservableProperty]
+    private bool isReading = false;
 
     public HomePageViewModel()
     {
-        WeakReferenceMessenger.Default.Register<FileDropMessage>(this, (sender, msg) =>
+        WeakReferenceMessenger.Default.Register<FileDropMessage>(this, async (sender, msg) =>
         {
-            MusicInfoLoaderByTagLib musicInfoLoader = new();
-
-            foreach (string fileName in msg.FileNames)
-            {
-                try
-                {
-                    MusicInfo musicInfo = musicInfoLoader.Load(fileName);
-
-                    if (musicInfo.Status != MusicInfoStatus.MusicTagInvalid)
-                    {
-                        musicInfo.BitRate = MediaInfoAudio.GetAudioBitRate(fileName) / 1000d;
-                        TagAlbumName = musicInfo.AlbumName;
-                        TagName = musicInfo.Name;
-                        TagAlbumImage = musicInfo.AlbumImage;
-                        TagDuration = musicInfo.Duration;
-                        TagBitRate = $"{musicInfo.BitRate} kbps";
-                        Volumes = AudioInfoProvider.GetAudioVolume(fileName).ToList();
-                        MusicFilePath = fileName;
-                    }
-                    ChangeWindowTitle();
-                }
-                catch (Exception e)
-                {
-                    _ = e;
-                }
-            }
+            await OpenFilesAsync(msg.FileNames);
         });
     }
 
@@ -81,7 +63,90 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
-    private void ChangeWindowTitle()
+    private async Task OpenFilesAsync(params string[] fileNames)
+    {
+        IsReading = true;
+
+        try
+        {
+            string? lyricFile = fileNames.Where(f => !string.IsNullOrWhiteSpace(f) && (new FileInfo(f).Extension?.Equals(".lrc", StringComparison.OrdinalIgnoreCase) ?? false)).FirstOrDefault();
+            string? musicFile = fileNames.Where(f => MediaInfoAudio.HasAudioTrack(f)).FirstOrDefault();
+
+            if (lyricFile == null && musicFile == null)
+            {
+                return;
+            }
+
+            if (lyricFile == null)
+            {
+                string? lyricFileHatena = Path.ChangeExtension(musicFile, "lrc");
+
+                if (File.Exists(lyricFileHatena))
+                {
+                    lyricFile = lyricFileHatena;
+                }
+            }
+
+            if (lyricFile != null)
+            {
+                LyricFilePath = lyricFile;
+            }
+
+            if (musicFile == null)
+            {
+                string? musicFileHatena = Directory.GetFiles(Path.GetDirectoryName(lyricFile), $"{Path.GetFileNameWithoutExtension(lyricFile)}.*")
+                    .Where(f => !f.EndsWith(".lrc", StringComparison.OrdinalIgnoreCase))
+                    .Where(MediaInfoAudio.HasAudioTrack)
+                    .FirstOrDefault();
+
+                if (musicFileHatena != null)
+                {
+                    musicFile = musicFileHatena;
+                }
+            }
+
+            if (musicFile != null)
+            {
+                MusicFilePath = musicFile;
+
+                MusicInfo musicInfo = await Task.Run(() =>
+                {
+                    MusicInfoLoaderByTagLib musicInfoLoader = new();
+                    MusicInfo musicInfo = musicInfoLoader.Load(musicFile);
+
+                    if (musicInfo.Status != MusicInfoStatus.MusicTagInvalid)
+                    {
+                        musicInfo.BitRate = MediaInfoAudio.GetAudioBitRate(musicFile) / 1000d;
+                        musicInfo.Volumes = AudioInfoProvider.GetAudioVolume(musicFile).ToList();
+                    }
+                    return musicInfo;
+                });
+
+                if (musicInfo.Status != MusicInfoStatus.MusicTagInvalid)
+                {
+                    TagAlbumName = musicInfo.AlbumName;
+                    TagName = musicInfo.Name;
+                    TagArtist = musicInfo.Artist;
+                    TagAlbumImage = musicInfo.AlbumImage;
+                    TagDuration = musicInfo.Duration;
+                    TagBitRate = $"{musicInfo.BitRate} kbps";
+                    Volumes = musicInfo.Volumes;
+                }
+            }
+
+            SyncWindowTitle();
+        }
+        catch (Exception e)
+        {
+            _ = e;
+        }
+        finally
+        {
+            IsReading = false;
+        }
+    }
+
+    private void SyncWindowTitle()
     {
         if (string.IsNullOrWhiteSpace(MusicFilePath) && string.IsNullOrWhiteSpace(LyricFilePath))
         {
@@ -92,7 +157,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
         if (string.IsNullOrWhiteSpace(LyricFilePath) || !IsSaved)
         {
-            fileName = $"*{fileName}";
+            fileName = $"{fileName}•";
         }
 
         WeakReferenceMessenger.Default.Send(new GlobalMessage(this, GlobalCommand.ChangeMainWindowTitle, fileName));
