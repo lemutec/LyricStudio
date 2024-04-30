@@ -47,12 +47,6 @@ public partial class Ass2lrc
         return startTimeMsec;
     }
 
-    public static string GetFileText(string path)
-    {
-        using StreamReader stream = File.OpenText(path);
-        return stream.ReadToEnd();
-    }
-
     public static string ToTimecode(long msecTime, bool fullFormat)
     {
         int secTime = (int)(msecTime / 1000d);
@@ -80,24 +74,25 @@ public partial class Ass2lrc
         return timecode;
     }
 
-    public static bool AssToLyric(string srcPath, string tarPath)
+    public static bool AssToLyric(string ass, out string lrc)
     {
-        List<KeyValuePair<long, string>> assParsedList = AssParse(GetFileText(srcPath));
+        List<KeyValuePair<long, string>> assParsedList = AssParse(ass);
 
-        FileStream stream = File.OpenWrite(tarPath);
+        using MemoryStream stream = new();
 
         string lrcHeader =
-            $@"""
-                [ti:None]
-                [ar:None]
-                [al:None]
-                [by:Lyric Studio]
-                """;
+            """
+            [ti:None]
+            [ar:None]
+            [al:None]
+            [by:Lyric Studio]
+            """;
 
         try
         {
             stream.Write(Encoding.UTF8.GetPreamble());
             stream.Write(Encoding.UTF8.GetBytes(lrcHeader));
+            stream.Write(Encoding.UTF8.GetBytes(Environment.NewLine));
 
             foreach (KeyValuePair<long, string> assParsedLine in assParsedList)
             {
@@ -110,10 +105,13 @@ public partial class Ass2lrc
         }
         catch (Exception e)
         {
-            Trace.WriteLine(e.ToString());
+            Debug.WriteLine(e);
+
+            lrc = null!;
             return false;
         }
 
+        lrc = Encoding.UTF8.GetString(stream.ToArray());
         return true;
     }
 

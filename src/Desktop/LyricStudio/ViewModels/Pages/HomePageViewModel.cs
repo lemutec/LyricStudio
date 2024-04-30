@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Fischless.Win32;
 using LyricStudio.Core.AudioTrack;
 using LyricStudio.Core.Configuration;
+using LyricStudio.Core.LyricTrack;
 using LyricStudio.Core.MusicTag;
 using LyricStudio.Core.Player;
 using LyricStudio.Models;
@@ -75,6 +76,9 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     private string lyricFilePath = null!;
 
     [ObservableProperty]
+    private string lyricText = null!;
+
+    [ObservableProperty]
     private string musicFilePath = null!;
 
     [ObservableProperty]
@@ -116,12 +120,15 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
             string? lyricFile = fileNames.Where(f => !string.IsNullOrWhiteSpace(f) && (new FileInfo(f).Extension?.Equals(".lrc", StringComparison.OrdinalIgnoreCase) ?? false)).FirstOrDefault();
             string? musicFile = fileNames.Where(f => MediaInfoAudio.HasAudioTrack(f)).FirstOrDefault();
 
+            if (lyricFile == null)
+            {
+                lyricFile = fileNames.Where(f => !string.IsNullOrWhiteSpace(f) && (new FileInfo(f).Extension?.Equals(".ass", StringComparison.OrdinalIgnoreCase) ?? false)).FirstOrDefault();
+            }
+
             if (lyricFile == null && musicFile == null)
             {
                 return;
             }
-
-            TagAlbumImage = null!;
 
             if (lyricFile == null)
             {
@@ -131,17 +138,47 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                 {
                     lyricFile = lyricFileHatena;
                 }
+                else
+                {
+                    lyricFileHatena = Path.ChangeExtension(musicFile, "ass");
+
+                    if (File.Exists(lyricFileHatena))
+                    {
+                        lyricFile = lyricFileHatena;
+                    }
+                }
             }
 
             if (lyricFile != null)
             {
+                IsSaved = true;
+
+                if (Path.GetExtension(lyricFile).Equals(".ass", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (Ass2lrc.AssToLyric(LyricFile.ReadAllText(lyricFile), out string lyricText))
+                    {
+                        lyricFile = Path.ChangeExtension(lyricFile, "lrc");
+
+                        LyricText = lyricText;
+                        IsSaved = false;
+                    }
+                    else
+                    {
+                        lyricFile = null;
+                    }
+                }
+                else
+                {
+                    LyricText = LyricFile.ReadAllText(lyricFile);
+                }
+
                 LyricFilePath = lyricFile;
             }
 
             if (musicFile == null)
             {
                 string? musicFileHatena = Directory.GetFiles(Path.GetDirectoryName(lyricFile), $"{Path.GetFileNameWithoutExtension(lyricFile)}.*")
-                    .Where(f => !f.EndsWith(".lrc", StringComparison.OrdinalIgnoreCase))
+                    .Where(f => !f.EndsWith(".lrc", StringComparison.OrdinalIgnoreCase) && !f.EndsWith(".aas", StringComparison.OrdinalIgnoreCase))
                     .Where(MediaInfoAudio.HasAudioTrack)
                     .FirstOrDefault();
 
@@ -155,6 +192,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
             {
                 MusicFilePath = musicFile;
 
+                TagAlbumImage = null!;
                 MusicInfo musicInfo = await Task.Run(() =>
                 {
                     MusicInfoLoaderByTagLib musicInfoLoader = new();

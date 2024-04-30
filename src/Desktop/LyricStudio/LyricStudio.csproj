@@ -41,6 +41,7 @@
 		<PackageReference Include="TagLibSharp" Version="2.3.0" />
 		<PackageReference Include="LoadingIndicators.Avalonia" Version="11.0.10" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
+		<PackageReference Include="Ude.NetStandard" Version="1.2.0" />
 		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
 	</ItemGroup>
 	<ItemGroup>
