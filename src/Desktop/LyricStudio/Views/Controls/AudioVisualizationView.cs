@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
 using LyricStudio.Models.Audios;
+using System;
 using System.Collections.Generic;
 
 namespace LyricStudio.Views.Controls;
@@ -66,6 +67,7 @@ file static class AudioVisualizationRender
         }
     }
 
+    [Obsolete(nameof(RenderAsSpectrum))]
     public static void RenderAsLineChart(this DrawingContext context, Rect rect, List<AudioVolume> volumes)
     {
         if (volumes == null || volumes.Count == 0)
@@ -91,6 +93,7 @@ file static class AudioVisualizationRender
         }
     }
 
+    [Obsolete(nameof(RenderAsSpectrum))]
     public static void RenderAsSolidLineChart(this DrawingContext context, Rect rect, List<AudioVolume> volumes)
     {
         if (volumes == null || volumes.Count == 0)

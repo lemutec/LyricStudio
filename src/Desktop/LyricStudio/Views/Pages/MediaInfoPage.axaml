@@ -17,7 +17,7 @@
                  Background="Transparent"
                  BorderThickness="0"
                  Classes="static"
-                 FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                 FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
                  FontSize="12"
                  Text="{Binding MediaInfo}"
                  TextWrapping="Wrap"

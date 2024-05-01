@@ -270,48 +270,214 @@
             </Grid>
             <Grid Grid.Column="1" Margin="16,8,8,8">
                 <Grid RowDefinitions="Auto, *, Auto">
-                    <Grid Grid.Row="0">
-                        <ProgressBar Height="30"
-                                     Background="#112B2B2B"
-                                     Foreground="#AA0078D4"
-                                     Maximum="1"
-                                     Value="{Binding Position}" />
-                        <controls:AudioVisualizationView Height="14"
-                                                         Opacity="0.1"
-                                                         Volumes="{Binding Volumes}" />
-                        <TextBlock Margin="5,0,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   FontWeight="Normal"
-                                   Text="{Binding CurrentTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
-                        <TextBlock Margin="0,0,5,0"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center"
-                                   FontWeight="Normal"
-                                   Text="{Binding TotalTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="#FFFFFF"
-                                   Text=""
-                                   TextDecorations="{x:Null}" />
-                        <Border Height="30"
+                    <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                        <Grid Grid.Column="0">
+                            <ProgressBar Height="30"
+                                         Background="#112B2B2B"
+                                         Foreground="#AA0078D4"
+                                         Maximum="1"
+                                         Value="{Binding Position}" />
+                            <controls:AudioVisualizationView Height="14"
+                                                             Opacity="0.1"
+                                                             Volumes="{Binding Volumes}" />
+                            <TextBlock Margin="5,0,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Normal"
+                                       Text="{Binding CurrentTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
+                            <TextBlock Margin="0,0,5,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Normal"
+                                       Text="{Binding TotalTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="#FFFFFF"
+                                       Text=""
+                                       TextDecorations="{x:Null}" />
+                            <Border Height="30"
+                                    Background="Transparent"
+                                    BorderBrush="#10AAAAAA"
+                                    BorderThickness="1"
+                                    CornerRadius="5"
+                                    PointerPressed="OnTimeClickBarPointerPressed" />
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Button Width="34"
+                                    Height="30"
+                                    Margin="8,0,0,0"
+                                    Padding="0"
+                                    Command="{Binding FlagCommand}">
+                                <Button.Content>
+                                    <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                 FontSize="18"
+                                                 Glyph="{x:Static fui:IcoMoonSymbols.Flag}" />
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1"
+                          Margin="0,8,0,0"
+                          ColumnDefinitions="*, Auto">
+                        <Border Grid.Column="0"
                                 Background="Transparent"
                                 BorderBrush="#10AAAAAA"
                                 BorderThickness="1"
-                                PointerPressed="OnTimeClickBarPointerPressed" />
-                    </Grid>
-                    <Border Grid.Row="1"
-                            Margin="0,8,0,0"
-                            Background="Transparent"
-                            BorderBrush="#10AAAAAA"
-                            BorderThickness="1"
-                            CornerRadius="5">
-                        <Grid>
-                            <ListBox Background="Transparent"
-                                     Classes="lyric"
-                                     ItemsSource="{Binding LrcLines}" />
+                                CornerRadius="5">
+                            <Grid>
+                                <ListBox Background="Transparent"
+                                         Classes="lyric"
+                                         ItemsSource="{Binding LrcLines}" />
+                            </Grid>
+                        </Border>
+                        <Grid Grid.Column="1"
+                              Margin="8,0,0,0"
+                              RowDefinitions="*, Auto">
+                            <StackPanel Grid.Row="0">
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,0,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.Education}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                     FontSize="18"
+                                                     Glyph="{x:Static fui:IcoMoonSymbols.Exchange}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.Audio}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.ReadingList}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.Delete}" />
+                                    </Button.Content>
+                                </Button>
+                                <Separator Margin="0,8,0,0" />
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                     FontSize="18"
+                                                     Glyph="{x:Static fui:IcoMoonSymbols.Undo}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                     FontSize="18"
+                                                     Glyph="{x:Static fui:IcoMoonSymbols.Undo}"
+                                                     RenderTransformOrigin="9,9">
+                                            <ui:FontIcon.RenderTransform>
+                                                <ScaleTransform ScaleX="-1" />
+                                            </ui:FontIcon.RenderTransform>
+                                        </ui:FontIcon>
+                                    </Button.Content>
+                                </Button>
+                                <Separator Margin="0,8,0,0" />
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.Add}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.Remove}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.Up}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.Down}" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1">
+                                <Button Width="34"
+                                        Height="30"
+                                        Margin="0,8,0,0"
+                                        Padding="0"
+                                        Command="{Binding FlagCommand}">
+                                    <Button.Content>
+                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                     FontSize="16"
+                                                     Glyph="{x:Static fui:FontSymbols.Info}" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
                         </Grid>
-                    </Border>
+                    </Grid>
                     <TextBox Grid.Row="2"
                              Margin="0,8,0,0"
                              Background="Transparent"

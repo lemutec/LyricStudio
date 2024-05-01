@@ -14,7 +14,6 @@ using LyricStudio.Models.Audios;
 using LyricStudio.Models.Messages;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -359,6 +358,11 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     {
         CurrentTime = position * TotalTime;
         Position = position;
+    }
+
+    [RelayCommand]
+    public void Flag()
+    {
     }
 }
 

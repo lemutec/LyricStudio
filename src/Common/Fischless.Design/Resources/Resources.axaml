@@ -1,4 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <FontFamily x:Key="TextThemeFontFamily">avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans</FontFamily>
     <FontFamily x:Key="SymbolThemeFontFamily">avares://Fischless.Design/Assets/Fonts/Segoe Fluent Icons.ttf#Segoe Fluent Icons</FontFamily>
+    <FontFamily x:Key="MonoThemeFontFamily">avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code</FontFamily>
+    <FontFamily x:Key="IcoMoonFontFamily">avares://Fischless.Design/Assets/Fonts/IcoMoon/fonts/icomoon.ttf#icomoon</FontFamily>
 </ResourceDictionary>
