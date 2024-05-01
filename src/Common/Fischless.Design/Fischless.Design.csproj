@@ -14,6 +14,7 @@
 		<Watch Include="**\*.axaml" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Watch Remove="Controls\ListBox\LyricListBox.axaml" />
 	  <Watch Remove="Controls\TextBox\StaticTextBox.axaml" />
 	  <Watch Remove="Stylings\Stylings.axaml" />
 	</ItemGroup>

@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Fischless.Mapper;
+using Fischless.Mvvm;
 using Fischless.Win32;
 using LyricStudio.Core.AudioTrack;
 using LyricStudio.Core.Configuration;
@@ -12,6 +14,7 @@ using LyricStudio.Models.Audios;
 using LyricStudio.Models.Messages;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -23,6 +26,11 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 {
     [SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance")]
     private IAudioPlayer audioPlayer = null!;
+
+    private readonly LrcManager lrcManager = new();
+
+    [ObservableProperty]
+    private ObservableCollectionEx<ObservableLrcLine> lrcLines = [];
 
     [ObservableProperty]
     private bool isPlaying = false;
@@ -155,7 +163,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
                 if (Path.GetExtension(lyricFile).Equals(".ass", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (Ass2lrc.AssToLyric(LyricFile.ReadAllText(lyricFile), out string lyricText))
+                    if (Ass2lrc.AssToLyric(LrcHelper.ReadAllText(lyricFile), out string lyricText))
                     {
                         lyricFile = Path.ChangeExtension(lyricFile, "lrc");
 
@@ -169,10 +177,13 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                 }
                 else
                 {
-                    LyricText = LyricFile.ReadAllText(lyricFile);
+                    LyricText = LrcHelper.ReadAllText(lyricFile);
                 }
 
                 LyricFilePath = lyricFile;
+
+                lrcManager.LoadText(LyricText);
+                LrcLines.Reset(lrcManager.LrcList.Select(v => MapperProvider.Map<LrcLine, ObservableLrcLine>(v)));
             }
 
             if (musicFile == null)
@@ -349,4 +360,12 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         CurrentTime = position * TotalTime;
         Position = position;
     }
+}
+
+[ObservableObject]
+public partial class ObservableLrcLine : LrcLine
+{
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LrcTimeText))]
+    public TimeSpan? lrcTime = default;
 }

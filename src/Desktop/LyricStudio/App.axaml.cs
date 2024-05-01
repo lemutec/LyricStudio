@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Fischless.Design.Extensions;
 using Fischless.Globalization;
+using Fischless.Mapper;
 using LyricStudio.Core.Configuration;
 using LyricStudio.Models;
 using LyricStudio.Services;
@@ -31,6 +32,7 @@ public partial class App : Application
     // https://docs.microsoft.com/dotnet/core/extensions/configuration
     // https://docs.microsoft.com/dotnet/core/extensions/logging
     private static readonly IHost _host = Host.CreateDefaultBuilder()
+        .UseMapper(typeof(App).Assembly)
         .ConfigureServices((context, services) =>
         {
             AppConfig.LogFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LyricStudio\log");

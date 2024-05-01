@@ -307,7 +307,9 @@
                             BorderThickness="1"
                             CornerRadius="5">
                         <Grid>
-                            <ListBox Background="Transparent" />
+                            <ListBox Background="Transparent"
+                                     Classes="lyric"
+                                     ItemsSource="{Binding LrcLines}" />
                         </Grid>
                     </Border>
                     <TextBox Grid.Row="2"
