@@ -9,7 +9,7 @@ public class LrcLine : IComparable<LrcLine>
 {
     public static readonly LrcLine Empty = new();
 
-    public TimeSpan? LrcTime { get; set; }
+    public TimeSpan? LrcTime { get; set; } = default;
 
     public static bool IsShort { get; set; } = false;
 
@@ -33,6 +33,36 @@ public class LrcLine : IComparable<LrcLine>
     }
 
     public string LrcText { get; set; }
+
+    /// <summary>
+    /// 将歌词行以形如 [mm:ss.mss]歌词文本 输出
+    /// </summary>
+    public string PreviewText
+    {
+        get
+        {
+            // 歌曲信息|[al:album]      | Time = null, Content = Info
+            // 空白行  |                | Time = null, Content = empty
+            // 正常歌词|[00:00.000]Info | Time = time, Content = content
+            // 空白歌词|[00:00.000]     | Time = time, Content = empty
+
+            // 正常歌词或空白歌词
+            if (LrcTime.HasValue)
+            {
+                return $"[{LrcHelper.ToShortString(LrcTime.Value, IsShort)}]{LrcText}";
+            }
+            // 歌曲信息
+            else if (!string.IsNullOrWhiteSpace(LrcText))
+            {
+                return $"[{LrcText}]";
+            }
+            // 空白行
+            else
+            {
+                return string.Empty;
+            }
+        }
+    }
 
     public LrcLine(double time, string text)
     {
@@ -125,32 +155,7 @@ public class LrcLine : IComparable<LrcLine>
         else return false;
     }
 
-    /// <summary>
-    /// 将歌词行以形如 [mm:ss.mss]歌词文本 输出
-    /// </summary>
-    public override string ToString()
-    {
-        // 歌曲信息|[al:album]      | Time = null, Content = Info
-        // 空白行  |                | Time = null, Content = empty
-        // 正常歌词|[00:00.000]Info | Time = time, Content = content
-        // 空白歌词|[00:00.000]     | Time = time, Content = empty
-
-        // 正常歌词或空白歌词
-        if (LrcTime.HasValue)
-        {
-            return $"[{LrcHelper.ToShortString(LrcTime.Value, IsShort)}]{LrcText}";
-        }
-        // 歌曲信息
-        else if (!string.IsNullOrWhiteSpace(LrcText))
-        {
-            return $"[{LrcText}]";
-        }
-        // 空白行
-        else
-        {
-            return string.Empty;
-        }
-    }
+    public override string ToString() => PreviewText;
 
     public int CompareTo(LrcLine? other)
     {

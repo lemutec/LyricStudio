@@ -47,6 +47,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Common\Fischless.Globalization\Fischless.Globalization.csproj" />
+	  <ProjectReference Include="..\..\Common\Fischless.Linq\Fischless.Linq.csproj" />
 	  <ProjectReference Include="..\..\Common\Fischless.Mapper\Fischless.Mapper.csproj" />
 	  <ProjectReference Include="..\..\Common\Fischless.Mvvm\Fischless.Mvvm.csproj" />
 	  <ProjectReference Include="..\..\Common\Fischless.Win32\Fischless.Win32.csproj" />

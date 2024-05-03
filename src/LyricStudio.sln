@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fischless.Mapper", "Common\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fischless.Mvvm", "Common\Fischless.Mvvm\Fischless.Mvvm.csproj", "{F51B4B04-BDA8-4F18-B63B-7BB92DCC5123}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fischless.Linq", "Common\Fischless.Linq\Fischless.Linq.csproj", "{A57394D8-450A-4CEB-BE47-F45768D74500}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,14 @@ Global
 		{F51B4B04-BDA8-4F18-B63B-7BB92DCC5123}.Release|Any CPU.Build.0 = Release|x64
 		{F51B4B04-BDA8-4F18-B63B-7BB92DCC5123}.Release|x64.ActiveCfg = Release|x64
 		{F51B4B04-BDA8-4F18-B63B-7BB92DCC5123}.Release|x64.Build.0 = Release|x64
+		{A57394D8-450A-4CEB-BE47-F45768D74500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A57394D8-450A-4CEB-BE47-F45768D74500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A57394D8-450A-4CEB-BE47-F45768D74500}.Debug|x64.ActiveCfg = Debug|x64
+		{A57394D8-450A-4CEB-BE47-F45768D74500}.Debug|x64.Build.0 = Debug|x64
+		{A57394D8-450A-4CEB-BE47-F45768D74500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A57394D8-450A-4CEB-BE47-F45768D74500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A57394D8-450A-4CEB-BE47-F45768D74500}.Release|x64.ActiveCfg = Release|x64
+		{A57394D8-450A-4CEB-BE47-F45768D74500}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +101,7 @@ Global
 		{820D960A-7CB0-45A1-B365-CDD6CF8B3AC7} = {3E585265-7E72-4832-9230-F2B54423EB13}
 		{15BC14BE-758A-40A6-8707-00B9D59B1B45} = {3E585265-7E72-4832-9230-F2B54423EB13}
 		{F51B4B04-BDA8-4F18-B63B-7BB92DCC5123} = {3E585265-7E72-4832-9230-F2B54423EB13}
+		{A57394D8-450A-4CEB-BE47-F45768D74500} = {3E585265-7E72-4832-9230-F2B54423EB13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9133D3BC-6E58-439B-812B-FB1C2E4D4C70}

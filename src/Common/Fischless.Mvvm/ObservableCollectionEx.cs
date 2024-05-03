@@ -32,14 +32,19 @@ public class ObservableCollectionEx<T> : ObservableCollection<T>
             Items.Add(item);
         }
 
-        OnPropertyChanged(new PropertyChangedEventArgs("Count"));
-        OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        Invalidate();
     }
 
     public virtual void Reset(IEnumerable<T> range)
     {
         Items.Clear();
         AddRange(range);
+    }
+
+    public void Invalidate()
+    {
+        OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+        OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
     }
 }

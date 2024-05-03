@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-#if NETSTANDARD2_1 || NET6_0
+#if NETSTANDARD2_1 || NET6_0 || NET7_0 || NET8_0
 
 using AutoMapper.Internal;
 
@@ -22,7 +22,7 @@ public static class MapperProvider
         try
         {
             MapperConfiguration configuration = new(CreateMap);
-#if DEBUG
+#if DEBUG0
             configuration.AssertConfigurationIsValid();
 #endif
             Service = configuration.CreateMapper();
@@ -104,7 +104,7 @@ public static class MapperProvider
         }
 #if NETSTANDARD2_0
         if (Service?.ConfigurationProvider.FindTypeMapFor<TSource, TDestination>() != null)
-#elif NETSTANDARD2_1 || NET6_0
+#elif NETSTANDARD2_1 || NET6_0 || NET7_0 || NET8_0
         if (Service?.ConfigurationProvider.Internal().FindTypeMapFor<TSource, TDestination>() != null)
 #endif
         {
@@ -127,7 +127,7 @@ public static class MapperProvider
         }
 #if NETSTANDARD2_0
         if (Service?.ConfigurationProvider.FindTypeMapFor<TSource, TDestination>() != null)
-#elif NETSTANDARD2_1 || NET6_0
+#elif NETSTANDARD2_1 || NET6_0 || NET7_0 || NET8_0
         if (Service?.ConfigurationProvider.Internal().FindTypeMapFor<TSource, TDestination>() != null)
 #endif
         {

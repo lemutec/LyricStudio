@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Ude;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LyricStudio.Core.LyricTrack;
 
@@ -187,5 +185,15 @@ public static partial class LrcHelper
         {
             return $"{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:000}";
         }
+    }
+
+    public static LrcLine GetNearestLrc(IEnumerable<LrcLine> lrcList, TimeSpan time)
+    {
+        LrcLine? line = lrcList
+            .Where(x => x.LrcTime != null && x.LrcTime <= time)
+            .OrderByDescending(x => x.LrcTime)
+            .FirstOrDefault();
+
+        return line;
     }
 }

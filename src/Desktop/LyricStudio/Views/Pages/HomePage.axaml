@@ -5,6 +5,7 @@
              xmlns:converters="using:LyricStudio.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fui="urn:fischless.design"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:li="using:LoadingIndicators.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mui="urn:fischless.globalization"
@@ -18,10 +19,18 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
-        <fui:BoolInvertConverter x:Key="BoolInvertConverter" />
+        <fui:BoolInverter x:Key="BoolInverter" />
         <fui:IsNullOrEmptyStringConverter x:Key="IsNullOrEmptyStringConverter" />
         <fui:IsNullOrEmptyStringInvertConverter x:Key="IsNullOrEmptyStringInvertConverter" />
         <fui:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        <fui:BoolToBrushConverter x:Key="LyricHightlightTextBackgroundConverter">
+            <fui:BoolToBrushConverter.FalseValue>
+                <SolidColorBrush>Transparent</SolidColorBrush>
+            </fui:BoolToBrushConverter.FalseValue>
+            <fui:BoolToBrushConverter.TrueValue>
+                <SolidColorBrush>#224BC0FD</SolidColorBrush>
+            </fui:BoolToBrushConverter.TrueValue>
+        </fui:BoolToBrushConverter>
     </UserControl.Resources>
     <UserControl.Styles />
     <Grid>
@@ -84,7 +93,7 @@
                                                 <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                              FontSize="16"
                                                              Glyph="{x:Static fui:FontSymbols.Play}"
-                                                             IsVisible="{Binding IsPlaying, Converter={StaticResource BoolInvertConverter}}" />
+                                                             IsVisible="{Binding IsPlaying, Converter={StaticResource BoolInverter}}" />
                                                 <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                              FontSize="16"
                                                              Glyph="{x:Static fui:FontSymbols.Pause}"
@@ -226,7 +235,7 @@
                             <li:LoadingIndicator IsActive="{Binding IsReading, Mode=OneWay}}"
                                                  Mode="Arc"
                                                  SpeedRatio="3" />
-                            <ScrollViewer Width="168" IsVisible="{Binding IsReading, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}">
+                            <ScrollViewer Width="168" IsVisible="{Binding IsReading, Mode=OneWay, Converter={StaticResource BoolInverter}}">
                                 <Grid Margin="8"
                                       HorizontalAlignment="Center"
                                       RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
@@ -293,7 +302,7 @@
                             <TextBlock HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Foreground="#FFFFFF"
-                                       Text=""
+                                       Text="{Binding CurrentLrcText}"
                                        TextDecorations="{x:Null}" />
                             <Border Height="30"
                                     Background="Transparent"
@@ -327,7 +336,16 @@
                             <Grid>
                                 <ListBox Background="Transparent"
                                          Classes="lyric"
-                                         ItemsSource="{Binding LrcLines}" />
+                                         ItemsSource="{Binding LrcLines}"
+                                         SelectedItem="{Binding SelectedlrcLine}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{Binding IsHightlight, Mode=OneWay, Converter={StaticResource LyricHightlightTextBackgroundConverter}}" CornerRadius="4">
+                                                <TextBlock Text="{Binding PreviewText}" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </Grid>
                         </Border>
                         <Grid Grid.Column="1"
@@ -337,13 +355,23 @@
                                 <Button Width="34"
                                         Height="30"
                                         Margin="0,0,0,0"
-                                        Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Padding="0">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
                                                      Glyph="{x:Static fui:FontSymbols.Education}" />
                                     </Button.Content>
+                                    <Button.Flyout>
+                                        <MenuFlyout>
+                                            <MenuItem FontSize="12" Header="XXX">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.DeveloperTools}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </MenuFlyout>
+                                    </Button.Flyout>
                                 </Button>
                                 <Button Width="34"
                                         Height="30"
@@ -483,7 +511,8 @@
                              Background="Transparent"
                              BorderThickness="1"
                              Classes="static"
-                             Text=""
+                             FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
+                             Text="{Binding EditinglrcLine, Mode=TwoWay}"
                              Watermark="{mui:Lang CurrentLyric}" />
                 </Grid>
             </Grid>

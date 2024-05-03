@@ -1,6 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Fischless.Linq;
 using Fischless.Mapper;
 using Fischless.Mvvm;
 using Fischless.Win32;
@@ -23,13 +25,42 @@ namespace LyricStudio.ViewModels;
 
 public partial class HomePageViewModel : ObservableObject, IDisposable
 {
-    [SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance")]
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsMediaAvailable))]
     private IAudioPlayer audioPlayer = null!;
+
+    private readonly DispatcherTimer timer = new();
 
     private readonly LrcManager lrcManager = new();
 
     [ObservableProperty]
     private ObservableCollectionEx<ObservableLrcLine> lrcLines = [];
+
+    [ObservableProperty]
+    private ObservableLrcLine selectedlrcLine = null!;
+
+    partial void OnSelectedlrcLineChanged(ObservableLrcLine value)
+    {
+        EditinglrcLine = value?.ToString();
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LrcLines))]
+    private string editinglrcLine = null!;
+
+    partial void OnEditinglrcLineChanged(string value)
+    {
+        if (SelectedlrcLine != null)
+        {
+            LrcLine v = LrcLine.Parse(value);
+
+            SelectedlrcLine.LrcText = v.LrcText;
+            SelectedlrcLine.LrcTime = v.LrcTime;
+        }
+    }
+
+    [ObservableProperty]
+    private string currentLrcText = string.Empty;
 
     [ObservableProperty]
     private bool isPlaying = false;
@@ -50,9 +81,9 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     {
         ConfigurationKeys.Volume.Set(value);
         Config.Configer?.Save(AppConfig.SettingsFile);
-        if (audioPlayer != null)
+        if (IsMediaAvailable)
         {
-            audioPlayer.Volume = (int)(value * 100d);
+            AudioPlayer.Volume = (int)(value * 100d);
         }
     }
 
@@ -61,9 +92,9 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     partial void OnRateChanged(double value)
     {
-        if (audioPlayer != null)
+        if (IsMediaAvailable)
         {
-            audioPlayer.Rate = value;
+            AudioPlayer.Rate = value;
         }
     }
 
@@ -103,8 +134,30 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private bool isReading = false;
 
+    protected bool IsMediaAvailable => AudioPlayer != null;
+
     public HomePageViewModel()
     {
+        timer.Tick += (_, _) =>
+        {
+            if (!IsMediaAvailable)
+            {
+                return;
+            }
+
+            LrcLine line = LrcHelper.GetNearestLrc(lrcLines, TimeSpan.FromSeconds(CurrentTime));
+
+            CurrentLrcText = line?.LrcText ?? string.Empty;
+
+            (lrcLines as IEnumerable<ObservableLrcLine>).ForEach(v => v.IsHightlight = false);
+            if (line is ObservableLrcLine oLine)
+            {
+                oLine.IsHightlight = true;
+            }
+        };
+        timer.Interval = TimeSpan.FromMicroseconds(20d);
+        timer.Start();
+
         WeakReferenceMessenger.Default.Register<FileDropMessage>(this, async (sender, msg) =>
         {
             await OpenFilesAsync(msg.FileNames);
@@ -115,6 +168,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     public void Dispose()
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
+        timer?.Stop();
     }
 
     private async Task OpenFilesAsync(params string[] fileNames)
@@ -180,7 +234,6 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                 }
 
                 LyricFilePath = lyricFile;
-
                 lrcManager.LoadText(LyricText);
                 LrcLines.Reset(lrcManager.LrcList.Select(v => MapperProvider.Map<LrcLine, ObservableLrcLine>(v)));
             }
@@ -229,14 +282,14 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                     TotalTime = musicInfo.TotalTime;
                 }
 
-                if (audioPlayer != null)
+                if (IsMediaAvailable)
                 {
-                    audioPlayer.PositionChanged -= OnPositionChanged;
-                    audioPlayer.Dispose();
-                    audioPlayer = null!;
+                    AudioPlayer.PositionChanged -= OnPositionChanged;
+                    AudioPlayer.Dispose();
+                    AudioPlayer = null!;
                 }
-                audioPlayer = new AudioPlayer(musicFile);
-                audioPlayer.PositionChanged += OnPositionChanged;
+                AudioPlayer = new AudioPlayer(musicFile);
+                AudioPlayer.PositionChanged += OnPositionChanged;
             }
 
             SyncWindowTitle();
@@ -271,12 +324,12 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void Play()
     {
-        if (audioPlayer == null)
+        if (!IsMediaAvailable)
         {
             return;
         }
 
-        switch (audioPlayer.State)
+        switch (AudioPlayer.State)
         {
             case AudioPlayerState.Buffering:
             case AudioPlayerState.Opening:
@@ -286,17 +339,17 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
             case AudioPlayerState.Playing:
             case AudioPlayerState.Ended:
                 IsPlaying = false;
-                audioPlayer.Pause();
+                AudioPlayer.Pause();
                 break;
 
             case AudioPlayerState.None:
             case AudioPlayerState.Paused:
             case AudioPlayerState.Stopped:
                 IsPlaying = true;
-                audioPlayer.Volume = (int)(Volume * 100d);
-                audioPlayer.Rate = Rate;
+                AudioPlayer.Volume = (int)(Volume * 100d);
+                AudioPlayer.Rate = Rate;
                 IsPlaying = true;
-                audioPlayer.Play();
+                AudioPlayer.Play();
                 break;
         }
     }
@@ -304,7 +357,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void Stop()
     {
-        if (audioPlayer == null)
+        if (!IsMediaAvailable)
         {
             return;
         }
@@ -312,7 +365,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         CurrentTime = default;
         Position = default;
         IsPlaying = false;
-        audioPlayer.Stop();
+        AudioPlayer.Stop();
     }
 
     [RelayCommand]
@@ -341,12 +394,12 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     public void SeekInSeconds(double second)
     {
-        if (audioPlayer == null)
+        if (!IsMediaAvailable)
         {
             return;
         }
 
-        audioPlayer.SeekTo(second);
+        AudioPlayer.SeekTo(second);
     }
 
     public void SeekInPosition(double position)
@@ -371,5 +424,25 @@ public partial class ObservableLrcLine : LrcLine
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(LrcTimeText))]
-    public TimeSpan? lrcTime = default;
+    [NotifyPropertyChangedFor(nameof(PreviewText))]
+    private TimeSpan? lrcTime = default;
+
+    partial void OnLrcTimeChanged(TimeSpan? value)
+    {
+        base.LrcTime = value;
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LrcTimeText))]
+    [NotifyPropertyChangedFor(nameof(PreviewText))]
+    private string lrcText = default;
+
+    partial void OnLrcTextChanged(string value)
+    {
+        base.LrcText = value;
+    }
+
+    [ObservableProperty]
+    [property: NotMapped]
+    private bool isHightlight = false;
 }
