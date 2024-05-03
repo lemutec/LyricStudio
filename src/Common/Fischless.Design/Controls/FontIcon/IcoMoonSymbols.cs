@@ -8,4 +8,5 @@ public sealed class IcoMoonSymbols
     public const string Kashi = "\xe903";
     public const string Empty = "\xe904";
     public const string Undo = "\xe905";
+    public const string MagicWand = "\xe906";
 }

@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?3qv3kj');
-  src:  url('fonts/icomoon.eot?3qv3kj#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?3qv3kj') format('truetype'),
-    url('fonts/icomoon.woff?3qv3kj') format('woff'),
-    url('fonts/icomoon.svg?3qv3kj#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?uwz9vf');
+  src:  url('fonts/icomoon.eot?uwz9vf#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?uwz9vf') format('truetype'),
+    url('fonts/icomoon.woff?uwz9vf') format('woff'),
+    url('fonts/icomoon.svg?uwz9vf#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-MagicWand:before {
+  content: "\e906";
+}
 .icon-Undo:before {
   content: "\e905";
 }

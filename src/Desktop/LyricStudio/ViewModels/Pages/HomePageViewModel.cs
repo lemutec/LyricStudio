@@ -20,6 +20,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static Vanara.PInvoke.User32;
 
 namespace LyricStudio.ViewModels;
 
@@ -135,6 +136,18 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     private bool isReading = false;
 
     protected bool IsMediaAvailable => AudioPlayer != null;
+
+    [ObservableProperty]
+    private bool isUseTwoDigitTimeCode = ConfigurationKeys.IsUseTwoDigitTimeCode.Get();
+
+    [ObservableProperty]
+    private int flagTimeOffset = ConfigurationKeys.FlagTimeOffset.Get();
+
+    [ObservableProperty]
+    private double shortShiftSeconds = ConfigurationKeys.ShortShiftSeconds.Get();
+
+    [ObservableProperty]
+    private double longShiftSeconds = ConfigurationKeys.LongShiftSeconds.Get();
 
     public HomePageViewModel()
     {
@@ -435,6 +448,16 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
+    public void SaveLyricFile()
+    {
+    }
+
+    [RelayCommand]
+    public void CopyLyric()
+    {
+    }
+
+    [RelayCommand]
     public void CloseFiles()
     {
     }
@@ -486,6 +509,57 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         {
             SeekInSeconds(SelectedlrcLine.LrcTime.Value.TotalSeconds);
         }
+    }
+
+    /// <summary>
+    /// Change to [00:00.00]
+    /// </summary>
+    [RelayCommand]
+    public void ResetTimeMark()
+    {
+    }
+
+    /// <summary>
+    /// Remove like [00:00.00]
+    /// </summary>
+    [RelayCommand]
+    public void ClearTimeMark()
+    {
+    }
+
+    [RelayCommand]
+    public void ShiftTimecode()
+    {
+    }
+
+    [RelayCommand]
+    public void Tranlate()
+    {
+    }
+
+    [RelayCommand]
+    public void TranlateSimplifiedToTraditional()
+    {
+    }
+
+    [RelayCommand]
+    public void TranlateTraditionalToSimplified()
+    {
+    }
+
+    [RelayCommand]
+    public void TranlateKanjiToRomaji()
+    {
+    }
+
+    [RelayCommand]
+    public void FixKanji()
+    {
+    }
+
+    [RelayCommand]
+    public void Settings()
+    {
     }
 }
 

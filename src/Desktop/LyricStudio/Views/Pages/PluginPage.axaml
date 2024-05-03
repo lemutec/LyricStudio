@@ -11,6 +11,6 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-        <TextBlock Text="NONE" />
+        <TextBlock Margin="8" Text="敬请期待" />
     </Grid>
 </UserControl>

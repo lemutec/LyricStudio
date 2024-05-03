@@ -34,7 +34,7 @@
     </UserControl.Resources>
     <UserControl.Styles />
     <Grid>
-        <Grid ColumnDefinitions="Auto, *">
+        <Grid ColumnDefinitions="Auto, *, Auto">
             <Grid Grid.Column="0">
                 <Grid RowDefinitions="Auto, Auto, *">
                     <Border Grid.Row="0"
@@ -277,245 +277,450 @@
                     </Border>
                 </Grid>
             </Grid>
-            <Grid Grid.Column="1" Margin="16,8,8,8">
-                <Grid RowDefinitions="Auto, *, Auto">
-                    <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
-                        <Grid Grid.Column="0">
-                            <ProgressBar Height="30"
-                                         Background="#112B2B2B"
-                                         Foreground="#AA0078D4"
-                                         Maximum="1"
-                                         Value="{Binding Position}" />
-                            <controls:AudioVisualizationView Height="14"
-                                                             Opacity="0.1"
-                                                             Volumes="{Binding Volumes}" />
-                            <TextBlock Margin="5,0,0,0"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       FontWeight="Normal"
-                                       Text="{Binding CurrentTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
-                            <TextBlock Margin="0,0,5,0"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       FontWeight="Normal"
-                                       Text="{Binding TotalTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
-                            <TextBlock HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="#FFFFFF"
-                                       Text="{Binding CurrentLrcText}"
-                                       TextDecorations="{x:Null}" />
-                            <Border Height="30"
-                                    Background="Transparent"
-                                    BorderBrush="#10AAAAAA"
-                                    BorderThickness="1"
-                                    CornerRadius="5"
-                                    PointerPressed="OnTimeClickBarPointerPressed" />
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Button Width="34"
-                                    Height="30"
-                                    Margin="8,0,0,0"
-                                    Padding="0"
-                                    Command="{Binding FlagCommand}">
-                                <Button.Content>
-                                    <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
-                                                 FontSize="18"
-                                                 Glyph="{x:Static fui:IcoMoonSymbols.Flag}" />
-                                </Button.Content>
-                            </Button>
-                        </Grid>
-                    </Grid>
-                    <Grid Grid.Row="1"
-                          Margin="0,8,0,0"
-                          ColumnDefinitions="*, Auto">
-                        <Border Grid.Column="0"
-                                Background="Transparent"
-                                BorderBrush="#10AAAAAA"
-                                BorderThickness="1"
-                                CornerRadius="5">
-                            <Grid>
-                                <ListBox Background="Transparent"
-                                         Classes="lyric"
-                                         DoubleTapped="OnLyricListBoxDoubleTapped"
-                                         ItemsSource="{Binding LrcLines}"
-                                         SelectedItem="{Binding SelectedlrcLine}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Background="{Binding IsHightlight, Mode=OneWay, Converter={StaticResource LyricHightlightTextBackgroundConverter}}" CornerRadius="4">
-                                                <TextBlock Text="{Binding PreviewText}" />
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Grid>
-                        </Border>
-                        <Grid Grid.Column="1"
-                              Margin="8,0,0,0"
-                              RowDefinitions="*, Auto">
-                            <StackPanel Grid.Row="0">
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,0,0,0"
-                                        Padding="0">
+            <Grid Grid.Column="1"
+                  Margin="16,8,8,8"
+                  RowDefinitions="Auto, *, Auto">
+                <Grid Grid.Row="0">
+                    <ProgressBar Height="30"
+                                 Background="#112B2B2B"
+                                 Foreground="#AA0078D4"
+                                 Maximum="1"
+                                 Value="{Binding Position}" />
+                    <controls:AudioVisualizationView Height="14"
+                                                     Opacity="0.1"
+                                                     Volumes="{Binding Volumes}" />
+                    <TextBlock Margin="5,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontWeight="Normal"
+                               Text="{Binding CurrentTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
+                    <TextBlock Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               FontWeight="Normal"
+                               Text="{Binding TotalTime, Converter={StaticResource SecondsToTimeStringConverter}}" />
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="#FFFFFF"
+                               Text="{Binding CurrentLrcText}"
+                               TextDecorations="{x:Null}" />
+                    <Border Height="30"
+                            Background="Transparent"
+                            BorderBrush="#10AAAAAA"
+                            BorderThickness="1"
+                            CornerRadius="5"
+                            PointerPressed="OnTimeClickBarPointerPressed" />
+                </Grid>
+                <Border Grid.Row="1"
+                        Margin="0,8,0,0"
+                        Background="Transparent"
+                        BorderBrush="#10AAAAAA"
+                        BorderThickness="1"
+                        CornerRadius="5">
+                    <Grid>
+                        <Grid>
+                            <ListBox Grid.Row="0"
+                                     Background="Transparent"
+                                     Classes="lyric"
+                                     DoubleTapped="OnLyricListBoxDoubleTapped"
+                                     ItemsSource="{Binding LrcLines}"
+                                     SelectedItem="{Binding SelectedlrcLine}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{Binding IsHightlight, Mode=OneWay, Converter={StaticResource LyricHightlightTextBackgroundConverter}}" CornerRadius="4">
+                                            <TextBlock Text="{Binding PreviewText}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <StackPanel Grid.Row="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                             FontSize="48"
+                                             Foreground="#5DFFFFFF"
+                                             Glyph="{x:Static fui:IcoMoonSymbols.Empty}" />
+                                <Button Margin="0,6,0,0">
                                     <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.Education}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                         FontSize="16"
+                                                         Glyph="{x:Static fui:FontSymbols.OpenFolderHorizontal}" />
+                                            <TextBlock Margin="6,0,0,0" Text="打开" />
+                                            <ui:FontIcon Margin="4,0,0,0"
+                                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                         FontSize="12"
+                                                         Glyph="{x:Static fui:FontSymbols.ChevronDown}" />
+                                        </StackPanel>
                                     </Button.Content>
                                     <Button.Flyout>
-                                        <MenuFlyout>
-                                            <MenuItem FontSize="12" Header="XXX">
+                                        <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                            <MenuItem Command="{Binding OpenAudioFileCommand}"
+                                                      FontSize="12"
+                                                      Header="打开音乐文件">
                                                 <MenuItem.Icon>
                                                     <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                                FontSize="14"
-                                                               Text="{x:Static fui:FontSymbols.DeveloperTools}" />
+                                                               Text="{x:Static fui:FontSymbols.Audio}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding OpenLyricFileCommand}"
+                                                      FontSize="12"
+                                                      Header="打开歌词文件">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.ReadingList}" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                         </MenuFlyout>
                                     </Button.Flyout>
                                 </Button>
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding ExchangeCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
-                                                     FontSize="18"
-                                                     Glyph="{x:Static fui:IcoMoonSymbols.Exchange}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding OpenAudioFileCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.Audio}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding OpenLyricFileCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.ReadingList}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding CloseFilesCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.Delete}" />
-                                    </Button.Content>
-                                </Button>
-                                <Separator Margin="0,8,0,0" />
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding UndoCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
-                                                     FontSize="18"
-                                                     Glyph="{x:Static fui:IcoMoonSymbols.Undo}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding RedoCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
-                                                     FontSize="18"
-                                                     Glyph="{x:Static fui:IcoMoonSymbols.Undo}"
-                                                     RenderTransformOrigin="9,9">
-                                            <ui:FontIcon.RenderTransform>
-                                                <ScaleTransform ScaleX="-1" />
-                                            </ui:FontIcon.RenderTransform>
-                                        </ui:FontIcon>
-                                    </Button.Content>
-                                </Button>
-                                <Separator Margin="0,8,0,0" />
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding AddLineCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.Add}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding RemoveLineCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.Remove}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding MoveUpLineCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.Up}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding MoveDownLineCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.Down}" />
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
-                            <StackPanel Grid.Row="1">
-                                <Button Width="34"
-                                        Height="30"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        Command="{Binding ShowInfoCommand}">
-                                    <Button.Content>
-                                        <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                     FontSize="16"
-                                                     Glyph="{x:Static fui:FontSymbols.Info}" />
-                                    </Button.Content>
-                                </Button>
                             </StackPanel>
                         </Grid>
                     </Grid>
-                    <TextBox Grid.Row="2"
-                             Margin="0,8,0,0"
-                             Background="Transparent"
-                             BorderThickness="1"
-                             Classes="static"
-                             FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
-                             Text="{Binding EditinglrcLine, Mode=TwoWay}"
-                             Watermark="{mui:Lang CurrentLyric}" />
-                </Grid>
+                </Border>
+                <TextBox Grid.Row="2"
+                         Margin="0,8,0,0"
+                         Background="Transparent"
+                         BorderThickness="1"
+                         Classes="static"
+                         FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
+                         Text="{Binding EditinglrcLine, Mode=TwoWay}"
+                         Watermark="{mui:Lang CurrentLyric}" />
+            </Grid>
+            <Grid Grid.Column="2"
+                  Margin="0,8,8,0"
+                  RowDefinitions="*, Auto">
+                <StackPanel Grid.Row="0">
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,0,0,0"
+                            Padding="0"
+                            Command="{Binding FlagCommand}"
+                            ToolTip.Tip="标记时间">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                         FontSize="18"
+                                         Glyph="{x:Static fui:IcoMoonSymbols.Flag}" />
+                        </Button.Content>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            ToolTip.Tip="文件">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="16"
+                                         Glyph="{x:Static fui:FontSymbols.OpenFolderHorizontal}" />
+                        </Button.Content>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="LeftEdgeAlignedTop">
+                                <MenuItem Command="{Binding OpenAudioFileCommand}"
+                                          FontSize="12"
+                                          Header="打开音乐文件">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.Audio}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding OpenLyricFileCommand}"
+                                          FontSize="12"
+                                          Header="打开歌词文件">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.ReadingList}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Command="{Binding SaveLyricFileCommand}"
+                                          FontSize="12"
+                                          Header="保存歌词文件">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.Save}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding CopyLyricCommand}"
+                                          FontSize="12"
+                                          Header="复制到剪贴板">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.Copy}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Command="{Binding CloseFilesCommand}"
+                                          FontSize="12"
+                                          Header="关闭所有文件">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.Delete}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            ToolTip.Tip="编辑">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="16"
+                                         Glyph="{x:Static fui:FontSymbols.Edit}" />
+                        </Button.Content>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="LeftEdgeAlignedTop">
+                                <MenuItem Command="{Binding ResetTimeMarkCommand}"
+                                          FontSize="12"
+                                          Header="重置时间标记">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.History}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding ClearTimeMarkCommand}"
+                                          FontSize="12"
+                                          Header="清除时间标记">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.Broom}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding ShiftTimecodeCommand}"
+                                          FontSize="12"
+                                          Header="平移时间轴">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.Unit}">
+                                            <TextBlock.RenderTransform>
+                                                <RotateTransform Angle="270" />
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            ToolTip.Tip="高级编辑">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                         FontSize="20"
+                                         Glyph="{x:Static fui:IcoMoonSymbols.MagicWand}" />
+                        </Button.Content>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="LeftEdgeAlignedTop">
+                                <MenuItem Command="{Binding TranlateCommand}"
+                                          FontSize="12"
+                                          Header="一键翻译">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.LocaleLanguage}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Command="{Binding TranlateSimplifiedToTraditionalCommand}"
+                                          FontSize="12"
+                                          Header="简体转正體">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.LocaleLanguage}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding TranlateTraditionalToSimplifiedCommand}"
+                                          FontSize="12"
+                                          Header="正體转简体">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.LocaleLanguage}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Command="{Binding TranlateKanjiToRomajiCommand}"
+                                          FontSize="12"
+                                          Header="汉字转罗马音">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.LocaleLanguage}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding FixKanjiCommand}"
+                                          FontSize="12"
+                                          Header="纠正日文汉字">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.LocaleLanguage}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            Command="{Binding ExchangeCommand}"
+                            ToolTip.Tip="切换模式">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                         FontSize="18"
+                                         Glyph="{x:Static fui:IcoMoonSymbols.Exchange}" />
+                        </Button.Content>
+                    </Button>
+                    <Separator Margin="0,8,0,0" />
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            Command="{Binding UndoCommand}"
+                            ToolTip.Tip="撤销">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                         FontSize="18"
+                                         Glyph="{x:Static fui:IcoMoonSymbols.Undo}" />
+                        </Button.Content>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            Command="{Binding RedoCommand}"
+                            ToolTip.Tip="重做">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                         FontSize="18"
+                                         Glyph="{x:Static fui:IcoMoonSymbols.Undo}"
+                                         RenderTransformOrigin="9,9">
+                                <ui:FontIcon.RenderTransform>
+                                    <ScaleTransform ScaleX="-1" />
+                                </ui:FontIcon.RenderTransform>
+                            </ui:FontIcon>
+                        </Button.Content>
+                    </Button>
+                    <Separator Margin="0,8,0,0" />
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            Command="{Binding AddLineCommand}"
+                            ToolTip.Tip="新增行（选中行下方）">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="16"
+                                         Glyph="{x:Static fui:FontSymbols.Add}" />
+                        </Button.Content>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            Command="{Binding RemoveLineCommand}"
+                            ToolTip.Tip="删除当前选中行">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="16"
+                                         Glyph="{x:Static fui:FontSymbols.Remove}" />
+                        </Button.Content>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            Command="{Binding MoveUpLineCommand}"
+                            ToolTip.Tip="选中行上移">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="16"
+                                         Glyph="{x:Static fui:FontSymbols.Up}" />
+                        </Button.Content>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            Command="{Binding MoveDownLineCommand}"
+                            ToolTip.Tip="选中行下移">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="16"
+                                         Glyph="{x:Static fui:FontSymbols.Down}" />
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,0,0,8"
+                            Padding="0"
+                            Command="{Binding SettingsCommand}"
+                            IsVisible="False"
+                            ToolTip.Tip="首选项">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="16"
+                                         Glyph="{x:Static fui:FontSymbols.Settings}" />
+                        </Button.Content>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="LeftEdgeAlignedTop">
+                                <CheckBox Content="毫秒数截取前俩位" IsChecked="{Binding IsUseTwoDigitTimeCode, Mode=TwoWay}" />
+                                <Grid ColumnDefinitions="Auto, *, Auto">
+                                    <TextBlock Grid.Column="0"
+                                               VerticalAlignment="Center"
+                                               Text="时间偏差" />
+                                    <ui:NumberBox Grid.Column="1"
+                                                  MinWidth="130"
+                                                  Margin="4,0,0,0"
+                                                  Maximum="999"
+                                                  Minimum="-999"
+                                                  Text="{Binding FlagTimeOffset}" />
+                                    <TextBlock Grid.Column="2"
+                                               Margin="4,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="ms" />
+                                </Grid>
+                                <Grid ColumnDefinitions="Auto, *, *, Auto">
+                                    <TextBlock Grid.Column="0"
+                                               VerticalAlignment="Center"
+                                               Text="快进快退速度" />
+                                    <ui:NumberBox Grid.Column="1"
+                                                  Margin="4,0,0,0"
+                                                  Maximum="99"
+                                                  Minimum="-99"
+                                                  Text="{Binding ShortShiftSeconds}" />
+                                    <ui:NumberBox Grid.Column="2"
+                                                  Margin="4,0,0,0"
+                                                  Maximum="99"
+                                                  Minimum="-99"
+                                                  Text="" />
+                                    <TextBlock Grid.Column="3"
+                                               Margin="4,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding LongShiftSeconds}" />
+                                </Grid>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>
