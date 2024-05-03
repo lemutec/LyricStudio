@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using Fischless.Win32.Helpers;
 using LyricStudio.Models.Messages;
 using LyricStudio.ViewModels;
-using System;
 using System.Linq;
 
 namespace LyricStudio.Views;
@@ -43,5 +42,10 @@ public partial class HomePage : UserControl
 
             ViewModel.SeekInPosition(relativePosition);
         }
+    }
+
+    private void OnLyricListBoxDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        ViewModel.PlaySeekLyric();
     }
 }

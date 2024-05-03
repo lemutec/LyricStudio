@@ -171,6 +171,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         timer?.Stop();
     }
 
+    [SuppressMessage("Style", "IDE0074:Use compound assignment")]
     private async Task OpenFilesAsync(params string[] fileNames)
     {
         IsReading = true;
@@ -416,6 +417,75 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void Flag()
     {
+    }
+
+    [RelayCommand]
+    public void Exchange()
+    {
+    }
+
+    [RelayCommand]
+    public void OpenAudioFile()
+    {
+    }
+
+    [RelayCommand]
+    public void OpenLyricFile()
+    {
+    }
+
+    [RelayCommand]
+    public void CloseFiles()
+    {
+    }
+
+    [RelayCommand]
+    public void Undo()
+    {
+    }
+
+    [RelayCommand]
+    public void Redo()
+    {
+    }
+
+    [RelayCommand]
+    public void AddLine()
+    {
+    }
+
+    [RelayCommand]
+    public void RemoveLine()
+    {
+    }
+
+    [RelayCommand]
+    public void MoveUpLine()
+    {
+    }
+
+    [RelayCommand]
+    public void MoveDownLine()
+    {
+    }
+
+    [RelayCommand]
+    public void ShowInfo()
+    {
+    }
+
+    [RelayCommand]
+    public void PlaySeekLyric()
+    {
+        if (SelectedlrcLine is null)
+        {
+            return;
+        }
+
+        if (SelectedlrcLine.LrcTime.HasValue)
+        {
+            SeekInSeconds(SelectedlrcLine.LrcTime.Value.TotalSeconds);
+        }
     }
 }
 

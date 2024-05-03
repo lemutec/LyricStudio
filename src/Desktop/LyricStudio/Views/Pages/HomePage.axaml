@@ -336,6 +336,7 @@
                             <Grid>
                                 <ListBox Background="Transparent"
                                          Classes="lyric"
+                                         DoubleTapped="OnLyricListBoxDoubleTapped"
                                          ItemsSource="{Binding LrcLines}"
                                          SelectedItem="{Binding SelectedlrcLine}">
                                     <ListBox.ItemTemplate>
@@ -377,7 +378,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding ExchangeCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
                                                      FontSize="18"
@@ -388,7 +389,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding OpenAudioFileCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
@@ -399,7 +400,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding OpenLyricFileCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
@@ -410,7 +411,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding CloseFilesCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
@@ -422,7 +423,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding UndoCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
                                                      FontSize="18"
@@ -433,7 +434,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding RedoCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
                                                      FontSize="18"
@@ -450,7 +451,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding AddLineCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
@@ -461,7 +462,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding RemoveLineCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
@@ -472,7 +473,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding MoveUpLineCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
@@ -483,7 +484,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding MoveDownLineCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
@@ -496,7 +497,7 @@
                                         Height="30"
                                         Margin="0,8,0,0"
                                         Padding="0"
-                                        Command="{Binding FlagCommand}">
+                                        Command="{Binding ShowInfoCommand}">
                                     <Button.Content>
                                         <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                      FontSize="16"
