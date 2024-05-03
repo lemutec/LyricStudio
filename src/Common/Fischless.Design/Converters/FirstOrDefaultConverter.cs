@@ -5,7 +5,7 @@ namespace Fischless.Design.Converters;
 
 public class FirstOrDefaultConverter : SingletonConverterBase<FirstOrDefaultConverter>
 {
-    protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is IEnumerable enumerable)
         {

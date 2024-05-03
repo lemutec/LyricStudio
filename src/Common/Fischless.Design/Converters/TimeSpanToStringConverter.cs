@@ -32,7 +32,7 @@ public class TimeSpanToStringConverter : SingletonConverterBase<TimeSpanToString
         set => this.SetValue(MinValueStringProperty, value);
     }
 
-    protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is TimeSpan timeSpan)
         {
@@ -47,7 +47,7 @@ public class TimeSpanToStringConverter : SingletonConverterBase<TimeSpanToString
         return UnsetValue;
     }
 
-    protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    protected override object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value != null)
         {

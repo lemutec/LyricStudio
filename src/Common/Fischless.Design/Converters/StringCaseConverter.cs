@@ -17,7 +17,7 @@ namespace Fischless.Design.Converters;
 /// </example>
 public class StringCaseConverter : SingletonConverterBase<StringCaseConverter>
 {
-    protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is string stringValue)
         {

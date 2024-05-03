@@ -21,7 +21,7 @@ namespace Fischless.Design.Converters;
 /// </summary>
 public class EnumToObjectConverter : StringToObjectConverter
 {
-    protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value == null)
         {

@@ -20,7 +20,7 @@ public abstract class ConverterBase : AvaloniaObject, IValueConverter
     /// <param name="parameter">Additional parameter (optional).</param>
     /// <param name="culture">The preferred culture (see also <seealso cref="ConverterBase.PreferredCulture"/>)</param>
     /// <returns>The converted value.</returns>
-    protected abstract object Convert(object value, Type targetType, object parameter, CultureInfo culture);
+    protected abstract object Convert(object? value, Type targetType, object? parameter, CultureInfo culture);
 
     /// <summary>
     /// Converts back <paramref name="value"/> from binding target to binding source.
@@ -30,7 +30,7 @@ public abstract class ConverterBase : AvaloniaObject, IValueConverter
     /// <param name="parameter">Additional parameter (optional).</param>
     /// <param name="culture">The preferred culture (see also <seealso cref="ConverterBase.PreferredCulture"/>)</param>
     /// <returns>The converted value.</returns>
-    protected virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    protected virtual object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException($"Converter '{this.GetType().Name}' does not support backward conversion.");
     }
