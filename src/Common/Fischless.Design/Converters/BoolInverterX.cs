@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Fischless.Design.Converters;
 
-public sealed class BoolInvertConverter : IValueConverter
+public sealed class BoolInverterX : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
