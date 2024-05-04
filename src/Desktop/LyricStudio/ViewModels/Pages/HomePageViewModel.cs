@@ -7,7 +7,6 @@ using Fischless.Mapper;
 using Fischless.Mvvm;
 using Fischless.Win32;
 using Fischless.Win32.SystemDialog;
-using LibVLCSharp.Shared;
 using LyricStudio.Core.AudioTrack;
 using LyricStudio.Core.Configuration;
 using LyricStudio.Core.LyricTrack;
@@ -166,6 +165,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private double longShiftSeconds = ConfigurationKeys.LongShiftSeconds.Get();
 
+    [SupportedOSPlatform("Windows")]
     public HomePageViewModel()
     {
         timer.Tick += (_, _) => OnTick();
@@ -207,6 +207,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         }
     }
 
+    [SupportedOSPlatform("Windows")]
     [SuppressMessage("Style", "IDE0074:Use compound assignment")]
     private async Task OpenFilesAsync(params string[] fileNames)
     {
@@ -215,7 +216,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
         try
         {
-            string? lyricFile = fileNames.Where(f => !string.IsNullOrWhiteSpace(f) && (new FileInfo(f).Extension?.Equals(".lrc", StringComparison.OrdinalIgnoreCase) ?? false)).FirstOrDefault();
+            string? lyricFile = fileNames.Where(f => !string.IsNullOrWhiteSpace(f) && LrcHelper.LyricExtensions.Contains(Path.GetExtension(f).ToLower())).FirstOrDefault();
             string? musicFile = fileNames.Where(f => MediaInfoAudio.HasAudioTrack(f)).FirstOrDefault();
 
             if (lyricFile == null)
@@ -228,6 +229,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                 return;
             }
 
+            // Auto load lyric/subtitle/text file
             if (lyricFile == null)
             {
                 string? lyricFileHatena = Path.ChangeExtension(musicFile, "lrc");
@@ -243,6 +245,15 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                     if (File.Exists(lyricFileHatena))
                     {
                         lyricFile = lyricFileHatena;
+                    }
+                    else
+                    {
+                        lyricFileHatena = Path.ChangeExtension(musicFile, "txt");
+
+                        if (File.Exists(lyricFileHatena))
+                        {
+                            lyricFile = lyricFileHatena;
+                        }
                     }
                 }
             }
@@ -483,7 +494,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     {
         if (await new OpenFileDialog() { Title = "打开音乐文件" }.ShowAsync() is OpenFileDialogResult result)
         {
-            string name = result.Item.FileInfo.FullName;
+            await OpenFilesAsync(result.Item.FileInfo.FullName);
         }
     }
 
@@ -499,12 +510,12 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                 new FileDialogFilter()
                 {
                     Name = "歌词文件",
-                    Extensions = [.. LrcHelper.LyricExtensions]
+                    Extensions = [.. LrcHelper.LyricExtensions.Select(ext => ext.Replace(".", string.Empty))]
                 },
             ]
         }.ShowAsync() is OpenFileDialogResult result)
         {
-            string name = result.Item.FileInfo.FullName;
+            await OpenFilesAsync(result.Item.FileInfo.FullName);
         }
     }
 
