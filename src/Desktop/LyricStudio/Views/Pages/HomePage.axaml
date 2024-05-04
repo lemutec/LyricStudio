@@ -412,6 +412,9 @@
                                     <fui:TextEditorLrcHighlightingBehavior />
                                 </i:Interaction.Behaviors>
                             </ava:TextEditor>
+                            <TextBlock Foreground="#5DFFFFFF"
+                                       IsVisible="{Binding LyricText, Converter={StaticResource IsNullOrEmptyStringConverter}}"
+                                       Text="请打开歌词文件" />
                         </Grid>
                     </Border>
                 </Grid>
@@ -425,6 +428,7 @@
                             Margin="0,0,0,0"
                             Padding="0"
                             Command="{Binding FlagCommand}"
+                            IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
                             ToolTip.Tip="标记时间">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
@@ -432,6 +436,10 @@
                                          Glyph="{x:Static fui:IcoMoonSymbols.Flag}" />
                         </Button.Content>
                     </Button>
+                    <Grid Width="34"
+                          Height="30"
+                          Margin="0,0,0,0"
+                          IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.TextBox}}" />
                     <Button Width="34"
                             Height="30"
                             Margin="0,8,0,0"
@@ -493,6 +501,18 @@
                                 </MenuItem>
                             </MenuFlyout>
                         </Button.Flyout>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            Command="{Binding ExchangeCommand}"
+                            ToolTip.Tip="切换模式">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                         FontSize="18"
+                                         Glyph="{x:Static fui:IcoMoonSymbols.Exchange}" />
+                        </Button.Content>
                     </Button>
                     <Button Width="34"
                             Height="30"
@@ -602,24 +622,13 @@
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>
-                    <Button Width="34"
-                            Height="30"
-                            Margin="0,8,0,0"
-                            Padding="0"
-                            Command="{Binding ExchangeCommand}"
-                            ToolTip.Tip="切换模式">
-                        <Button.Content>
-                            <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
-                                         FontSize="18"
-                                         Glyph="{x:Static fui:IcoMoonSymbols.Exchange}" />
-                        </Button.Content>
-                    </Button>
-                    <Separator Margin="0,8,0,0" />
+                    <Separator Margin="0,8,0,0" IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}" />
                     <Button Width="34"
                             Height="30"
                             Margin="0,8,0,0"
                             Padding="0"
                             Command="{Binding UndoCommand}"
+                            IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
                             ToolTip.Tip="撤销">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
@@ -632,6 +641,7 @@
                             Margin="0,8,0,0"
                             Padding="0"
                             Command="{Binding RedoCommand}"
+                            IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
                             ToolTip.Tip="重做">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
@@ -644,12 +654,13 @@
                             </ui:FontIcon>
                         </Button.Content>
                     </Button>
-                    <Separator Margin="0,8,0,0" />
+                    <Separator Margin="0,8,0,0" IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}" />
                     <Button Width="34"
                             Height="30"
                             Margin="0,8,0,0"
                             Padding="0"
                             Command="{Binding AddLineCommand}"
+                            IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
                             ToolTip.Tip="新增行（选中行下方）">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -662,6 +673,7 @@
                             Margin="0,8,0,0"
                             Padding="0"
                             Command="{Binding RemoveLineCommand}"
+                            IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
                             ToolTip.Tip="删除当前选中行">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -674,6 +686,7 @@
                             Margin="0,8,0,0"
                             Padding="0"
                             Command="{Binding MoveUpLineCommand}"
+                            IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
                             ToolTip.Tip="选中行上移">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -686,6 +699,7 @@
                             Margin="0,8,0,0"
                             Padding="0"
                             Command="{Binding MoveDownLineCommand}"
+                            IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
                             ToolTip.Tip="选中行下移">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
