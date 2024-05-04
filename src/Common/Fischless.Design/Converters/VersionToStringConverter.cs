@@ -11,7 +11,7 @@ namespace Fischless.Design.Converters;
 /// </summary>
 public class VersionToStringConverter : ConverterBase
 {
-    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         var version = value as Version;
         if (version != null)

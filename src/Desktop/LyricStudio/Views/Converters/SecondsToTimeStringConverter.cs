@@ -1,12 +1,12 @@
-﻿using Avalonia.Data.Converters;
+﻿using Fischless.Design.Converters;
 using System;
 using System.Globalization;
 
 namespace LyricStudio.Views.Converters;
 
-public sealed class SecondsToTimeStringConverter : IValueConverter
+public sealed class SecondsToTimeStringConverter : SingletonConverterBase<SecondsToTimeStringConverter>
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is double seconds)
         {
@@ -15,10 +15,5 @@ public sealed class SecondsToTimeStringConverter : IValueConverter
         }
 
         return null;
-    }
-
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
     }
 }

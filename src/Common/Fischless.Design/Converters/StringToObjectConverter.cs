@@ -25,7 +25,7 @@ public class StringToObjectConverter : SingletonConverterBase<StringToObjectConv
     [Content]
     public ResourceDictionary Items { get; set; }
 
-    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is string key)
         {

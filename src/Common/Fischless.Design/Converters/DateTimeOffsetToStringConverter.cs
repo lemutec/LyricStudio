@@ -48,7 +48,7 @@ public class DateTimeOffsetToStringConverter : SingletonConverterBase<DateTimeOf
         set => this.SetValue(MinValueStringProperty, value);
     }
 
-    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is DateTimeOffset dateTimeOffset)
         {
@@ -63,7 +63,7 @@ public class DateTimeOffsetToStringConverter : SingletonConverterBase<DateTimeOf
         return UnsetValue;
     }
 
-    protected override object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value != null)
         {

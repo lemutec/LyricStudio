@@ -15,7 +15,7 @@ public class NullToBoolConverter : SingletonConverterBase<NullToBoolConverter>
         set => this.SetValue(IsInvertedProperty, value);
     }
 
-    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value == null ^ this.IsInverted;
     }

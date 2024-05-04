@@ -1,12 +1,11 @@
-﻿using Avalonia.Data.Converters;
-using Avalonia.Media.Imaging;
+﻿using Avalonia.Media.Imaging;
 using System.Globalization;
 
 namespace Fischless.Design.Converters;
 
-public sealed class ByteArrayToImageSourceConverter : IValueConverter
+public sealed class ByteArrayToImageSourceConverter : SingletonConverterBase<ByteArrayToImageSourceConverter>
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         int? width = null!;
 
@@ -33,10 +32,5 @@ public sealed class ByteArrayToImageSourceConverter : IValueConverter
         }
 
         return null;
-    }
-
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException();
     }
 }

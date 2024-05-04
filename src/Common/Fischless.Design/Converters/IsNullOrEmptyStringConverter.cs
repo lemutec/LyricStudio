@@ -1,30 +1,19 @@
-﻿using Avalonia.Data.Converters;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Fischless.Design.Converters;
 
-public sealed class IsNullOrEmptyStringConverter : IValueConverter
+public sealed class IsNullOrEmptyStringConverter : SingletonConverterBase<IsNullOrEmptyStringConverter>
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return string.IsNullOrEmpty(value?.ToString());
     }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
 }
 
-public sealed class IsNullOrEmptyStringInvertConverter : IValueConverter
+public sealed class IsNullOrEmptyStringInvertConverter : SingletonConverterBase<IsNullOrEmptyStringInvertConverter>
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return !string.IsNullOrEmpty(value?.ToString());
-    }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
     }
 }

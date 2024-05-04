@@ -14,7 +14,7 @@ public abstract class ValueToBoolConverterBase<T, TConverter> : ConverterBase
         set => this.SetValue(IsInvertedProperty, value);
     }
 
-    protected override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         var trueValue = this.TrueValue;
         return Equals(value, trueValue) ^ this.IsInverted;
