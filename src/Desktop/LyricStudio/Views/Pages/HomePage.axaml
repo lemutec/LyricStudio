@@ -403,11 +403,12 @@
                             BorderBrush="#10AAAAAA"
                             BorderThickness="1"
                             CornerRadius="5">
-                        <Grid>
-                            <ava:TextEditor FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
+                        <Grid Margin="12,1,0,0">
+                            <ava:TextEditor fui:TextEditorHelper.Code="{Binding LyricText, Mode=TwoWay}"
+                                            FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
                                             ShowLineNumbers="False"
-                                            Text="Binding LyricText">
-								<i:Interaction.Behaviors>
+                                            WordWrap="True">
+                                <i:Interaction.Behaviors>
                                     <fui:TextEditorLrcHighlightingBehavior />
                                 </i:Interaction.Behaviors>
                             </ava:TextEditor>
