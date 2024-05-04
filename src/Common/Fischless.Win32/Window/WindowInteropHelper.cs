@@ -2,6 +2,7 @@
 using Avalonia.Platform;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.Versioning;
 
 namespace Fischless.Win32;
 
@@ -10,6 +11,7 @@ namespace Fischless.Win32;
 /// interop b/w legacy and Avalon Window.
 /// Ported from https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Interop/WindowInteropHelper.cs
 /// </summary>
+[SupportedOSPlatform("Windows")]
 public sealed class WindowInteropHelper
 {
     private Window _window;

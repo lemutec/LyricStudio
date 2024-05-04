@@ -11,17 +11,19 @@ namespace LyricStudio.Core.LyricTrack;
 
 public static partial class LrcHelper
 {
+    public static HashSet<string> LyricExtensions { get; } = ["lrc", "txt", "ass"];
+
     [GeneratedRegex(@"\r?\n")]
     public static partial Regex SplitLineRegex();
 
     /// <summary>
-    /// Suck as [00:00.000]
+    /// Such as [00:00.000]
     /// </summary>
     [GeneratedRegex(@"\[\d+\:\d+\.\d+\]")]
     public static partial Regex TimeMarkRegex();
 
     /// <summary>
-    /// Suck as [al:album]
+    /// Such as [al:album]
     /// </summary>
     [GeneratedRegex(@"\[\w+\:.+\]")]
     public static partial Regex LrcInfoRegex();
@@ -58,49 +60,49 @@ public static partial class LrcHelper
 
         string[] lines = SplitLineRegex().Split(text);
 
-        // 文本中不包含时间信息
+        // The text does not contain timecode
         if (!TimeMarkRegex().IsMatch(text))
         {
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
-                // 即便是不包含时间信息的歌词文本，也可能出现歌词信息
                 if (LrcInfoRegex().IsMatch(line))
                 {
                     lrcList.Add(new LrcLine(null, line.Trim('[', ']')));
                 }
-                // 否则将会为当前歌词行添加空白的时间标记，即便当前行是空行
                 else
+                {
                     lrcList.Add(new LrcLine(0, line));
+                }
             }
         }
-        // 文本中包含时间信息
+        // The text contain timecode
         else
         {
-            // 如果在解析过程中发现存在单行的多时间标记的情况，会在最后进行排序
             bool multiLrc = false;
 
             int lineNumber = 1;
             try
             {
-                foreach (var line in lines)
+                foreach (string line in lines)
                 {
-                    // 在确认文本中包含时间标记的情况下，会忽略所有空行
                     if (string.IsNullOrWhiteSpace(line))
                     {
                         lineNumber++;
                         continue;
                     }
 
-                    var matches = TimeMarkRegex().Matches(line);
-                    // 出现了类似 [00:00.000][00:01.000] 的包含多个时间信息的歌词行
+                    MatchCollection matches = TimeMarkRegex().Matches(line);
+
+                    // Such as [00:00.000][00:01.000]
                     if (matches.Count > 1)
                     {
-                        var lrc = LyricRegex().Match(line).ToString();
-                        foreach (var match in matches)
+                        string lrc = LyricRegex().Match(line).ToString();
+
+                        foreach (string match in matches)
                         {
                             lrcList.Add(
                                 new LrcLine(
-                                    LrcHelper.ParseTimeSpan(match.ToString().Trim('[', ']')),
+                                    ParseTimeSpan(match.ToString().Trim('[', ']')),
                                     lrc
                                 )
                             );
@@ -108,28 +110,30 @@ public static partial class LrcHelper
 
                         multiLrc = true;
                     }
-                    // 常规的单行歌词 [00:00.000]
+                    // Normal line like [00:00.000]
                     else if (matches.Count == 1)
                     {
                         lrcList.Add(LrcLine.Parse(line));
                     }
-                    // 说明这是一个歌词信息行
+                    // Info line
                     else if (LrcInfoRegex().IsMatch(line))
                     {
                         lrcList.Add(
                             new LrcLine(null, LrcInfoRegex().Match(line).ToString().Trim('[', ']'))
                         );
                     }
-                    // 说明正常的歌词里面出现了一个不是空行，却没有时间标记的内容，则添加空时间标记
+                    // Not an empty line but no any timecode was found, so add an empty timecode
                     else
                     {
                         lrcList.Add(new LrcLine(TimeSpan.Zero, line));
                     }
                     lineNumber++;
                 }
-                // 如果出现单行出现多个歌词信息的情况，所以进行排序
+                // Multi timecode and sort it auto
                 if (multiLrc)
+                {
                     lrcList = [.. lrcList.OrderBy(x => x.LrcTime)];
+                }
             }
             catch (Exception e)
             {

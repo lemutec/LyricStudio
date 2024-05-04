@@ -1,4 +1,6 @@
-﻿namespace Fischless.Design.Converters;
+﻿using System.Globalization;
+
+namespace Fischless.Design.Converters;
 
 /// <summary>
 /// Converts a <seealso cref="Guid"/> to <seealso cref="string"/>
@@ -16,7 +18,7 @@ public class GuidToStringConverter : SingletonConverterBase<GuidToStringConverte
     public string Format { get; set; } = "D";
 
     /// <inheritdoc/>
-    protected override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is Guid guid)
         {
@@ -34,7 +36,7 @@ public class GuidToStringConverter : SingletonConverterBase<GuidToStringConverte
     }
 
     /// <inheritdoc/>
-    protected override object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    protected override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is string guidString)
         {

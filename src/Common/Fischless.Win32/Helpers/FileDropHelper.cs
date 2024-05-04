@@ -1,8 +1,11 @@
 ﻿using Avalonia.Input;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
 
 namespace Fischless.Win32.Helpers;
 
+[SupportedOSPlatform("Windows")]
+[SupportedOSPlatform("MacOS")]
 [SuppressMessage("Usage", "CS0618:Obsolete Method")]
 [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression")]
 public static class FileDropHelper

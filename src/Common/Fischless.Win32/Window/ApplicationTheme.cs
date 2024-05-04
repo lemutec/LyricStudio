@@ -1,8 +1,11 @@
-﻿namespace Fischless.Win32;
+﻿using System.Runtime.Versioning;
+
+namespace Fischless.Win32;
 
 /// <summary>
 /// Theme in which an application using WPF UI is displayed.
 /// </summary>
+[SupportedOSPlatform("Windows")]
 public enum ApplicationTheme
 {
     /// <summary>

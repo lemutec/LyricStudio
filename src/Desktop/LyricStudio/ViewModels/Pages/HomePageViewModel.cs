@@ -6,6 +6,8 @@ using Fischless.Linq;
 using Fischless.Mapper;
 using Fischless.Mvvm;
 using Fischless.Win32;
+using Fischless.Win32.SystemDialog;
+using LibVLCSharp.Shared;
 using LyricStudio.Core.AudioTrack;
 using LyricStudio.Core.Configuration;
 using LyricStudio.Core.LyricTrack;
@@ -19,6 +21,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
 namespace LyricStudio.ViewModels;
@@ -405,25 +408,25 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void ShortShiftLeft()
     {
-        SeekInSeconds(CurrentTime - 2d);
+        SeekInSeconds(CurrentTime - ConfigurationKeys.ShortShiftSeconds.Get());
     }
 
     [RelayCommand]
     public void ShortShiftRight()
     {
-        SeekInSeconds(CurrentTime + 2d);
+        SeekInSeconds(CurrentTime + ConfigurationKeys.ShortShiftSeconds.Get());
     }
 
     [RelayCommand]
     public void LongShiftLeft()
     {
-        SeekInSeconds(CurrentTime - 5d);
+        SeekInSeconds(CurrentTime - ConfigurationKeys.LongShiftSeconds.Get());
     }
 
     [RelayCommand]
     public void LongShiftRight()
     {
-        SeekInSeconds(CurrentTime + 5d);
+        SeekInSeconds(CurrentTime + ConfigurationKeys.LongShiftSeconds.Get());
     }
 
     public void SeekInSeconds(double second)
@@ -459,17 +462,50 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void Exchange()
     {
-        Mode = Mode == LyricEditMode.ListView ? LyricEditMode.TextBox : LyricEditMode.ListView;
+        LyricEditMode targetMode = Mode == LyricEditMode.ListView ? LyricEditMode.TextBox : LyricEditMode.ListView;
+
+        if (targetMode == LyricEditMode.ListView)
+        {
+            // TODO
+        }
+        else if (targetMode == LyricEditMode.TextBox)
+        {
+            // TODO
+        }
+
+        Mode = targetMode;
     }
 
     [RelayCommand]
-    public void OpenAudioFile()
+    [SupportedOSPlatform("Windows")]
+    [SupportedOSPlatform("MacOS")]
+    public async Task OpenAudioFile()
     {
+        if (await new OpenFileDialog() { Title = "打开音乐文件" }.ShowAsync() is OpenFileDialogResult result)
+        {
+            string name = result.Item.FileInfo.FullName;
+        }
     }
 
     [RelayCommand]
-    public void OpenLyricFile()
+    [SupportedOSPlatform("Windows")]
+    [SupportedOSPlatform("MacOS")]
+    public async Task OpenLyricFile()
     {
+        if (await new OpenFileDialog()
+        {
+            Title = "打开歌词文件",
+            Filters = [
+                new FileDialogFilter()
+                {
+                    Name = "歌词文件",
+                    Extensions = [.. LrcHelper.LyricExtensions]
+                },
+            ]
+        }.ShowAsync() is OpenFileDialogResult result)
+        {
+            string name = result.Item.FileInfo.FullName;
+        }
     }
 
     [RelayCommand]

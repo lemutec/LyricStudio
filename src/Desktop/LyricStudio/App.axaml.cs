@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Fischless.Design.Extensions;
@@ -18,6 +19,7 @@ using Serilog.Events;
 using System;
 using System.IO;
 using System.Resources;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
 namespace LyricStudio;
@@ -65,6 +67,10 @@ public partial class App : Application
             services.AddView<PluginPage, PluginPageViewModel>();
         })
         .Build();
+
+    [SupportedOSPlatform("Windows")]
+    [SupportedOSPlatform("MacOS")]
+    public static Window? MainWindow => (Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
 
     static App()
     {

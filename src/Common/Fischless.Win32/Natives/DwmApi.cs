@@ -1,10 +1,10 @@
 ﻿using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Vanara.PInvoke;
 
 namespace Fischless.Win32;
 
-#pragma warning disable CA1416
-
+[SupportedOSPlatform("Windows")]
 internal static class DwmApi
 {
     public static HRESULT DwmSetWindowAttribute(HWND hWnd, DWMWINDOWATTRIBUTE dwAttribute, int pvAttribute, int cbAttribute)

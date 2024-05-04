@@ -1,11 +1,11 @@
 ﻿using Microsoft.Win32;
+using System.Runtime.Versioning;
 
 namespace Fischless.Win32;
 
-#pragma warning disable CA1416
-
 public static class ApplicationThemeManager
 {
+    [SupportedOSPlatform("Windows")]
     public static ApplicationTheme GetAppTheme()
     {
         using RegistryKey? key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");

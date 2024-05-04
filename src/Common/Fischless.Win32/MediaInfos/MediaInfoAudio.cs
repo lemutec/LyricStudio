@@ -1,7 +1,9 @@
 ﻿using MediaInfoLib;
+using System.Runtime.Versioning;
 
 namespace Fischless.Win32;
 
+[SupportedOSPlatform("Windows")]
 public static class MediaInfoAudio
 {
     public static bool HasAudioTrack(string fileName)

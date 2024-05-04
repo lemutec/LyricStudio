@@ -1,12 +1,12 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Vanara.PInvoke;
 
 namespace Fischless.Win32;
 
-#pragma warning disable CA1416
-
+[SupportedOSPlatform("Windows")]
 public static class WindowBackdrop
 {
     private static bool IsSupported(WindowBackdropType backdropType)
