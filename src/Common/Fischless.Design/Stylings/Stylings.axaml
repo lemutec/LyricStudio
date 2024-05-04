@@ -8,6 +8,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
+    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     <StyleInclude Source="avares://Fischless.Design/Controls/TextBox/StaticTextBox.axaml" />
     <StyleInclude Source="avares://Fischless.Design/Controls/ListBox/LyricListBox.axaml" />
 </Styles>

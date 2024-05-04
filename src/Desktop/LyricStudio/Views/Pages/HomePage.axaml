@@ -1,6 +1,7 @@
 <UserControl x:Class="LyricStudio.Views.HomePage"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ava="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              xmlns:controls="clr-namespace:LyricStudio.Views.Controls"
              xmlns:converters="using:LyricStudio.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,7 +14,7 @@
              xmlns:styles="clr-namespace:Avalonia.Styling;assembly=Avalonia"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
-             xmlns:vm="clr-namespace:LyricStudio.ViewModels"
+             xmlns:vm="using:LyricStudio.ViewModels"
              d:DesignHeight="600"
              d:DesignWidth="800"
              mc:Ignorable="d">
@@ -31,6 +32,8 @@
                 <SolidColorBrush>#224BC0FD</SolidColorBrush>
             </fui:BoolToBrushConverter.TrueValue>
         </fui:BoolToBrushConverter>
+        <fui:IsCountEmptyEmptyConverter x:Key="IsCountEmptyEmptyConverter" />
+        <fui:ObjectEqualsConverter x:Key="ObjectEqualsConverter" />
     </UserControl.Resources>
     <UserControl.Styles />
     <Grid>
@@ -311,83 +314,106 @@
                             CornerRadius="5"
                             PointerPressed="OnTimeClickBarPointerPressed" />
                 </Grid>
-                <Border Grid.Row="1"
-                        Margin="0,8,0,0"
-                        Background="Transparent"
-                        BorderBrush="#10AAAAAA"
-                        BorderThickness="1"
-                        CornerRadius="5">
-                    <Grid>
+                <Grid Grid.Row="1"
+                      Margin="0,8,0,0"
+                      IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
+                      RowDefinitions="*, Auto">
+                    <Border Grid.Row="0"
+                            Background="Transparent"
+                            BorderBrush="#10AAAAAA"
+                            BorderThickness="1"
+                            CornerRadius="5">
                         <Grid>
-                            <ListBox Grid.Row="0"
-                                     Background="Transparent"
-                                     Classes="lyric"
-                                     DoubleTapped="OnLyricListBoxDoubleTapped"
-                                     ItemsSource="{Binding LrcLines}"
-                                     SelectedItem="{Binding SelectedlrcLine}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Background="{Binding IsHightlight, Mode=OneWay, Converter={StaticResource LyricHightlightTextBackgroundConverter}}" CornerRadius="4">
-                                            <TextBlock Text="{Binding PreviewText}" />
-                                        </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                            <StackPanel Grid.Row="0"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
-                                             FontSize="48"
-                                             Foreground="#5DFFFFFF"
-                                             Glyph="{x:Static fui:IcoMoonSymbols.Empty}" />
-                                <Button Margin="0,6,0,0">
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                         FontSize="16"
-                                                         Glyph="{x:Static fui:FontSymbols.OpenFolderHorizontal}" />
-                                            <TextBlock Margin="6,0,0,0" Text="打开" />
-                                            <ui:FontIcon Margin="4,0,0,0"
-                                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                         FontSize="12"
-                                                         Glyph="{x:Static fui:FontSymbols.ChevronDown}" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                    <Button.Flyout>
-                                        <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                                            <MenuItem Command="{Binding OpenAudioFileCommand}"
-                                                      FontSize="12"
-                                                      Header="打开音乐文件">
-                                                <MenuItem.Icon>
-                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                               FontSize="14"
-                                                               Text="{x:Static fui:FontSymbols.Audio}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem Command="{Binding OpenLyricFileCommand}"
-                                                      FontSize="12"
-                                                      Header="打开歌词文件">
-                                                <MenuItem.Icon>
-                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                               FontSize="14"
-                                                               Text="{x:Static fui:FontSymbols.ReadingList}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                        </MenuFlyout>
-                                    </Button.Flyout>
-                                </Button>
-                            </StackPanel>
+                            <Grid>
+                                <ListBox Grid.Row="0"
+                                         Background="Transparent"
+                                         Classes="lyric"
+                                         DoubleTapped="OnLyricListBoxDoubleTapped"
+                                         ItemsSource="{Binding LrcLines}"
+                                         SelectedItem="{Binding SelectedlrcLine}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{Binding IsHightlight, Mode=OneWay, Converter={StaticResource LyricHightlightTextBackgroundConverter}}" CornerRadius="4">
+                                                <TextBlock Text="{Binding PreviewText}" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <StackPanel Grid.Row="0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            IsVisible="{Binding LrcLines.Count, Converter={StaticResource IsCountEmptyEmptyConverter}}">
+                                    <ui:FontIcon FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                 FontSize="48"
+                                                 Foreground="#5DFFFFFF"
+                                                 Glyph="{x:Static fui:IcoMoonSymbols.Empty}" />
+                                    <Button Margin="0,6,0,0">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                             FontSize="16"
+                                                             Glyph="{x:Static fui:FontSymbols.OpenFolderHorizontal}" />
+                                                <TextBlock Margin="6,0,0,0" Text="打开" />
+                                                <ui:FontIcon Margin="4,0,0,0"
+                                                             FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                             FontSize="12"
+                                                             Glyph="{x:Static fui:FontSymbols.ChevronDown}" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                        <Button.Flyout>
+                                            <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                                <MenuItem Command="{Binding OpenAudioFileCommand}"
+                                                          FontSize="12"
+                                                          Header="打开音乐文件">
+                                                    <MenuItem.Icon>
+                                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                                   FontSize="14"
+                                                                   Text="{x:Static fui:FontSymbols.Audio}" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Command="{Binding OpenLyricFileCommand}"
+                                                          FontSize="12"
+                                                          Header="打开歌词文件">
+                                                    <MenuItem.Icon>
+                                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                                   FontSize="14"
+                                                                   Text="{x:Static fui:FontSymbols.ReadingList}" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </MenuFlyout>
+                                        </Button.Flyout>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Border>
-                <TextBox Grid.Row="2"
-                         Margin="0,8,0,0"
-                         Background="Transparent"
-                         BorderThickness="1"
-                         Classes="static"
-                         FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
-                         Text="{Binding EditinglrcLine, Mode=TwoWay}"
-                         Watermark="{mui:Lang CurrentLyric}" />
+                    </Border>
+                    <TextBox Grid.Row="1"
+                             Margin="0,8,0,0"
+                             Background="Transparent"
+                             BorderThickness="1"
+                             Classes="static"
+                             FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
+                             Text="{Binding EditinglrcLine, Mode=TwoWay}"
+                             Watermark="{mui:Lang CurrentLyric}" />
+                </Grid>
+                <Grid Grid.Row="1"
+                      Margin="0,8,0,0"
+                      IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.TextBox}}">
+                    <Border Background="Transparent"
+                            BorderBrush="#10AAAAAA"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                        <Grid>
+                            <ava:TextEditor FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
+                                            ShowLineNumbers="False"
+                                            Text="Binding LyricText">
+								<i:Interaction.Behaviors>
+                                    <fui:TextEditorLrcHighlightingBehavior />
+                                </i:Interaction.Behaviors>
+                            </ava:TextEditor>
+                        </Grid>
+                    </Border>
+                </Grid>
             </Grid>
             <Grid Grid.Column="2"
                   Margin="0,8,8,0"

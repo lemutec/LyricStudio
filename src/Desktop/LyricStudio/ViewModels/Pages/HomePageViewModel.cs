@@ -20,12 +20,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using static Vanara.PInvoke.User32;
 
 namespace LyricStudio.ViewModels;
 
 public partial class HomePageViewModel : ObservableObject, IDisposable
 {
+    [ObservableProperty]
+    private LyricEditMode mode = LyricEditMode.ListView;
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsMediaAvailable))]
     private IAudioPlayer audioPlayer = null!;
@@ -37,6 +39,9 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private ObservableCollectionEx<ObservableLrcLine> lrcLines = [];
 
+    /// <summary>
+    /// Used for <see cref="LyricEditMode.ListView"/>
+    /// </summary>
     [ObservableProperty]
     private ObservableLrcLine selectedlrcLine = null!;
 
@@ -45,6 +50,9 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         EditinglrcLine = value?.ToString();
     }
 
+    /// <summary>
+    /// Used for <see cref="LyricEditMode.ListView"/>
+    /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(LrcLines))]
     private string editinglrcLine = null!;
@@ -60,8 +68,17 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         }
     }
 
+    /// <summary>
+    /// Used for <see cref="LyricEditMode.ListView"/>
+    /// </summary>
     [ObservableProperty]
     private string currentLrcText = string.Empty;
+
+    /// <summary>
+    /// Used for <see cref="LyricEditMode.TextBox"/>
+    /// </summary>
+    [ObservableProperty]
+    private string lyricText = null!;
 
     [ObservableProperty]
     private bool isPlaying = false;
@@ -115,9 +132,6 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     private string lyricFilePath = null!;
 
     [ObservableProperty]
-    private string lyricText = null!;
-
-    [ObservableProperty]
     private string musicFilePath = null!;
 
     [ObservableProperty]
@@ -151,23 +165,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     public HomePageViewModel()
     {
-        timer.Tick += (_, _) =>
-        {
-            if (!IsMediaAvailable)
-            {
-                return;
-            }
-
-            LrcLine line = LrcHelper.GetNearestLrc(lrcLines, TimeSpan.FromSeconds(CurrentTime));
-
-            CurrentLrcText = line?.LrcText ?? string.Empty;
-
-            (lrcLines as IEnumerable<ObservableLrcLine>).ForEach(v => v.IsHightlight = false);
-            if (line is ObservableLrcLine oLine)
-            {
-                oLine.IsHightlight = true;
-            }
-        };
+        timer.Tick += (_, _) => OnTick();
         timer.Interval = TimeSpan.FromMicroseconds(20d);
         timer.Start();
 
@@ -182,6 +180,28 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
         timer?.Stop();
+    }
+
+    private void OnTick()
+    {
+        if (!IsMediaAvailable)
+        {
+            return;
+        }
+        SyncHightlight();
+    }
+
+    private void SyncHightlight()
+    {
+        LrcLine line = LrcHelper.GetNearestLrc(LrcLines, TimeSpan.FromSeconds(CurrentTime));
+
+        CurrentLrcText = line?.LrcText ?? string.Empty;
+
+        (LrcLines as IEnumerable<ObservableLrcLine>).ForEach(v => v.IsHightlight = false);
+        if (line is ObservableLrcLine oLine)
+        {
+            oLine.IsHightlight = true;
+        }
     }
 
     [SuppressMessage("Style", "IDE0074:Use compound assignment")]
@@ -430,11 +450,16 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void Flag()
     {
+        if (!IsMediaAvailable)
+        {
+            return;
+        }
     }
 
     [RelayCommand]
     public void Exchange()
     {
+        Mode = Mode == LyricEditMode.ListView ? LyricEditMode.TextBox : LyricEditMode.ListView;
     }
 
     [RelayCommand]
@@ -497,6 +522,9 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     {
     }
 
+    /// <summary>
+    /// Caused by double tapped
+    /// </summary>
     [RelayCommand]
     public void PlaySeekLyric()
     {
@@ -589,4 +617,10 @@ public partial class ObservableLrcLine : LrcLine
     [ObservableProperty]
     [property: NotMapped]
     private bool isHightlight = false;
+}
+
+public enum LyricEditMode
+{
+    ListView,
+    TextBox,
 }

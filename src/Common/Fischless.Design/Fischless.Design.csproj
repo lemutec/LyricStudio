@@ -14,12 +14,8 @@
 		<Watch Include="**\*.axaml" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Watch Remove="Controls\ListBox\LyricListBox.axaml" />
-	  <Watch Remove="Controls\TextBox\StaticTextBox.axaml" />
-	  <Watch Remove="Stylings\Stylings.axaml" />
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
 		<PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.0.10.9" />
 		<PackageReference Include="FluentAvaloniaUI" Version="2.0.5" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
