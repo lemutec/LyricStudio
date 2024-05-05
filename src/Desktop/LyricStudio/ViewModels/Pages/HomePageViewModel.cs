@@ -619,6 +619,48 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
+    [SupportedOSPlatform("Windows")]
+    [SupportedOSPlatform("MacOS")]
+    public async Task SaveAsLyricFile()
+    {
+        SaveFileDialogResult? result = await new SaveFileDialog()
+        {
+            Title = "保存歌词文件",
+            InitialFileName = Path.GetFileName(LyricFilePath),
+            DefaultExtension = ".lrc",
+            Filters = [
+                new FileDialogFilter()
+                {
+                    Name = "歌词文件",
+                    Extensions = ["lrc"]
+                }
+            ]
+        }.ShowAsync();
+
+        if (result == null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (Mode == LyricEditMode.ListView)
+            {
+                File.WriteAllLines(result.FileInfo.FullName, LrcLines.Select(l => l.ToString()));
+            }
+            else if (Mode == LyricEditMode.TextBox)
+            {
+                File.WriteAllText(result.FileInfo.FullName, LyricText ?? string.Empty);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            Log.Warning(e.ToString());
+        }
+    }
+
+    [RelayCommand]
     public async Task CopyLyric()
     {
         if (Mode == LyricEditMode.ListView)

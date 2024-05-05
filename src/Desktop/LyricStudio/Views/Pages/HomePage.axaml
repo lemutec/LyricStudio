@@ -364,7 +364,7 @@
                                             <MenuFlyout Placement="BottomEdgeAlignedLeft">
                                                 <MenuItem Command="{Binding OpenAudioFileCommand}"
                                                           FontSize="12"
-                                                          Header="打开音乐文件">
+                                                          Header="打开音乐">
                                                     <MenuItem.Icon>
                                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                                    FontSize="14"
@@ -373,7 +373,7 @@
                                                 </MenuItem>
                                                 <MenuItem Command="{Binding OpenLyricFileCommand}"
                                                           FontSize="12"
-                                                          Header="打开歌词文件">
+                                                          Header="打开歌词">
                                                     <MenuItem.Icon>
                                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                                    FontSize="14"
@@ -454,7 +454,7 @@
                             <MenuFlyout Placement="LeftEdgeAlignedTop">
                                 <MenuItem Command="{Binding OpenAudioFileCommand}"
                                           FontSize="12"
-                                          Header="打开音乐文件">
+                                          Header="打开音乐">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
@@ -463,7 +463,7 @@
                                 </MenuItem>
                                 <MenuItem Command="{Binding OpenLyricFileCommand}"
                                           FontSize="12"
-                                          Header="打开歌词文件">
+                                          Header="打开歌词">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
@@ -473,11 +473,20 @@
                                 <Separator />
                                 <MenuItem Command="{Binding SaveLyricFileCommand}"
                                           FontSize="12"
-                                          Header="保存歌词文件">
+                                          Header="保存">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
                                                    Text="{x:Static fui:FontSymbols.Save}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding SaveAsLyricFileCommand}"
+                                          FontSize="12"
+                                          Header="另存为">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.SaveAs}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Command="{Binding CopyLyricCommand}"
@@ -492,7 +501,7 @@
                                 <Separator />
                                 <MenuItem Command="{Binding CloseFilesCommand}"
                                           FontSize="12"
-                                          Header="关闭所有文件">
+                                          Header="关闭所有">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
