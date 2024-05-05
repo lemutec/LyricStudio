@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 public partial class MediaElement
 {
     /// <inheritdoc />
-    public event PropertyChangedEventHandler PropertyChanged;
+    public new event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
     /// Occurs when a logging message has been logged.

@@ -57,6 +57,7 @@ public sealed class LegacyAudioException : MediaContainerException
     /// </summary>
     /// <param name="info">The serialization info.</param>
     /// <param name="context">The streaming context.</param>
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
     private LegacyAudioException(SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
@@ -74,6 +75,7 @@ public sealed class LegacyAudioException : MediaContainerException
     public LegacyAudioResult Result { get; }
 
     /// <inheritdoc/>
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         if (info == null) throw new ArgumentNullException(nameof(info));

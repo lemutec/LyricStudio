@@ -132,7 +132,7 @@ internal abstract unsafe class MediaFrame : IComparable<MediaFrame>, IDisposable
     #region Methods
 
     /// <inheritdoc />
-    public int CompareTo(MediaFrame other)
+    public int CompareTo(MediaFrame? other)
     {
         if (other == null) throw new ArgumentNullException(nameof(other));
         return StartTime.Ticks.CompareTo(other.StartTime.Ticks);

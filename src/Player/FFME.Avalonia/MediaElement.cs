@@ -14,6 +14,9 @@ using System.Collections.Concurrent;
 
 namespace FFME;
 
+#pragma warning disable CS0414
+#pragma warning disable CS0618
+
 public partial class MediaElement : ImageHost, IDisposable, IUriContext
 {
     /// <summary>
@@ -21,7 +24,7 @@ public partial class MediaElement : ImageHost, IDisposable, IUriContext
     /// </summary>
     private readonly bool AllowContentChange;
 
-    private readonly ConcurrentBag<string> PropertyUpdates = new();
+    private readonly ConcurrentBag<string> PropertyUpdates = [];
     private readonly AtomicBoolean m_IsStateUpdating = new(false);
     private readonly DispatcherTimer UpdatesTimer;
 

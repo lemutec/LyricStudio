@@ -9,6 +9,7 @@ namespace FFME.Rendering;
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// A control suitable for displaying subtitles.
@@ -222,6 +223,7 @@ internal class SubtitlesControl : UserControl
 
     #region Helper Methods
 
+    [SuppressMessage("AvaloniaProperty", "AVP1001:The same AvaloniaProperty should not be registered twice")]
     private static StyledProperty<T> RegisterProperty<T>(string name, T defaultVal,
         Action<SubtitlesControl, AvaloniaPropertyChangedEventArgs>? changed = null)
     {
@@ -242,19 +244,19 @@ internal class SubtitlesControl : UserControl
     {
         if (e.Property.Name == nameof(FontSize))
         {
-            var value = (double)e.NewValue;
+            var value = (double)e.NewValue!;
             foreach (var t in TextBlocks)
                 t.Value.FontSize = value;
         }
         else if (e.Property.Name == nameof(FontStretch))
         {
-            var value = (FontStretch)e.NewValue;
+            var value = (FontStretch)e.NewValue!;
             foreach (var t in TextBlocks)
                 t.Value.FontStretch = value;
         }
         else if (e.Property.Name == nameof(FontWeight))
         {
-            var value = (FontWeight)e.NewValue;
+            var value = (FontWeight)e.NewValue!;
             foreach (var t in TextBlocks)
                 t.Value.FontWeight = value;
         }
@@ -344,7 +346,7 @@ internal class SubtitlesControl : UserControl
         if (dependencyObject is SubtitlesControl == false) return;
 
         var element = (SubtitlesControl)dependencyObject;
-        var value = (Thickness)e.NewValue;
+        var value = (Thickness)e.NewValue!;
         foreach (var t in element.TextBlocks)
             t.Value.Margin = ComputeMargin(t.Key, value);
     }

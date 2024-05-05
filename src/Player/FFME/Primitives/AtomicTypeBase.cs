@@ -217,7 +217,7 @@ internal abstract class AtomicTypeBase<T> : IComparable, IComparable<T>, ICompar
     public virtual void Decrement() => Interlocked.Decrement(ref backingValue);
 
     /// <inheritdoc />
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         switch (obj)
         {
@@ -239,10 +239,10 @@ internal abstract class AtomicTypeBase<T> : IComparable, IComparable<T>, ICompar
     public int CompareTo(T other) => CompareTo(this, other);
 
     /// <inheritdoc />
-    public int CompareTo(AtomicTypeBase<T> other) => CompareTo(this, other);
+    public int CompareTo(AtomicTypeBase<T>? other) => CompareTo(this, other);
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         switch (obj)
         {
@@ -264,7 +264,7 @@ internal abstract class AtomicTypeBase<T> : IComparable, IComparable<T>, ICompar
     public override int GetHashCode() => BackingValue.GetHashCode();
 
     /// <inheritdoc />
-    public bool Equals(AtomicTypeBase<T> other) => Equals(this, other);
+    public bool Equals(AtomicTypeBase<T>? other) => Equals(this, other);
 
     /// <inheritdoc />
     public bool Equals(T other) => Equals(Value, other);

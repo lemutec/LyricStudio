@@ -152,7 +152,7 @@ internal class WaveFormat : IEquatable<WaveFormat>
     /// </summary>
     /// <param name="obj">Object to compare to.</param>
     /// <returns>True if the objects are the same.</returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is WaveFormat other)
         {
@@ -182,7 +182,7 @@ internal class WaveFormat : IEquatable<WaveFormat>
     }
 
     /// <inheritdoc />
-    public bool Equals(WaveFormat other) => other != null && GetHashCode() == other.GetHashCode();
+    public bool Equals(WaveFormat? other) => other != null && GetHashCode() == other.GetHashCode();
 }
 
 #pragma warning restore 414 // Field is assigned but its value is never used

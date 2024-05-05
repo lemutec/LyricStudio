@@ -139,7 +139,7 @@ internal struct LegacyAudioDeviceData : IEquatable<LegacyAudioDeviceData>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj) =>
+    public override bool Equals(object? obj) =>
         obj is LegacyAudioDeviceData data && Equals(data);
 
     /// <inheritdoc />

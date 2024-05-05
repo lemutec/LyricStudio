@@ -96,7 +96,7 @@ internal sealed class StepTimer : IDisposable
     /// Implements the execute-wait cycles of the thread.
     /// </summary>
     /// <param name="state">The state.</param>
-    private static void ExecuteCallbacks(object state)
+    private static void ExecuteCallbacks(object? state)
     {
         while (true)
         {

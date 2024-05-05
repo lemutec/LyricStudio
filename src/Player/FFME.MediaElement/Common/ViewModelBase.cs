@@ -41,7 +41,7 @@ public abstract class ViewModelBase : INotifyPropertyChanged
     /// Occurs when a property value changes.
     /// </summary>
     /// <returns>The property changed notification handler</returns>
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>Checks if a property already matches a desired value.  Sets the property and
     /// notifies listeners only when necessary.</summary>

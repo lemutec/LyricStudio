@@ -1,20 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Avalonia" Version="11.0.4" />
-      <PackageReference Include="FFmpeg.AutoGen" Version="4.4.0" />
-      <PackageReference Include="System.Resources.Extensions" Version="8.0.0-rc.1.23419.4" />
-    </ItemGroup>
-
-    <Import Project="..\FFME\FFME.projitems" Label="Shared" />
-    <Import Project="..\FFME\FFME.projitems" Label="Shared" />
-    <Import Project="..\FFME.MediaElement\FFME.MediaElement.projitems" Label="Shared" />
-
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Update="Libs\win-x64\avcodec-58.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>avcodec-58.dll</TargetPath>
+		</None>
+		<None Update="Libs\win-x64\avdevice-58.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>avdevice-58.dll</TargetPath>
+		</None>
+		<None Update="Libs\win-x64\avfilter-7.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>avfilter-7.dll</TargetPath>
+		</None>
+		<None Update="Libs\win-x64\avformat-58.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>avformat-58.dll</TargetPath>
+		</None>
+		<None Update="Libs\win-x64\avutil-56.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>avutil-56.dll</TargetPath>
+		</None>
+		<None Update="Libs\win-x64\postproc-55.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>postproc-55.dll</TargetPath>
+		</None>
+		<None Update="Libs\win-x64\swresample-3.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>swresample-3.dll</TargetPath>
+		</None>
+		<None Update="Libs\win-x64\swscale-5.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>swscale-5.dll</TargetPath>
+		</None>
+	</ItemGroup>
+	<PropertyGroup>
+		<AvaloniaVersion>11.0.10</AvaloniaVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="FFmpeg.AutoGen" Version="4.4.0" />
+		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+	</ItemGroup>
+	<Import Project="..\FFME\FFME.projitems" Label="Shared" />
+	<Import Project="..\FFME.MediaElement\FFME.MediaElement.projitems" Label="Shared" />
 </Project>

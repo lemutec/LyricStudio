@@ -246,7 +246,7 @@ public sealed class VideoSeekIndex
     private class VideoSeekIndexEntryComparer : IComparer<VideoSeekIndexEntry>
     {
         /// <inheritdoc />
-        public int Compare(VideoSeekIndexEntry x, VideoSeekIndexEntry y) =>
+        public int Compare(VideoSeekIndexEntry? x, VideoSeekIndexEntry? y) =>
             x.StartTime.Ticks.CompareTo(y.StartTime.Ticks);
     }
 }

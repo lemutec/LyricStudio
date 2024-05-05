@@ -40,7 +40,7 @@ internal struct PacketBufferState : IEquatable<PacketBufferState>
                 HasEnoughPackets == other.HasEnoughPackets;
 
     /// <inheritdoc />
-    public override bool Equals(object obj) =>
+    public override bool Equals(object? obj) =>
         obj is PacketBufferState state && Equals(state);
 
     /// <inheritdoc />

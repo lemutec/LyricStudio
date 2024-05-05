@@ -180,7 +180,7 @@ internal sealed class BlockRenderingWorker : WorkerBase, IMediaWorker, ILoggingS
     /// <summary>
     /// Executes render thread logic in a cycle.
     /// </summary>
-    private void RunQuantumThread(object state)
+    private void RunQuantumThread(object? state)
     {
         using var vsync = new VerticalSyncContext();
         while (WorkerState != WorkerState.Stopped)

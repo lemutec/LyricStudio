@@ -8,6 +8,7 @@ using Common;
 using global::Avalonia.Controls;
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 public partial class MediaElement
 {
@@ -37,7 +38,7 @@ public partial class MediaElement
         if (!(d is MediaElement element))
             return;
 
-        if ((bool)e.NewValue)
+        if ((bool)e.NewValue!)
         {
             element.VideoView.Source ??= Properties.Resources.FFmpegMediaElementBackground;
 
@@ -426,7 +427,7 @@ public partial class MediaElement
     /// The Stretch property determines how large the MediaElement will be drawn.
     /// </summary>
     [Category(nameof(MediaElement))]
-    public Stretch Stretch
+    public new Stretch Stretch
     {
         get => GetValue(StretchProperty);
         set => SetValue(StretchProperty, value);
@@ -435,7 +436,7 @@ public partial class MediaElement
     /// <summary>
     /// The StyledProperty for the MediaElement.Stretch property.
     /// </summary>
-    public static readonly StyledProperty<Stretch> StretchProperty = RegisterProperty(nameof(Stretch), global::Avalonia.Media.Stretch.Uniform,
+    public new static readonly StyledProperty<Stretch> StretchProperty = RegisterProperty(nameof(Stretch), global::Avalonia.Media.Stretch.Uniform,
         OnStretchPropertyChanged, null);
 
     private static void OnStretchPropertyChanged(AvaloniaObject? d, AvaloniaPropertyChangedEventArgs e)
@@ -454,7 +455,7 @@ public partial class MediaElement
     /// can be used to prevent the content from being smaller than its native size or larger than
     /// its native size.
     /// </summary>
-    public StretchDirection StretchDirection
+    public new StretchDirection StretchDirection
     {
         get => GetValue(StretchDirectionProperty);
         set => SetValue(StretchDirectionProperty, value);
@@ -463,7 +464,7 @@ public partial class MediaElement
     /// <summary>
     /// The StyledProperty for the MediaElement.StretchDirection property.
     /// </summary>
-    private static readonly StyledProperty<StretchDirection> StretchDirectionProperty = RegisterProperty(nameof(StretchDirection), StretchDirection.Both,
+    private new static readonly StyledProperty<StretchDirection> StretchDirectionProperty = RegisterProperty(nameof(StretchDirection), StretchDirection.Both,
         OnStretchDirectionPropertyChanged, null);
 
     private static void OnStretchDirectionPropertyChanged(AvaloniaObject? d, AvaloniaPropertyChangedEventArgs e)
@@ -495,6 +496,7 @@ public partial class MediaElement
 
     #endregion IgnorePixelAspectRatio Dependency Property
 
+    [SuppressMessage("AvaloniaProperty", "AVP1001:The same AvaloniaProperty should not be registered twice")]
     private static StyledProperty<T> RegisterProperty<T>(string name, T defaultVal,
         Action<MediaElement, AvaloniaPropertyChangedEventArgs>? changed = null, Func<AvaloniaObject, T, T>? coerce = null)
     {

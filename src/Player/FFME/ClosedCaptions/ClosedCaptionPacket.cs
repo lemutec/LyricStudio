@@ -705,14 +705,14 @@ public sealed class ClosedCaptionPacket : IComparable<ClosedCaptionPacket>, IEqu
     }
 
     /// <inheritdoc />
-    public int CompareTo(ClosedCaptionPacket other)
+    public int CompareTo(ClosedCaptionPacket? other)
     {
         if (other == null) throw new ArgumentNullException(nameof(other));
         return Timestamp.Ticks.CompareTo(other.Timestamp.Ticks);
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is ClosedCaptionPacket other)
             return ReferenceEquals(this, other);
@@ -721,7 +721,7 @@ public sealed class ClosedCaptionPacket : IComparable<ClosedCaptionPacket>, IEqu
     }
 
     /// <inheritdoc />
-    public bool Equals(ClosedCaptionPacket other) =>
+    public bool Equals(ClosedCaptionPacket? other) =>
         ReferenceEquals(this, other);
 
     /// <inheritdoc />

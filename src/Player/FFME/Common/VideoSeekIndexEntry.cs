@@ -132,7 +132,7 @@ public sealed class VideoSeekIndexEntry
     #endregion Operators
 
     /// <inheritdoc />
-    public int CompareTo(VideoSeekIndexEntry other)
+    public int CompareTo(VideoSeekIndexEntry? other)
     {
         if (other == null) throw new ArgumentNullException(nameof(other));
         return StartTime.Ticks.CompareTo(other.StartTime.Ticks);
@@ -145,7 +145,7 @@ public sealed class VideoSeekIndexEntry
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is VideoSeekIndexEntry other)
             return ReferenceEquals(this, other);
@@ -154,7 +154,7 @@ public sealed class VideoSeekIndexEntry
     }
 
     /// <inheritdoc />
-    public bool Equals(VideoSeekIndexEntry other) =>
+    public bool Equals(VideoSeekIndexEntry? other) =>
         ReferenceEquals(this, other);
 
     /// <inheritdoc />

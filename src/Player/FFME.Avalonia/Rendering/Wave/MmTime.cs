@@ -66,7 +66,7 @@ internal struct MmTime : IEquatable<MmTime>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj) =>
+    public override bool Equals(object? obj) =>
         obj is MmTime && Equals((MmTime)obj);
 
     /// <inheritdoc />

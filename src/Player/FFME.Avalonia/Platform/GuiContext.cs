@@ -8,7 +8,8 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using static Application;
+
+#pragma warning disable CS0618
 
 /// <summary>
 /// Provides properties and methods for the

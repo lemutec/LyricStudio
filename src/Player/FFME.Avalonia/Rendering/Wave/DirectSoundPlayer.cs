@@ -632,7 +632,7 @@ internal sealed class DirectSoundPlayer : IntervalWorkerBase, IWavePlayer, ILogg
                 NotifyHandle == other.NotifyHandle;
 
             /// <inheritdoc />
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 if (obj is DirectSoundBufferPositionNotify other)
                     return Equals(other);

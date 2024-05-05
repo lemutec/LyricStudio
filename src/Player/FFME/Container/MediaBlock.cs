@@ -231,7 +231,7 @@ internal abstract class MediaBlock
     }
 
     /// <inheritdoc />
-    public int CompareTo(MediaBlock other)
+    public int CompareTo(MediaBlock? other)
     {
         if (other == null) throw new ArgumentNullException(nameof(other));
         return StartTime.Ticks.CompareTo(other.StartTime.Ticks);
@@ -250,7 +250,7 @@ internal abstract class MediaBlock
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is MediaBlock other)
             return ReferenceEquals(this, other);
@@ -259,7 +259,7 @@ internal abstract class MediaBlock
     }
 
     /// <inheritdoc />
-    public bool Equals(MediaBlock other) =>
+    public bool Equals(MediaBlock? other) =>
         ReferenceEquals(this, other);
 
     /// <inheritdoc />
