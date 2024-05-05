@@ -42,8 +42,10 @@
 		<PackageReference Include="LoadingIndicators.Avalonia" Version="11.0.10" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Ude.NetStandard" Version="1.2.0" />
-		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
 		<PackageReference Include="GuiLabs.Undo" Version="1.0.2" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(DefineConstants.Contains(VLC))'">
+		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Common\Fischless.Globalization\Fischless.Globalization.csproj" />
@@ -52,5 +54,6 @@
 	  <ProjectReference Include="..\..\Common\Fischless.Mvvm\Fischless.Mvvm.csproj" />
 	  <ProjectReference Include="..\..\Common\Fischless.Win32\Fischless.Win32.csproj" />
 	  <ProjectReference Include="..\..\Common\Fischless.Design\Fischless.Design.csproj" />
+	  <ProjectReference Include="..\..\Player\FFME.Avalonia\FFME.Avalonia.csproj" />
 	</ItemGroup>
 </Project>

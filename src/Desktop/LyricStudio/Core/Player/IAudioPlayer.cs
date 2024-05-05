@@ -1,10 +1,12 @@
 ﻿using LibVLCSharp.Shared;
 using System;
+using FFME.Common;
 
 namespace LyricStudio.Core.Player;
 
 /// <summary>
-/// <see cref="AudioPlayer" />
+/// <see cref="VLCAudioPlayer" />
+/// <see cref="FFMEAudioPlayer" />
 /// </summary>
 public interface IAudioPlayer : IDisposable
 {
@@ -42,6 +44,7 @@ public interface IAudioPlayer : IDisposable
 
 /// <summary>
 /// <see cref="VLCState" />
+/// <see cref="MediaPlaybackState"/>
 /// </summary>
 public enum AudioPlayerState
 {

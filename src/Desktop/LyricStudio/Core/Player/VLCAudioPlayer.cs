@@ -6,7 +6,8 @@ namespace LyricStudio.Core.Player;
 /// <summary>
 /// <inheritdoc/>
 /// </summary>
-public sealed class AudioPlayer : LibVLC, IAudioPlayer
+[Obsolete]
+public sealed class VLCAudioPlayer : LibVLC, IAudioPlayer
 {
     public string FileName { get; }
     private Media Media { get; }
@@ -14,7 +15,7 @@ public sealed class AudioPlayer : LibVLC, IAudioPlayer
 
     public event EventHandler<double> PositionChanged = null!;
 
-    public AudioPlayer(string fileName)
+    public VLCAudioPlayer(string fileName)
     {
         FileName = fileName;
         Media = new Media(this, FileName);

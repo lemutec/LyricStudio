@@ -336,7 +336,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                     AudioPlayer.Dispose();
                     AudioPlayer = null!;
                 }
-                AudioPlayer = new AudioPlayer(musicFile);
+                AudioPlayer = new FFMEAudioPlayer(musicFile);
                 AudioPlayer.PositionChanged += OnPositionChanged;
             }
 
