@@ -45,6 +45,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     /// Used for <see cref="LyricEditMode.ListView"/>
     /// </summary>
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EditinglrcLine))]
     private ObservableLrcLine selectedlrcLine = null!;
 
     partial void OnSelectedlrcLineChanged(ObservableLrcLine value)
@@ -467,6 +468,42 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         if (!IsMediaAvailable)
         {
             return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        if (SelectedlrcLine == null)
+        {
+            if (LrcLines.Any())
+            {
+                ObservableLrcLine firstTake = LrcLines.Where(l => l.LrcTime.HasValue).FirstOrDefault();
+
+                if (firstTake != null)
+                {
+                    SelectedlrcLine = firstTake;
+                }
+            }
+        }
+
+        if (SelectedlrcLine != null)
+        {
+            if (SelectedlrcLine.LrcTime.HasValue)
+            {
+                SelectedlrcLine.LrcTime = TimeSpan.FromSeconds(AudioPlayer.Position)
+                    .Add(TimeSpan.FromMicroseconds(ConfigurationKeys.FlagTimeOffset.Get()));
+                EditinglrcLine = SelectedlrcLine.ToString();
+
+                int nextIndex = LrcLines.IndexOf(SelectedlrcLine) + 1;
+
+                if (nextIndex <= LrcLines.Count - 1)
+                {
+                    SelectedlrcLine = LrcLines[nextIndex];
+                    EditinglrcLine = SelectedlrcLine.ToString();
+                }
+            }
         }
     }
 
