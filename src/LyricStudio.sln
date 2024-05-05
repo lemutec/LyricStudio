@@ -26,6 +26,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fischless.Mvvm", "Common\Fi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fischless.Linq", "Common\Fischless.Linq\Fischless.Linq.csproj", "{A57394D8-450A-4CEB-BE47-F45768D74500}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Player", "Player", "{1DEEC456-8329-4686-9A55-601D4C3EF7B6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFME.Avalonia", "Player\FFME.Avalonia\FFME.Avalonia.csproj", "{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FFME.MediaElement", "Player\FFME.MediaElement\FFME.MediaElement.shproj", "{64A74006-9E42-438B-9A15-07250FAD6E58}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FFME", "Player\FFME\FFME.shproj", "{BD805D77-C211-442B-9FAF-6096030D0D78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +98,14 @@ Global
 		{A57394D8-450A-4CEB-BE47-F45768D74500}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A57394D8-450A-4CEB-BE47-F45768D74500}.Release|x64.ActiveCfg = Release|x64
 		{A57394D8-450A-4CEB-BE47-F45768D74500}.Release|x64.Build.0 = Release|x64
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}.Debug|x64.Build.0 = Debug|Any CPU
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}.Release|x64.ActiveCfg = Release|Any CPU
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,8 +118,17 @@ Global
 		{15BC14BE-758A-40A6-8707-00B9D59B1B45} = {3E585265-7E72-4832-9230-F2B54423EB13}
 		{F51B4B04-BDA8-4F18-B63B-7BB92DCC5123} = {3E585265-7E72-4832-9230-F2B54423EB13}
 		{A57394D8-450A-4CEB-BE47-F45768D74500} = {3E585265-7E72-4832-9230-F2B54423EB13}
+		{BC3CB7F3-32C0-4E77-94D6-13AF1575FE29} = {1DEEC456-8329-4686-9A55-601D4C3EF7B6}
+		{64A74006-9E42-438B-9A15-07250FAD6E58} = {1DEEC456-8329-4686-9A55-601D4C3EF7B6}
+		{BD805D77-C211-442B-9FAF-6096030D0D78} = {1DEEC456-8329-4686-9A55-601D4C3EF7B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9133D3BC-6E58-439B-812B-FB1C2E4D4C70}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Player\FFME.MediaElement\FFME.MediaElement.projitems*{64a74006-9e42-438b-9a15-07250fad6e58}*SharedItemsImports = 13
+		Player\FFME.MediaElement\FFME.MediaElement.projitems*{bc3cb7f3-32c0-4e77-94d6-13af1575fe29}*SharedItemsImports = 5
+		Player\FFME\FFME.projitems*{bc3cb7f3-32c0-4e77-94d6-13af1575fe29}*SharedItemsImports = 5
+		Player\FFME\FFME.projitems*{bd805d77-c211-442b-9faf-6096030d0d78}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
