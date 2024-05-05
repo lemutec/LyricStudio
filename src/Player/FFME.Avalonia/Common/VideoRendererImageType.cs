@@ -1,18 +1,17 @@
-﻿namespace FFME.Avalonia.Common
+﻿namespace FFME.Avalonia.Common;
+
+/// <summary>
+/// Enumerates the different Video renderer image types.
+/// </summary>
+public enum VideoRendererImageType
 {
     /// <summary>
-    /// Enumerates the different Video renderer image types.
+    /// Uses a tear-free WriteableBitmap.
     /// </summary>
-    public enum VideoRendererImageType
-    {
-        /// <summary>
-        /// Uses a tear-free WriteableBitmap.
-        /// </summary>
-        WriteableBitmap,
+    WriteableBitmap,
 
-        /// <summary>
-        /// Uses the faster, non tear-free InteropBitmap.
-        /// </summary>
-        InteropBitmap
-    }
+    /// <summary>
+    /// Uses the faster, non tear-free InteropBitmap.
+    /// </summary>
+    InteropBitmap
 }

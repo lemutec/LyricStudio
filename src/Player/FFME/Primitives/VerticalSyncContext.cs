@@ -1,377 +1,376 @@
-﻿namespace FFME.Primitives
+﻿namespace FFME.Primitives;
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+
+/// <summary>
+/// Vertical Synchronization provider.
+/// Ideas taken from:
+/// 1. https://github.com/fuse-open/fuse-studio/blob/master/Source/Fusion/Windows/VerticalSynchronization.cs.
+/// 2. https://gist.github.com/anonymous/4397e4909c524c939bee.
+/// Related Discussion:
+/// https://bugs.chromium.org/p/chromium/issues/detail?id=467617.
+/// </summary>
+internal sealed class VerticalSyncContext : IDisposable
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Runtime.InteropServices;
-    using System.Threading;
+    private static readonly object NativeSyncLock = new object();
+    private readonly Stopwatch RefreshStopwatch = Stopwatch.StartNew();
+    private readonly object SyncLock = new object();
+    private bool IsDisposed;
+    private DisplayDeviceInfo? DisplayDevice;
+    private AdapterInfo CurrentAdapterInfo;
+    private VerticalSyncEventInfo VerticalSyncEvent;
+    private double RefreshCount;
 
     /// <summary>
-    /// Vertical Synchronization provider.
-    /// Ideas taken from:
-    /// 1. https://github.com/fuse-open/fuse-studio/blob/master/Source/Fusion/Windows/VerticalSynchronization.cs.
-    /// 2. https://gist.github.com/anonymous/4397e4909c524c939bee.
-    /// Related Discussion:
-    /// https://bugs.chromium.org/p/chromium/issues/detail?id=467617.
+    /// Initializes static members of the <see cref="VerticalSyncContext"/> class.
     /// </summary>
-    internal sealed class VerticalSyncContext : IDisposable
+    static VerticalSyncContext()
     {
-        private static readonly object NativeSyncLock = new object();
-        private readonly Stopwatch RefreshStopwatch = Stopwatch.StartNew();
-        private readonly object SyncLock = new object();
-        private bool IsDisposed;
-        private DisplayDeviceInfo? DisplayDevice;
-        private AdapterInfo CurrentAdapterInfo;
-        private VerticalSyncEventInfo VerticalSyncEvent;
-        private double RefreshCount;
+        IsAvailable = IsWindowsVistaOrAbove && PrimaryDisplayDevice != null;
+    }
 
-        /// <summary>
-        /// Initializes static members of the <see cref="VerticalSyncContext"/> class.
-        /// </summary>
-        static VerticalSyncContext()
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VerticalSyncContext"/> class.
+    /// </summary>
+    public VerticalSyncContext()
+    {
+        lock (SyncLock)
         {
-            IsAvailable = IsWindowsVistaOrAbove && PrimaryDisplayDevice != null;
+            EnsureAdapter();
         }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VerticalSyncContext"/> class.
-        /// </summary>
-        public VerticalSyncContext()
+    /// <summary>
+    /// Enumerates the device state flags.
+    /// </summary>
+    [Flags]
+    private enum DisplayDeviceStateFlags : int
+    {
+        AttachedToDesktop = 0x1,
+        MultiDriver = 0x2,
+        PrimaryDevice = 0x4,
+        MirroringDriver = 0x8,
+        VGACompatible = 0x10,
+        Removable = 0x20,
+        ModesPruned = 0x8000000,
+        Remote = 0x4000000,
+        Disconnect = 0x2000000
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether Vertical Synchronization is available on the system.
+    /// </summary>
+    public static bool IsAvailable { get; private set; }
+
+    /// <summary>
+    /// Gets the display device refresh rate in Hz.
+    /// </summary>
+    public double RefreshRateHz { get; private set; } = 60;
+
+    /// <summary>
+    /// Gets the refresh period of the display device.
+    /// </summary>
+    public TimeSpan RefreshPeriod => TimeSpan.FromSeconds(1d / RefreshRateHz);
+
+    /// <summary>
+    /// Gets a value indicating whether this system is running Windows Vista or above.
+    /// </summary>
+    private static bool IsWindowsVistaOrAbove =>
+        Environment.OSVersion.Platform == PlatformID.Win32NT &&
+        Environment.OSVersion.Version.Major >= 6;
+
+    /// <summary>
+    /// Gets the display devices.
+    /// </summary>
+    private static DisplayDeviceInfo[] DisplayDevices
+    {
+        get
         {
-            lock (SyncLock)
+            lock (NativeSyncLock)
             {
-                EnsureAdapter();
-            }
-        }
+                var structSize = Marshal.SizeOf<DisplayDeviceInfo>();
+                var result = new List<DisplayDeviceInfo>(16);
 
-        /// <summary>
-        /// Enumerates the device state flags.
-        /// </summary>
-        [Flags]
-        private enum DisplayDeviceStateFlags : int
-        {
-            AttachedToDesktop = 0x1,
-            MultiDriver = 0x2,
-            PrimaryDevice = 0x4,
-            MirroringDriver = 0x8,
-            VGACompatible = 0x10,
-            Removable = 0x20,
-            ModesPruned = 0x8000000,
-            Remote = 0x4000000,
-            Disconnect = 0x2000000
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether Vertical Synchronization is available on the system.
-        /// </summary>
-        public static bool IsAvailable { get; private set; }
-
-        /// <summary>
-        /// Gets the display device refresh rate in Hz.
-        /// </summary>
-        public double RefreshRateHz { get; private set; } = 60;
-
-        /// <summary>
-        /// Gets the refresh period of the display device.
-        /// </summary>
-        public TimeSpan RefreshPeriod => TimeSpan.FromSeconds(1d / RefreshRateHz);
-
-        /// <summary>
-        /// Gets a value indicating whether this system is running Windows Vista or above.
-        /// </summary>
-        private static bool IsWindowsVistaOrAbove =>
-            Environment.OSVersion.Platform == PlatformID.Win32NT &&
-            Environment.OSVersion.Version.Major >= 6;
-
-        /// <summary>
-        /// Gets the display devices.
-        /// </summary>
-        private static DisplayDeviceInfo[] DisplayDevices
-        {
-            get
-            {
-                lock (NativeSyncLock)
-                {
-                    var structSize = Marshal.SizeOf<DisplayDeviceInfo>();
-                    var result = new List<DisplayDeviceInfo>(16);
-
-                    try
-                    {
-                        var deviceIndex = 0u;
-                        while (true)
-                        {
-                            var d = default(DisplayDeviceInfo);
-                            d.StructSize = structSize;
-                            if (!NativeMethods.EnumDisplayDevices(null, deviceIndex, ref d, 0))
-                                break;
-
-                            result.Add(d);
-                            deviceIndex++;
-                        }
-                    }
-                    catch
-                    {
-                        // ignore
-                    }
-
-                    return result.ToArray();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the primary display device.
-        /// </summary>
-        private static DisplayDeviceInfo? PrimaryDisplayDevice
-        {
-            get
-            {
-                var devices = DisplayDevices;
-                if (devices.Length == 0 || !devices.Any(d => d.StateFlags.HasFlag(DisplayDeviceStateFlags.PrimaryDevice)))
-                    return null;
-
-                return devices.First(d => d.StateFlags.HasFlag(DisplayDeviceStateFlags.PrimaryDevice));
-            }
-        }
-
-        /// <summary>
-        /// An alternative, less precise method to <see cref="WaitForBlank"/> for synchronizing pictures to the monitor's refresh rate.
-        /// Requires DWM composition enabled on Windows Vista and above.
-        /// For further info, see https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmflush.
-        /// </summary>
-        public static void Flush() => NativeMethods.DwmFlush();
-
-        /// <summary>
-        /// Waits for the vertical blanking interval on the primary display adapter to occur and then returns.
-        /// </summary>
-        /// <returns>True if the wait was performed using the adapter, and false otherwise.</returns>
-        public bool WaitForBlank()
-        {
-            lock (SyncLock)
-            {
                 try
                 {
-                    if (!IsAvailable || !EnsureAdapter())
+                    var deviceIndex = 0u;
+                    while (true)
                     {
-                        Thread.Sleep(Constants.DefaultTimingPeriod);
-                        return false;
-                    }
+                        var d = default(DisplayDeviceInfo);
+                        d.StructSize = structSize;
+                        if (!NativeMethods.EnumDisplayDevices(null, deviceIndex, ref d, 0))
+                            break;
 
-                    try
-                    {
-                        var waitResult = NativeMethods.D3DKMTWaitForVerticalBlankEvent(ref VerticalSyncEvent);
-                        if (waitResult != 0)
-                            throw new Exception("Adapter needs to be recreated. Resources will be released.");
-
-                        return true;
-                    }
-                    catch
-                    {
-                        ReleaseAdapter();
-                        return false;
+                        result.Add(d);
+                        deviceIndex++;
                     }
                 }
-                finally
+                catch
                 {
-                    RefreshCount++;
+                    // ignore
+                }
 
-                    if (RefreshCount >= 60)
-                    {
-                        RefreshRateHz = RefreshCount / RefreshStopwatch.Elapsed.TotalSeconds;
-                        RefreshStopwatch.Restart();
-                        RefreshCount = 0;
-                    }
+                return result.ToArray();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets the primary display device.
+    /// </summary>
+    private static DisplayDeviceInfo? PrimaryDisplayDevice
+    {
+        get
+        {
+            var devices = DisplayDevices;
+            if (devices.Length == 0 || !devices.Any(d => d.StateFlags.HasFlag(DisplayDeviceStateFlags.PrimaryDevice)))
+                return null;
+
+            return devices.First(d => d.StateFlags.HasFlag(DisplayDeviceStateFlags.PrimaryDevice));
+        }
+    }
+
+    /// <summary>
+    /// An alternative, less precise method to <see cref="WaitForBlank"/> for synchronizing pictures to the monitor's refresh rate.
+    /// Requires DWM composition enabled on Windows Vista and above.
+    /// For further info, see https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmflush.
+    /// </summary>
+    public static void Flush() => NativeMethods.DwmFlush();
+
+    /// <summary>
+    /// Waits for the vertical blanking interval on the primary display adapter to occur and then returns.
+    /// </summary>
+    /// <returns>True if the wait was performed using the adapter, and false otherwise.</returns>
+    public bool WaitForBlank()
+    {
+        lock (SyncLock)
+        {
+            try
+            {
+                if (!IsAvailable || !EnsureAdapter())
+                {
+                    Thread.Sleep(Constants.DefaultTimingPeriod);
+                    return false;
+                }
+
+                try
+                {
+                    var waitResult = NativeMethods.D3DKMTWaitForVerticalBlankEvent(ref VerticalSyncEvent);
+                    if (waitResult != 0)
+                        throw new Exception("Adapter needs to be recreated. Resources will be released.");
+
+                    return true;
+                }
+                catch
+                {
+                    ReleaseAdapter();
+                    return false;
+                }
+            }
+            finally
+            {
+                RefreshCount++;
+
+                if (RefreshCount >= 60)
+                {
+                    RefreshRateHz = RefreshCount / RefreshStopwatch.Elapsed.TotalSeconds;
+                    RefreshStopwatch.Restart();
+                    RefreshCount = 0;
                 }
             }
         }
+    }
 
-        /// <inheritdoc />
-        public void Dispose()
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        lock (SyncLock)
         {
-            lock (SyncLock)
-            {
-                if (IsDisposed) return;
-                IsDisposed = true;
+            if (IsDisposed) return;
+            IsDisposed = true;
 
-                ReleaseAdapter();
-            }
+            ReleaseAdapter();
         }
+    }
 
-        /// <summary>
-        /// Ensures the adapter is avaliable.
-        /// If the adapter cannot be created, the <see cref="IsAvailable"/> property is permanently set to false.
-        /// </summary>
-        /// <returns>True if the adapter is available, and false otherwise.</returns>
-        private bool EnsureAdapter()
+    /// <summary>
+    /// Ensures the adapter is avaliable.
+    /// If the adapter cannot be created, the <see cref="IsAvailable"/> property is permanently set to false.
+    /// </summary>
+    /// <returns>True if the adapter is available, and false otherwise.</returns>
+    private bool EnsureAdapter()
+    {
+        if (DisplayDevice == null)
         {
+            DisplayDevice = PrimaryDisplayDevice;
             if (DisplayDevice == null)
             {
-                DisplayDevice = PrimaryDisplayDevice;
-                if (DisplayDevice == null)
-                {
-                    IsAvailable = false;
-                    return false;
-                }
+                IsAvailable = false;
+                return false;
             }
+        }
 
-            if (CurrentAdapterInfo.DCHandle == IntPtr.Zero)
+        if (CurrentAdapterInfo.DCHandle == IntPtr.Zero)
+        {
+            try
             {
-                try
-                {
-                    CurrentAdapterInfo = default;
-                    CurrentAdapterInfo.DCHandle = NativeMethods.CreateDC(DisplayDevice.Value.DeviceName, null, null, IntPtr.Zero);
-                    if (CurrentAdapterInfo.DCHandle == IntPtr.Zero)
-                        throw new NotSupportedException("Unable to create DC for adapter.");
-                }
-                catch
-                {
-                    ReleaseAdapter();
-                    IsAvailable = false;
-                    return false;
-                }
+                CurrentAdapterInfo = default;
+                CurrentAdapterInfo.DCHandle = NativeMethods.CreateDC(DisplayDevice.Value.DeviceName, null, null, IntPtr.Zero);
+                if (CurrentAdapterInfo.DCHandle == IntPtr.Zero)
+                    throw new NotSupportedException("Unable to create DC for adapter.");
             }
-
-            if (VerticalSyncEvent.AdapterHandle == 0 && CurrentAdapterInfo.DCHandle != IntPtr.Zero)
+            catch
             {
-                try
-                {
-                    var openAdapterResult = NativeMethods.D3DKMTOpenAdapterFromHdc(ref CurrentAdapterInfo);
-                    if (openAdapterResult == 0)
-                    {
-                        VerticalSyncEvent = default;
-                        VerticalSyncEvent.AdapterHandle = CurrentAdapterInfo.AdapterHandle;
-                        VerticalSyncEvent.DeviceHandle = 0;
-                        VerticalSyncEvent.PresentSourceId = CurrentAdapterInfo.PresentSourceId;
-                    }
-                    else
-                    {
-                        throw new NotSupportedException("Unable to open D3D adapter.");
-                    }
-                }
-                catch
-                {
-                    ReleaseAdapter();
-                    IsAvailable = false;
-                    return false;
-                }
+                ReleaseAdapter();
+                IsAvailable = false;
+                return false;
             }
-
-            return VerticalSyncEvent.AdapterHandle != 0;
         }
 
-        /// <summary>
-        /// Releases the adapter and associated unmanaged references.
-        /// </summary>
-        private void ReleaseAdapter()
+        if (VerticalSyncEvent.AdapterHandle == 0 && CurrentAdapterInfo.DCHandle != IntPtr.Zero)
         {
-            if (CurrentAdapterInfo.AdapterHandle != 0)
+            try
             {
-                try
+                var openAdapterResult = NativeMethods.D3DKMTOpenAdapterFromHdc(ref CurrentAdapterInfo);
+                if (openAdapterResult == 0)
                 {
-                    var closeInfo = default(CloseAdapterInfo);
-                    closeInfo.AdapterHandle = CurrentAdapterInfo.AdapterHandle;
-
-                    // This will return 0 on success, and another value for failure.
-                    var closeAdapterResult = NativeMethods.D3DKMTCloseAdapter(ref closeInfo);
+                    VerticalSyncEvent = default;
+                    VerticalSyncEvent.AdapterHandle = CurrentAdapterInfo.AdapterHandle;
+                    VerticalSyncEvent.DeviceHandle = 0;
+                    VerticalSyncEvent.PresentSourceId = CurrentAdapterInfo.PresentSourceId;
                 }
-                catch
+                else
                 {
-                    // ignore
+                    throw new NotSupportedException("Unable to open D3D adapter.");
                 }
             }
-
-            if (CurrentAdapterInfo.DCHandle != IntPtr.Zero)
+            catch
             {
-                try
-                {
-                    // this will return 1 on success, 0 on failure.
-                    var deleteContextResult = NativeMethods.DeleteDC(CurrentAdapterInfo.DCHandle);
-                }
-                catch
-                {
-                    // ignore
-                }
+                ReleaseAdapter();
+                IsAvailable = false;
+                return false;
             }
-
-            DisplayDevice = null;
-            CurrentAdapterInfo = default;
-            VerticalSyncEvent = default;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct AdapterInfo
+        return VerticalSyncEvent.AdapterHandle != 0;
+    }
+
+    /// <summary>
+    /// Releases the adapter and associated unmanaged references.
+    /// </summary>
+    private void ReleaseAdapter()
+    {
+        if (CurrentAdapterInfo.AdapterHandle != 0)
         {
-            public IntPtr DCHandle;
-            public uint AdapterHandle;
-            public uint AdapterLuidLowPart;
-            public uint AdapterLuidHighPart;
-            public uint PresentSourceId;
+            try
+            {
+                var closeInfo = default(CloseAdapterInfo);
+                closeInfo.AdapterHandle = CurrentAdapterInfo.AdapterHandle;
+
+                // This will return 0 on success, and another value for failure.
+                var closeAdapterResult = NativeMethods.D3DKMTCloseAdapter(ref closeInfo);
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct VerticalSyncEventInfo
+        if (CurrentAdapterInfo.DCHandle != IntPtr.Zero)
         {
-            public uint AdapterHandle;
-            public uint DeviceHandle;
-            public uint PresentSourceId;
+            try
+            {
+                // this will return 1 on success, 0 on failure.
+                var deleteContextResult = NativeMethods.DeleteDC(CurrentAdapterInfo.DCHandle);
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct CloseAdapterInfo
-        {
-            public uint AdapterHandle;
-        }
+        DisplayDevice = null;
+        CurrentAdapterInfo = default;
+        VerticalSyncEvent = default;
+    }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        private struct DisplayDeviceInfo
-        {
-            [MarshalAs(UnmanagedType.U4)]
-            public int StructSize;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string DeviceName;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceString;
-            [MarshalAs(UnmanagedType.U4)]
-            public DisplayDeviceStateFlags StateFlags;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceID;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceKey;
-        }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct AdapterInfo
+    {
+        public IntPtr DCHandle;
+        public uint AdapterHandle;
+        public uint AdapterLuidLowPart;
+        public uint AdapterLuidHighPart;
+        public uint PresentSourceId;
+    }
 
-        private static class NativeMethods
-        {
-            private const string GDI32 = "Gdi32.dll";
-            private const string USER32 = "User32.dll";
-            private const string DWMAPI = "DwmApi.dll";
+    [StructLayout(LayoutKind.Sequential)]
+    private struct VerticalSyncEventInfo
+    {
+        public uint AdapterHandle;
+        public uint DeviceHandle;
+        public uint PresentSourceId;
+    }
 
-            [DllImport(USER32, CharSet = CharSet.Unicode)]
-            public static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DisplayDeviceInfo lpDisplayDevice, uint dwFlags);
+    [StructLayout(LayoutKind.Sequential)]
+    private struct CloseAdapterInfo
+    {
+        public uint AdapterHandle;
+    }
 
-            [DllImport(GDI32, CharSet = CharSet.Unicode)]
-            public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    private struct DisplayDeviceInfo
+    {
+        [MarshalAs(UnmanagedType.U4)]
+        public int StructSize;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string DeviceName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceString;
+        [MarshalAs(UnmanagedType.U4)]
+        public DisplayDeviceStateFlags StateFlags;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceID;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceKey;
+    }
 
-            [DllImport(USER32)]
-            public static extern IntPtr GetDesktopWindow();
+    private static class NativeMethods
+    {
+        private const string GDI32 = "Gdi32.dll";
+        private const string USER32 = "User32.dll";
+        private const string DWMAPI = "DwmApi.dll";
 
-            [DllImport(USER32)]
-            public static extern IntPtr GetDC(IntPtr windowHandle);
+        [DllImport(USER32, CharSet = CharSet.Unicode)]
+        public static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DisplayDeviceInfo lpDisplayDevice, uint dwFlags);
 
-            [DllImport(GDI32)]
-            public static extern uint DeleteDC(IntPtr deviceContextHandle);
+        [DllImport(GDI32, CharSet = CharSet.Unicode)]
+        public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
 
-            [DllImport(GDI32)]
-            public static extern uint D3DKMTOpenAdapterFromHdc(ref AdapterInfo adapterInfo);
+        [DllImport(USER32)]
+        public static extern IntPtr GetDesktopWindow();
 
-            [DllImport(GDI32)]
-            public static extern uint D3DKMTWaitForVerticalBlankEvent(ref VerticalSyncEventInfo eventInfo);
+        [DllImport(USER32)]
+        public static extern IntPtr GetDC(IntPtr windowHandle);
 
-            [DllImport(GDI32)]
-            public static extern uint D3DKMTCloseAdapter(ref CloseAdapterInfo adapterInfo);
+        [DllImport(GDI32)]
+        public static extern uint DeleteDC(IntPtr deviceContextHandle);
 
-            [DllImport(DWMAPI)]
-            public static extern void DwmFlush();
-        }
+        [DllImport(GDI32)]
+        public static extern uint D3DKMTOpenAdapterFromHdc(ref AdapterInfo adapterInfo);
+
+        [DllImport(GDI32)]
+        public static extern uint D3DKMTWaitForVerticalBlankEvent(ref VerticalSyncEventInfo eventInfo);
+
+        [DllImport(GDI32)]
+        public static extern uint D3DKMTCloseAdapter(ref CloseAdapterInfo adapterInfo);
+
+        [DllImport(DWMAPI)]
+        public static extern void DwmFlush();
     }
 }

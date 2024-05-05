@@ -1,33 +1,31 @@
-﻿namespace FFME.Common
+﻿namespace FFME.Common;
+
+using System;
+
+/// <summary>
+/// Contains the media state changed event args.
+/// </summary>
+/// <seealso cref="EventArgs" />
+public class MediaStateChangedEventArgs : EventArgs
 {
-    using Common;
-    using System;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MediaStateChangedEventArgs"/> class.
+    /// </summary>
+    /// <param name="oldState">State of the previous.</param>
+    /// <param name="newState">The new state.</param>
+    internal MediaStateChangedEventArgs(MediaPlaybackState oldState, MediaPlaybackState newState)
+    {
+        OldMediaState = oldState;
+        MediaState = newState;
+    }
 
     /// <summary>
-    /// Contains the media state changed event args.
+    /// Gets the current media state.
     /// </summary>
-    /// <seealso cref="EventArgs" />
-    public class MediaStateChangedEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MediaStateChangedEventArgs"/> class.
-        /// </summary>
-        /// <param name="oldState">State of the previous.</param>
-        /// <param name="newState">The new state.</param>
-        internal MediaStateChangedEventArgs(MediaPlaybackState oldState, MediaPlaybackState newState)
-        {
-            OldMediaState = oldState;
-            MediaState = newState;
-        }
+    public MediaPlaybackState MediaState { get; }
 
-        /// <summary>
-        /// Gets the current media state.
-        /// </summary>
-        public MediaPlaybackState MediaState { get; }
-
-        /// <summary>
-        /// Gets the position.
-        /// </summary>
-        public MediaPlaybackState OldMediaState { get; }
-    }
+    /// <summary>
+    /// Gets the position.
+    /// </summary>
+    public MediaPlaybackState OldMediaState { get; }
 }

@@ -1,50 +1,49 @@
-﻿namespace FFME.Container
+﻿namespace FFME.Container;
+
+using System;
+
+/// <summary>
+/// A value type that representing the packet buffer state.
+/// </summary>
+internal struct PacketBufferState : IEquatable<PacketBufferState>
 {
-    using System;
+    /// <summary>
+    /// The length in bytes of the packet buffer.
+    /// </summary>
+    public long Length;
 
     /// <summary>
-    /// A value type that representing the packet buffer state.
+    /// The number of packets in the packet buffer.
     /// </summary>
-    internal struct PacketBufferState : IEquatable<PacketBufferState>
-    {
-        /// <summary>
-        /// The length in bytes of the packet buffer.
-        /// </summary>
-        public long Length;
+    public int Count;
 
-        /// <summary>
-        /// The number of packets in the packet buffer.
-        /// </summary>
-        public int Count;
+    /// <summary>
+    /// The minimum number of packets so <see cref="HasEnoughPackets"/> is set to true.
+    /// </summary>
+    public int CountThreshold;
 
-        /// <summary>
-        /// The minimum number of packets so <see cref="HasEnoughPackets"/> is set to true.
-        /// </summary>
-        public int CountThreshold;
+    /// <summary>
+    /// Whether the packet buffer has enough packets.
+    /// </summary>
+    public bool HasEnoughPackets;
 
-        /// <summary>
-        /// Whether the packet buffer has enough packets.
-        /// </summary>
-        public bool HasEnoughPackets;
+    /// <summary>
+    /// The duration of the packets. An invalid value will return <see cref="TimeSpan.MinValue"/>.
+    /// </summary>
+    public TimeSpan Duration;
 
-        /// <summary>
-        /// The duration of the packets. An invalid value will return <see cref="TimeSpan.MinValue"/>.
-        /// </summary>
-        public TimeSpan Duration;
+    /// <inheritdoc />
+    public bool Equals(PacketBufferState other) =>
+                Length == other.Length &&
+                Count == other.Count &&
+                CountThreshold == other.CountThreshold &&
+                HasEnoughPackets == other.HasEnoughPackets;
 
-        /// <inheritdoc />
-        public bool Equals(PacketBufferState other) =>
-                    Length == other.Length &&
-                    Count == other.Count &&
-                    CountThreshold == other.CountThreshold &&
-                    HasEnoughPackets == other.HasEnoughPackets;
+    /// <inheritdoc />
+    public override bool Equals(object obj) =>
+        obj is PacketBufferState state && Equals(state);
 
-        /// <inheritdoc />
-        public override bool Equals(object obj) =>
-            obj is PacketBufferState state && Equals(state);
-
-        /// <inheritdoc />
-        public override int GetHashCode() =>
-            throw new NotSupportedException($"{nameof(PacketBufferState)} does not support hashing.");
-    }
+    /// <inheritdoc />
+    public override int GetHashCode() =>
+        throw new NotSupportedException($"{nameof(PacketBufferState)} does not support hashing.");
 }

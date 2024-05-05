@@ -1,23 +1,22 @@
-﻿namespace FFME.Engine
+﻿namespace FFME.Engine;
+
+/// <summary>
+/// Defines the different worker types.
+/// </summary>
+internal enum MediaWorkerType
 {
     /// <summary>
-    /// Defines the different worker types.
+    /// The packet reading worker.
     /// </summary>
-    internal enum MediaWorkerType
-    {
-        /// <summary>
-        /// The packet reading worker.
-        /// </summary>
-        Read,
+    Read,
 
-        /// <summary>
-        /// The frame decoding worker.
-        /// </summary>
-        Decode,
+    /// <summary>
+    /// The frame decoding worker.
+    /// </summary>
+    Decode,
 
-        /// <summary>
-        /// The block rendering worker.
-        /// </summary>
-        Render
-    }
+    /// <summary>
+    /// The block rendering worker.
+    /// </summary>
+    Render
 }

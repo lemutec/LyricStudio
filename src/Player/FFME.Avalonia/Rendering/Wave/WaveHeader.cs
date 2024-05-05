@@ -1,39 +1,40 @@
 ﻿#pragma warning disable SA1401 // Fields must be private
-namespace FFME.Rendering.Wave
+
+namespace FFME.Rendering.Wave;
+
+using System;
+using System.Runtime.InteropServices;
+
+/// <summary>
+/// WaveHeader interop structure (WAVEHDR)
+/// http://msdn.microsoft.com/en-us/library/dd743837%28VS.85%29.aspx.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal class WaveHeader
 {
-    using System;
-    using System.Runtime.InteropServices;
+    /// <summary>pointer to locked data buffer (lpData).</summary>
+    public IntPtr DataBuffer;
 
-    /// <summary>
-    /// WaveHeader interop structure (WAVEHDR)
-    /// http://msdn.microsoft.com/en-us/library/dd743837%28VS.85%29.aspx.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    internal class WaveHeader
-    {
-        /// <summary>pointer to locked data buffer (lpData).</summary>
-        public IntPtr DataBuffer;
+    /// <summary>length of data buffer (dwBufferLength).</summary>
+    public int BufferLength;
 
-        /// <summary>length of data buffer (dwBufferLength).</summary>
-        public int BufferLength;
+    /// <summary>used for input only (dwBytesRecorded).</summary>
+    public int BytesRecorded;
 
-        /// <summary>used for input only (dwBytesRecorded).</summary>
-        public int BytesRecorded;
+    /// <summary>for client's use (dwUser).</summary>
+    public IntPtr UserData;
 
-        /// <summary>for client's use (dwUser).</summary>
-        public IntPtr UserData;
+    /// <summary>assorted flags (dwFlags).</summary>
+    public WaveHeaderFlags Flags;
 
-        /// <summary>assorted flags (dwFlags).</summary>
-        public WaveHeaderFlags Flags;
+    /// <summary>loop control counter (dwLoops).</summary>
+    public int Loops;
 
-        /// <summary>loop control counter (dwLoops).</summary>
-        public int Loops;
+    /// <summary>PWaveHdr, reserved for driver (lpNext).</summary>
+    public IntPtr Next;
 
-        /// <summary>PWaveHdr, reserved for driver (lpNext).</summary>
-        public IntPtr Next;
-
-        /// <summary>reserved for driver.</summary>
-        public IntPtr Reserved;
-    }
+    /// <summary>reserved for driver.</summary>
+    public IntPtr Reserved;
 }
+
 #pragma warning restore SA1401 // Fields must be private

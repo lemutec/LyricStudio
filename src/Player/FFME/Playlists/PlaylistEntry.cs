@@ -1,84 +1,83 @@
-﻿namespace FFME.Playlists
+﻿namespace FFME.Playlists;
+
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+/// <summary>
+/// Represents a generic playlist entry.
+/// </summary>
+public class PlaylistEntry : INotifyPropertyChanged
 {
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
+    private string m_MediaSource;
+    private string m_Title;
+    private TimeSpan m_Duration;
 
     /// <summary>
-    /// Represents a generic playlist entry.
+    /// Occurs when a property value changes.
     /// </summary>
-    public class PlaylistEntry : INotifyPropertyChanged
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>
+    /// Gets or sets the media source URL.
+    /// </summary>
+    public string MediaSource
     {
-        private string m_MediaSource;
-        private string m_Title;
-        private TimeSpan m_Duration;
+        get => m_MediaSource;
+        set => SetProperty(ref m_MediaSource, value);
+    }
 
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+    /// <summary>
+    /// Gets or sets the title.
+    /// </summary>
+    public string Title
+    {
+        get => m_Title;
+        set => SetProperty(ref m_Title, value);
+    }
 
-        /// <summary>
-        /// Gets or sets the media source URL.
-        /// </summary>
-        public string MediaSource
-        {
-            get => m_MediaSource;
-            set => SetProperty(ref m_MediaSource, value);
-        }
+    /// <summary>
+    /// Gets or sets the duration.
+    /// </summary>
+    public TimeSpan Duration
+    {
+        get => m_Duration;
+        set => SetProperty(ref m_Duration, value);
+    }
 
-        /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        public string Title
-        {
-            get => m_Title;
-            set => SetProperty(ref m_Title, value);
-        }
+    /// <summary>
+    /// Gets the extended attributes.
+    /// </summary>
+    public PlaylistEntryAttributeDictionary Attributes { get; } = new PlaylistEntryAttributeDictionary();
 
-        /// <summary>
-        /// Gets or sets the duration.
-        /// </summary>
-        public TimeSpan Duration
-        {
-            get => m_Duration;
-            set => SetProperty(ref m_Duration, value);
-        }
+    /// <summary>
+    /// Checks if a property already matches a desired value.  Sets the property and
+    /// notifies listeners only when necessary.
+    /// </summary>
+    /// <typeparam name="T">Type of the property.</typeparam>
+    /// <param name="storage">Reference to a property with both getter and setter.</param>
+    /// <param name="value">Desired value for the property.</param>
+    /// <param name="propertyName">Name of the property used to notify listeners.  This
+    /// value is optional and can be provided automatically when invoked from compilers that
+    /// support CallerMemberName.</param>
+    /// <returns>True if the value was changed, false if the existing value matched the
+    /// desired value.</returns>
+    protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+    {
+        if (Equals(storage, value)) return false;
+        storage = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 
-        /// <summary>
-        /// Gets the extended attributes.
-        /// </summary>
-        public PlaylistEntryAttributeDictionary Attributes { get; } = new PlaylistEntryAttributeDictionary();
-
-        /// <summary>
-        /// Checks if a property already matches a desired value.  Sets the property and
-        /// notifies listeners only when necessary.
-        /// </summary>
-        /// <typeparam name="T">Type of the property.</typeparam>
-        /// <param name="storage">Reference to a property with both getter and setter.</param>
-        /// <param name="value">Desired value for the property.</param>
-        /// <param name="propertyName">Name of the property used to notify listeners.  This
-        /// value is optional and can be provided automatically when invoked from compilers that
-        /// support CallerMemberName.</param>
-        /// <returns>True if the value was changed, false if the existing value matched the
-        /// desired value.</returns>
-        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (Equals(storage, value)) return false;
-            storage = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        /// <summary>
-        /// Notifies listeners that a property value has changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property used to notify listeners.  This
-        /// value is optional and can be provided automatically when invoked from compilers
-        /// that support <see cref="CallerMemberNameAttribute"/>.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    /// <summary>
+    /// Notifies listeners that a property value has changed.
+    /// </summary>
+    /// <param name="propertyName">Name of the property used to notify listeners.  This
+    /// value is optional and can be provided automatically when invoked from compilers
+    /// that support <see cref="CallerMemberNameAttribute"/>.</param>
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

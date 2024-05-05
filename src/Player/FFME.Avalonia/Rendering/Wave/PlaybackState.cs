@@ -1,18 +1,17 @@
-﻿namespace FFME.Rendering.Wave
+﻿namespace FFME.Rendering.Wave;
+
+/// <summary>
+/// Enumerates the various wave output playback states.
+/// </summary>
+internal enum PlaybackState
 {
     /// <summary>
-    /// Enumerates the various wave output playback states.
+    /// Stopped.
     /// </summary>
-    internal enum PlaybackState
-    {
-        /// <summary>
-        /// Stopped.
-        /// </summary>
-        Stopped,
+    Stopped,
 
-        /// <summary>
-        /// Playing.
-        /// </summary>
-        Playing
-    }
+    /// <summary>
+    /// Playing.
+    /// </summary>
+    Playing
 }

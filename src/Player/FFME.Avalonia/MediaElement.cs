@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -11,19 +10,21 @@ using FFME.Engine;
 using FFME.Platform;
 using FFME.Primitives;
 using FFME.Rendering;
+using System.Collections.Concurrent;
 
 namespace FFME;
 
-public partial class MediaElement:ImageHost,IDisposable,IUriContext
+public partial class MediaElement : ImageHost, IDisposable, IUriContext
 {
     /// <summary>
     /// The allow content change flag.
     /// </summary>
     private readonly bool AllowContentChange;
+
     private readonly ConcurrentBag<string> PropertyUpdates = new();
     private readonly AtomicBoolean m_IsStateUpdating = new(false);
     private readonly DispatcherTimer UpdatesTimer;
-    
+
     #region Constructors
 
     static MediaElement()
@@ -32,7 +33,7 @@ public partial class MediaElement:ImageHost,IDisposable,IUriContext
         MediaEngine.FFmpegMessageLogged += (s, message) =>
             FFmpegMessageLogged?.Invoke(typeof(MediaElement), new MediaLogMessageEventArgs(message));
         //ContentProperty.OverrideMetadata<MediaElement>(new StyledPropertyMetadata<object?>(null, coerce:OnCoerceContentValue));
-        var style = new Style(x=>x.OfType<MediaElement>())
+        var style = new Style(x => x.OfType<MediaElement>())
         {
             Setters =
             {
@@ -40,7 +41,6 @@ public partial class MediaElement:ImageHost,IDisposable,IUriContext
             }
         };
         Application.Current?.Styles.Add(style);
-        
     }
 
     static void InitPropertyAffect()
@@ -98,8 +98,8 @@ public partial class MediaElement:ImageHost,IDisposable,IUriContext
             AllowContentChange = false;
         }
     }
-    
-    #endregion
+
+    #endregion Constructors
 
     #region Methods
 
@@ -117,11 +117,9 @@ public partial class MediaElement:ImageHost,IDisposable,IUriContext
 
         return baseValue;
     }
-    
 
-    #endregion
-    
-    
+    #endregion Methods
+
     #region Properties
 
     /// <inheritdoc />
@@ -171,11 +169,13 @@ public partial class MediaElement:ImageHost,IDisposable,IUriContext
         set => m_IsStateUpdating.Value = value;
     }
 
-    #endregion
+    #endregion Properties
+
     public void Dispose()
     {
         throw new NotImplementedException();
     }
+
     /// <summary>
     /// <inheritdoc cref="IUriContext"/>
     /// </summary>

@@ -1,25 +1,24 @@
-﻿namespace FFME.Rendering.Wave
+﻿namespace FFME.Rendering.Wave;
+
+using System;
+
+/// <summary>
+/// Class for enumerating DirectSound devices.
+/// </summary>
+internal sealed class DirectSoundDeviceData
 {
-    using System;
+    /// <summary>
+    /// The device identifier.
+    /// </summary>
+    public Guid Guid { get; internal set; }
 
     /// <summary>
-    /// Class for enumerating DirectSound devices.
+    /// Device description.
     /// </summary>
-    internal sealed class DirectSoundDeviceData
-    {
-        /// <summary>
-        /// The device identifier.
-        /// </summary>
-        public Guid Guid { get; internal set; }
+    public string Description { get; internal set; }
 
-        /// <summary>
-        /// Device description.
-        /// </summary>
-        public string Description { get; internal set; }
-
-        /// <summary>
-        /// Device module name.
-        /// </summary>
-        public string ModuleName { get; internal set; }
-    }
+    /// <summary>
+    /// Device module name.
+    /// </summary>
+    public string ModuleName { get; internal set; }
 }
