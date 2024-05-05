@@ -15,8 +15,11 @@ using LyricStudio.Core.Player;
 using LyricStudio.Models;
 using LyricStudio.Models.Audios;
 using LyricStudio.Models.Messages;
+using LyricStudio.Services;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -32,7 +35,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsMediaAvailable))]
-    private IAudioPlayer audioPlayer = null!;
+    private IAudioPlayer audioPlayer = new FFMEAudioPlayer();
 
     private readonly DispatcherTimer timer = new();
 
@@ -68,10 +71,16 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
             SelectedlrcLine.LrcText = v.LrcText;
             SelectedlrcLine.LrcTime = v.LrcTime;
+
+            if (Mode == LyricEditMode.ListView)
+            {
+                IsSaved = false;
+            }
         }
     }
 
     /// <summary>
+    /// Display the current lyric in progress bar
     /// Used for <see cref="LyricEditMode.ListView"/>
     /// </summary>
     [ObservableProperty]
@@ -79,9 +88,24 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     /// <summary>
     /// Used for <see cref="LyricEditMode.TextBox"/>
+    /// TODO: Fix the not right with this property
     /// </summary>
     [ObservableProperty]
     private string lyricText = null!;
+
+    partial void OnLyricTextChanged(string? oldValue, string newValue)
+    {
+        if (Mode == LyricEditMode.TextBox)
+        {
+            if (oldValue == null)
+            {
+                // Ignore the first loading
+                return;
+            }
+
+            IsSaved = false;
+        }
+    }
 
     [ObservableProperty]
     private bool isPlaying = false;
@@ -148,6 +172,11 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     [ObservableProperty]
     private bool isSaved = true;
+
+    partial void OnIsSavedChanged(bool value)
+    {
+        SyncWindowTitle();
+    }
 
     [ObservableProperty]
     private bool isReading = false;
@@ -304,6 +333,11 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
             {
                 MusicFilePath = musicFile;
 
+                if (string.IsNullOrWhiteSpace(LyricFilePath))
+                {
+                    LyricFilePath = new FileInfo(Path.ChangeExtension(MusicFilePath, "lrc")).Name;
+                }
+
                 TagAlbumImage = null!;
                 MusicInfo musicInfo = await Task.Run(() =>
                 {
@@ -331,14 +365,18 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                     TotalTime = musicInfo.TotalTime;
                 }
 
-                if (IsMediaAvailable)
-                {
-                    AudioPlayer.PositionChanged -= OnPositionChanged;
-                    AudioPlayer.Dispose();
-                    AudioPlayer = null!;
-                }
-                AudioPlayer = new FFMEAudioPlayer(musicFile);
+                AudioPlayer.Open(musicFile);
                 AudioPlayer.PositionChanged += OnPositionChanged;
+            }
+
+            if (!string.IsNullOrWhiteSpace(LyricFilePath))
+            {
+                LyricFilePath = Path.ChangeExtension(LyricFilePath, "lrc");
+            }
+
+            if (!File.Exists(LyricFilePath))
+            {
+                IsSaved = false;
             }
 
             SyncWindowTitle();
@@ -355,14 +393,15 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     private void SyncWindowTitle()
     {
-        if (string.IsNullOrWhiteSpace(MusicFilePath) && string.IsNullOrWhiteSpace(LyricFilePath))
+        if (string.IsNullOrWhiteSpace(MusicFilePath) || string.IsNullOrWhiteSpace(LyricFilePath))
         {
+            WeakReferenceMessenger.Default.Send(new GlobalMessage(this, GlobalCommand.ChangeMainWindowTitle, string.Empty));
             return;
         }
 
-        string fileName = new FileInfo(Path.ChangeExtension(MusicFilePath, "lrc")).Name;
+        string fileName = LyricFilePath;
 
-        if (string.IsNullOrWhiteSpace(LyricFilePath) || !IsSaved)
+        if (!IsSaved)
         {
             fileName = $"{fileName}•";
         }
@@ -495,9 +534,10 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                 SelectedlrcLine.LrcTime = TimeSpan.FromSeconds(AudioPlayer.Position)
                     .Add(TimeSpan.FromMicroseconds(ConfigurationKeys.FlagTimeOffset.Get()));
                 EditinglrcLine = SelectedlrcLine.ToString();
+                IsSaved = false;
 
+                // Select next line
                 int nextIndex = LrcLines.IndexOf(SelectedlrcLine) + 1;
-
                 if (nextIndex <= LrcLines.Count - 1)
                 {
                     SelectedlrcLine = LrcLines[nextIndex];
@@ -559,16 +599,65 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void SaveLyricFile()
     {
+        try
+        {
+            if (Mode == LyricEditMode.ListView)
+            {
+                File.WriteAllLines(LyricFilePath, LrcLines.Select(l => l.ToString()));
+            }
+            else if (Mode == LyricEditMode.TextBox)
+            {
+                File.WriteAllText(LyricFilePath, LyricText ?? string.Empty);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            Log.Warning(e.ToString());
+        }
+        IsSaved = true;
     }
 
     [RelayCommand]
-    public void CopyLyric()
+    public async Task CopyLyric()
     {
+        if (Mode == LyricEditMode.ListView)
+        {
+            string? text = string.Join(Environment.NewLine, LrcLines.Select(l => l.ToString()));
+            await App.GetService<IClipboardService>().SetTextAsync(text ?? string.Empty);
+        }
+        else if (Mode == LyricEditMode.TextBox)
+        {
+            await App.GetService<IClipboardService>().SetTextAsync(LyricText ?? string.Empty);
+        }
     }
 
     [RelayCommand]
     public void CloseFiles()
     {
+        LyricFilePath = null!;
+        MusicFilePath = null!;
+
+        // Close backend classes
+        if (IsMediaAvailable)
+        {
+            Stop();
+        }
+        lrcManager.Clear();
+
+        // Close view model classes
+        LrcLines.Clear();
+        TagAlbumImage = null!;
+        Volumes = [];
+        SelectedlrcLine = null!;
+        CurrentLrcText = string.Empty;
+        EditinglrcLine = null!;
+        LyricText = string.Empty;
+        CurrentTime = default;
+        TotalTime = default;
+        Position = default;
+        IsSaved = true;
+        SyncWindowTitle();
     }
 
     [RelayCommand]

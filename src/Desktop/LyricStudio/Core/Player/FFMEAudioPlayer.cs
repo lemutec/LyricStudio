@@ -8,7 +8,7 @@ namespace LyricStudio.Core.Player;
 
 public class FFMEAudioPlayer : IAudioPlayer
 {
-    public string FileName { get; }
+    public string FileName { get; protected set; }
     private MediaElement MediaElement { get; }
 
     public event EventHandler<double> PositionChanged;
@@ -33,12 +33,9 @@ public class FFMEAudioPlayer : IAudioPlayer
             false; // !System.Diagnostics.Debugger.IsAttached; // test with true and false
     }
 
-    public FFMEAudioPlayer(string fileName)
+    public FFMEAudioPlayer()
     {
-        FileName = fileName;
         MediaElement = new();
-        MediaElement.Open(new Uri(fileName, UriKind.Absolute));
-        MediaElement.PositionChanged += OnPositionChanged;
     }
 
     public void Dispose()
@@ -48,6 +45,13 @@ public class FFMEAudioPlayer : IAudioPlayer
             MediaElement.PositionChanged -= OnPositionChanged;
             MediaElement?.Dispose();
         }
+    }
+
+    public void Open(string fileName)
+    {
+        FileName = fileName;
+        MediaElement.Open(new Uri(fileName, UriKind.Absolute));
+        MediaElement.PositionChanged += OnPositionChanged;
     }
 
     public void Play() => MediaElement.Play();

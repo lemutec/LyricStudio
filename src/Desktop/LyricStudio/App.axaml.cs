@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input.Platform;
 using Avalonia.Markup.Xaml;
 using Fischless.Design.Extensions;
 using Fischless.Globalization;
@@ -57,6 +58,8 @@ public partial class App : Application
             resourceManager.GetString("AboutProgram", new System.Globalization.CultureInfo("en"));
 
             services.AddSingleton(services);
+            services.AddSingleton<IClipboardService, ClipboardService>();
+            services.AddSingleton<IClipboard, ClipboardService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddLogging(c => c.AddSerilog(Log.Logger));
             services.AddConfiguration(Config.Configer);

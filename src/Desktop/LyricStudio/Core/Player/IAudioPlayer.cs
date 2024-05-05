@@ -12,6 +12,8 @@ public interface IAudioPlayer : IDisposable
 {
     public event EventHandler<double> PositionChanged;
 
+    public void Open(string fileName);
+
     public void Play();
 
     public void Pause();

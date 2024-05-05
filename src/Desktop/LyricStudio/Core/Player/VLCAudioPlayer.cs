@@ -7,23 +7,16 @@ namespace LyricStudio.Core.Player;
 /// <inheritdoc/>
 /// </summary>
 [Obsolete]
-public sealed class VLCAudioPlayer : LibVLC, IAudioPlayer
+public class VLCAudioPlayer : LibVLC, IAudioPlayer
 {
-    public string FileName { get; }
-    private Media Media { get; }
-    private MediaPlayer MediaPlayer { get; }
+    public string FileName { get; protected set; }
+    protected Media Media { get; set; }
+    protected MediaPlayer MediaPlayer { get; set; }
 
     public event EventHandler<double> PositionChanged = null!;
 
-    public VLCAudioPlayer(string fileName)
+    public VLCAudioPlayer()
     {
-        FileName = fileName;
-        Media = new Media(this, FileName);
-        MediaPlayer = new MediaPlayer(Media);
-        Log += null!;
-        MediaPlayer.PositionChanged += OnPositionChanged;
-        MediaPlayer.EnableKeyInput = false;
-        MediaPlayer.EnableMouseInput = false;
     }
 
     public new void Dispose()
@@ -35,6 +28,17 @@ public sealed class VLCAudioPlayer : LibVLC, IAudioPlayer
             MediaPlayer?.Dispose();
         }
         Media?.Dispose();
+    }
+
+    public void Open(string fileName)
+    {
+        FileName = fileName;
+        Media = new Media(this, FileName);
+        MediaPlayer = new MediaPlayer(Media);
+        Log += null!;
+        MediaPlayer.PositionChanged += OnPositionChanged;
+        MediaPlayer.EnableKeyInput = false;
+        MediaPlayer.EnableMouseInput = false;
     }
 
     public void Play() => MediaPlayer.Play();
