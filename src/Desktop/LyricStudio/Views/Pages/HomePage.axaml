@@ -480,14 +480,33 @@
                                                    Text="{x:Static fui:FontSymbols.Save}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding SaveAsLyricFileCommand}"
-                                          FontSize="12"
-                                          Header="另存为">
+                                <MenuItem FontSize="12" Header="另存为">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
                                                    Text="{x:Static fui:FontSymbols.SaveAs}" />
                                     </MenuItem.Icon>
+                                    <MenuItem Command="{Binding SaveAsLyricFileCommand}"
+                                              FontSize="12"
+                                              Header="LRC 文件">
+                                        <MenuItem.Icon>
+                                            <TextBlock FontSize="14" Text="LRC" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Command="{Binding SaveAsTextFileCommand}"
+                                              FontSize="12"
+                                              Header="TXT 文件">
+                                        <MenuItem.Icon>
+                                            <TextBlock FontSize="14" Text="TXT" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Command="{Binding SaveAsAssFileCommand}"
+                                              FontSize="12"
+                                              Header="ASS 文件">
+                                        <MenuItem.Icon>
+                                            <TextBlock FontSize="14" Text="ASS" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
                                 </MenuItem>
                                 <MenuItem Command="{Binding CopyLyricCommand}"
                                           FontSize="12"
@@ -542,15 +561,6 @@
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
                                                    Text="{x:Static fui:FontSymbols.History}" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Command="{Binding ClearTimeMarkCommand}"
-                                          FontSize="12"
-                                          Header="清除时间标记">
-                                    <MenuItem.Icon>
-                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                   FontSize="14"
-                                                   Text="{x:Static fui:FontSymbols.Broom}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Command="{Binding ShiftTimecodeCommand}"

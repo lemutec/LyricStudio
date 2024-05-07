@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Ude;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LyricStudio.Core.LyricTrack;
 
@@ -13,6 +14,15 @@ public static partial class LrcHelper
 {
     public static HashSet<string> LyricExtensions { get; } = [".lrc", ".txt", ".ass"];
 
+    /// <summary>
+    /// Clear all Time Mark [00:00.000]
+    /// </summary>
+    [GeneratedRegex(@"\[\d+:\d+.\d+\]")]
+    public static partial Regex StripTimeMarkRegex();
+
+    /// <summary>
+    /// Split lines
+    /// </summary>
     [GeneratedRegex(@"\r?\n")]
     public static partial Regex SplitLineRegex();
 
@@ -199,5 +209,10 @@ public static partial class LrcHelper
             .FirstOrDefault();
 
         return line;
+    }
+
+    public static string StripTimeMark(string lrc)
+    {
+        return StripTimeMarkRegex().Replace(lrc, string.Empty);
     }
 }

@@ -24,7 +24,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using static Vanara.PInvoke.Gdi32;
 
 namespace LyricStudio.ViewModels;
 
@@ -547,18 +550,27 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         }
     }
 
+    /// <summary>
+    /// Switch mode
+    /// </summary>
     [RelayCommand]
     public void Exchange()
     {
-        LyricEditMode targetMode = Mode == LyricEditMode.ListView ? LyricEditMode.TextBox : LyricEditMode.ListView;
+        LyricEditMode targetMode = Mode switch
+        {
+            LyricEditMode.ListView => LyricEditMode.TextBox,
+            LyricEditMode.TextBox => LyricEditMode.ListView,
+            _ => throw new NotImplementedException(),
+        };
 
         if (targetMode == LyricEditMode.ListView)
         {
-            // TODO
+            lrcManager.LoadText(LyricText);
+            LrcLines.Reset(lrcManager.LrcList.Select(v => MapperProvider.Map<LrcLine, ObservableLrcLine>(v)));
         }
         else if (targetMode == LyricEditMode.TextBox)
         {
-            // TODO
+            LyricText = string.Join(Environment.NewLine, LrcLines.Select(l => l.ToString()));
         }
 
         Mode = targetMode;
@@ -651,6 +663,102 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
             else if (Mode == LyricEditMode.TextBox)
             {
                 File.WriteAllText(result.FileInfo.FullName, LyricText ?? string.Empty);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            Log.Warning(e.ToString());
+        }
+    }
+
+    [RelayCommand]
+    [SupportedOSPlatform("Windows")]
+    [SupportedOSPlatform("MacOS")]
+    public async Task SaveAsTextFile()
+    {
+        SaveFileDialogResult? result = await new SaveFileDialog()
+        {
+            Title = "保存文本文件",
+            InitialFileName = Path.ChangeExtension(Path.GetFileName(LyricFilePath), "txt"),
+            DefaultExtension = ".txt",
+            Filters = [
+                new FileDialogFilter()
+                {
+                    Name = "文本文件",
+                    Extensions = ["txt"]
+                }
+            ]
+        }.ShowAsync();
+
+        if (result == null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (Mode == LyricEditMode.ListView)
+            {
+                string lrc = string.Join(Environment.NewLine, LrcLines.Select(l => l.ToString()));
+                File.WriteAllText(result.FileInfo.FullName, LrcHelper.StripTimeMark(lrc));
+            }
+            else if (Mode == LyricEditMode.TextBox)
+            {
+                string lrc = LyricText ?? string.Empty;
+                File.WriteAllText(result.FileInfo.FullName, LrcHelper.StripTimeMark(lrc));
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            Log.Warning(e.ToString());
+        }
+    }
+
+    [RelayCommand]
+    [SupportedOSPlatform("Windows")]
+    [SupportedOSPlatform("MacOS")]
+    public async Task SaveAsAssFile()
+    {
+        SaveFileDialogResult? result = await new SaveFileDialog()
+        {
+            Title = "保存字幕文件",
+            InitialFileName = Path.ChangeExtension(Path.GetFileName(LyricFilePath), "ass"),
+            DefaultExtension = ".ass",
+            Filters = [
+                new FileDialogFilter()
+                {
+                    Name = "字幕文件",
+                    Extensions = ["ass"]
+                }
+            ]
+        }.ShowAsync();
+
+        if (result == null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (Mode == LyricEditMode.ListView)
+            {
+                string lrc = string.Join(Environment.NewLine, LrcLines.Select(l => l.ToString()));
+
+                if (Lrc2Ass.AssToLyric(lrc, out string ass))
+                {
+                    File.WriteAllText(result.FileInfo.FullName, ass);
+                }
+            }
+            else if (Mode == LyricEditMode.TextBox)
+            {
+                string lrc = LyricText ?? string.Empty;
+
+                if (Lrc2Ass.AssToLyric(lrc, out string ass))
+                {
+                    File.WriteAllText(result.FileInfo.FullName, ass);
+                }
             }
         }
         catch (Exception e)
@@ -759,14 +867,6 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     /// </summary>
     [RelayCommand]
     public void ResetTimeMark()
-    {
-    }
-
-    /// <summary>
-    /// Remove like [00:00.00]
-    /// </summary>
-    [RelayCommand]
-    public void ClearTimeMark()
     {
     }
 
