@@ -11,33 +11,6 @@ public class SmoothDrillInNavigationTransitionInfo : DrillInNavigationTransition
 {
     public async override void RunAnimation(Animatable ctrl, CancellationToken cancellationToken)
     {
-        var exitAnimation = new Animation
-        {
-            Children =
-            {
-                new KeyFrame
-                {
-                    Setters =
-                    {
-                        new Setter(Visual.OpacityProperty, 0d),
-                    },
-                    Cue = new Cue(0d)
-                },
-                new KeyFrame
-                {
-                    Setters =
-                    {
-                        new Setter(Visual.OpacityProperty, 0d),
-                        new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.15d : 0.9d),
-                        new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.15d : 0.9d),
-                    },
-                    Cue = new Cue(1d)
-                }
-            },
-            Duration = TimeSpan.FromMilliseconds(160d),
-            FillMode = FillMode.Forward
-        };
-
         var entryAnimation = new Animation
         {
             Easing = new SplineEasing(0.1d, 0.9d, 0.2d, 1d),
@@ -68,12 +41,41 @@ public class SmoothDrillInNavigationTransitionInfo : DrillInNavigationTransition
             FillMode = FillMode.Forward
         };
 
+#if false
+        var exitAnimation = new Animation
+        {
+            Children =
+            {
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter(Visual.OpacityProperty, 0d),
+                    },
+                    Cue = new Cue(0d)
+                },
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter(Visual.OpacityProperty, 0d),
+                        new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.15d : 0.9d),
+                        new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.15d : 0.9d),
+                    },
+                    Cue = new Cue(1d)
+                }
+            },
+            Duration = TimeSpan.FromMilliseconds(160d),
+            FillMode = FillMode.Forward
+        };
+
         bool isVisible = (ctrl as Visual).IsVisible;
 
         (ctrl as Visual).IsVisible = false;
         (ctrl as Visual).Opacity = 0d;
         await exitAnimation.RunAsync(ctrl, cancellationToken);
         (ctrl as Visual).IsVisible = isVisible;
+#endif
         await entryAnimation.RunAsync(ctrl, cancellationToken);
         if (cancellationToken.IsCancellationRequested)
             return;
