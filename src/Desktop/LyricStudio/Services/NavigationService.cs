@@ -19,7 +19,7 @@ public sealed class NavigationService : INavigationService
     /// <see cref="EntranceNavigationTransitionInfo"/>
     /// <see cref="SuppressNavigationTransitionInfo"/>
     /// </summary>
-    public NavigationTransitionInfo ContentTransitions { get; set; } = new FasterDrillInNavigationTransitionInfo();
+    public NavigationTransitionInfo ContentTransitions { get; set; } = new SmoothDrillInNavigationTransitionInfo();
 
     public void SetFrame(Frame frame)
         => Frame = frame;

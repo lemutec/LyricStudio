@@ -13,15 +13,15 @@ public class FasterDrillInNavigationTransitionInfo : DrillInNavigationTransition
     {
         var scaleAnimation = new Animation
         {
-            Easing = new SplineEasing(0.1, 0.9, 0.2, 1.0),
+            Easing = new SplineEasing(0.1d, 0.9d, 0.2d, 1d),
             Children =
             {
                 new KeyFrame
                 {
                     Setters =
                     {
-                        new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.05d :0.95d),
-                        new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.05d :0.95d)
+                        new Setter(ScaleTransform.ScaleXProperty, IsReversed ? 1.05d : 0.95d),
+                        new Setter(ScaleTransform.ScaleYProperty, IsReversed ? 1.05d : 0.95d)
                     },
                     Cue = new Cue(0d)
                 },
