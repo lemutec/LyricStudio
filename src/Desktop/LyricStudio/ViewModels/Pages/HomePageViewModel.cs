@@ -338,7 +338,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
                 if (string.IsNullOrWhiteSpace(LyricFilePath))
                 {
-                    LyricFilePath = new FileInfo(Path.ChangeExtension(MusicFilePath, "lrc")).Name;
+                    LyricFilePath = Path.ChangeExtension(MusicFilePath, "lrc");
                 }
 
                 TagAlbumImage = null!;
