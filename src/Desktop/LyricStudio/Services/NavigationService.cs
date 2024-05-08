@@ -1,4 +1,5 @@
-﻿using FluentAvalonia.Core;
+﻿using Fischless.Design.Controls;
+using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Media.Animation;
 using LyricStudio.Views;
@@ -12,7 +13,13 @@ public sealed class NavigationService : INavigationService
     public NavigationView NavigationView { get; set; } = null!;
     public Frame Frame { get; private set; } = null!;
     public Type NavigateFrom { get; set; } = typeof(HomePage);
-    public NavigationTransitionInfo ContentTransitions { get; set; } = null;// new DrillInNavigationTransitionInfo();
+
+    /// <summary>
+    /// <see cref="DrillInNavigationTransitionInfo"/>
+    /// <see cref="EntranceNavigationTransitionInfo"/>
+    /// <see cref="SuppressNavigationTransitionInfo"/>
+    /// </summary>
+    public NavigationTransitionInfo ContentTransitions { get; set; } = new FasterDrillInNavigationTransitionInfo();
 
     public void SetFrame(Frame frame)
         => Frame = frame;
