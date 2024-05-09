@@ -77,7 +77,8 @@
                                             Height="34"
                                             Padding="1"
                                             Command="{Binding ShortShiftLeftCommand}"
-                                            CornerRadius="9">
+                                            CornerRadius="9"
+                                            ToolTip.Tip="短快退">
                                         <Button.Content>
                                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                          FontSize="16"
@@ -90,7 +91,8 @@
                                             Margin="8,0,0,0"
                                             Padding="1"
                                             Command="{Binding PlayCommand}"
-                                            CornerRadius="9">
+                                            CornerRadius="9"
+                                            ToolTip.Tip="播放/暂停">
                                         <Button.Content>
                                             <Grid>
                                                 <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -110,7 +112,8 @@
                                             Margin="8,0,0,0"
                                             Padding="1"
                                             Command="{Binding ShortShiftRightCommand}"
-                                            CornerRadius="9">
+                                            CornerRadius="9"
+                                            ToolTip.Tip="短快进">
                                         <Button.Content>
                                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                          FontSize="16"
@@ -127,7 +130,8 @@
                                             Height="34"
                                             Padding="1"
                                             Command="{Binding LongShiftLeftCommand}"
-                                            CornerRadius="9">
+                                            CornerRadius="9"
+                                            ToolTip.Tip="长快退">
                                         <Button.Content>
                                             <Grid>
                                                 <ui:FontIcon Margin="6,0,0,0"
@@ -147,7 +151,8 @@
                                             Margin="8,0,0,0"
                                             Padding="1"
                                             Command="{Binding StopCommand}"
-                                            CornerRadius="9">
+                                            CornerRadius="9"
+                                            ToolTip.Tip="停止">
                                         <Button.Content>
                                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                          FontSize="16"
@@ -160,7 +165,8 @@
                                             Margin="8,0,0,0"
                                             Padding="1"
                                             Command="{Binding LongShiftRightCommand}"
-                                            CornerRadius="9">
+                                            CornerRadius="9"
+                                            ToolTip.Tip="长快进">
                                         <Button.Content>
                                             <Grid>
                                                 <ui:FontIcon Margin="6,0,0,0"
@@ -182,7 +188,8 @@
                                       ColumnDefinitions="Auto, *, Auto">
                                     <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                  FontSize="16"
-                                                 Glyph="{x:Static fui:FontSymbols.Volume3}" />
+                                                 Glyph="{x:Static fui:FontSymbols.Volume3}"
+                                                 ToolTip.Tip="调节音量" />
                                     <Slider Grid.Column="1"
                                             Width="88"
                                             Margin="8,-6,0,0"
@@ -206,7 +213,8 @@
                                                  VerticalAlignment="Center"
                                                  FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                  FontSize="16"
-                                                 Glyph="{x:Static fui:FontSymbols.History}" />
+                                                 Glyph="{x:Static fui:FontSymbols.History}"
+                                                 ToolTip.Tip="播放速度" />
                                     <Slider Grid.Column="1"
                                             Width="88"
                                             Margin="8,-8,0,0"
@@ -290,6 +298,7 @@
                                  Maximum="1"
                                  Value="{Binding Position}" />
                     <controls:AudioVisualizationView Height="14"
+                                                     IsVisible="{Binding IsShowAudioVisualization}"
                                                      Opacity="0.1"
                                                      Volumes="{Binding Volumes}" />
                     <TextBlock Margin="5,0,0,0"
@@ -732,8 +741,6 @@
                             Height="30"
                             Margin="0,0,0,8"
                             Padding="0"
-                            Command="{Binding SettingsCommand}"
-                            IsVisible="False"
                             ToolTip.Tip="首选项">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -741,43 +748,51 @@
                                          Glyph="{x:Static fui:FontSymbols.Settings}" />
                         </Button.Content>
                         <Button.Flyout>
-                            <MenuFlyout Placement="LeftEdgeAlignedTop">
-                                <CheckBox Content="毫秒数截取前俩位" IsChecked="{Binding IsUseTwoDigitTimeCode, Mode=TwoWay}" />
-                                <Grid ColumnDefinitions="Auto, *, Auto">
-                                    <TextBlock Grid.Column="0"
-                                               VerticalAlignment="Center"
-                                               Text="时间偏差" />
-                                    <ui:NumberBox Grid.Column="1"
-                                                  MinWidth="130"
-                                                  Margin="4,0,0,0"
-                                                  Maximum="999"
-                                                  Minimum="-999"
-                                                  Text="{Binding FlagTimeOffset}" />
-                                    <TextBlock Grid.Column="2"
-                                               Margin="4,0,0,0"
-                                               VerticalAlignment="Center"
-                                               Text="ms" />
-                                </Grid>
-                                <Grid ColumnDefinitions="Auto, *, *, Auto">
-                                    <TextBlock Grid.Column="0"
-                                               VerticalAlignment="Center"
-                                               Text="快进快退速度" />
-                                    <ui:NumberBox Grid.Column="1"
-                                                  Margin="4,0,0,0"
-                                                  Maximum="99"
-                                                  Minimum="-99"
-                                                  Text="{Binding ShortShiftSeconds}" />
-                                    <ui:NumberBox Grid.Column="2"
-                                                  Margin="4,0,0,0"
-                                                  Maximum="99"
-                                                  Minimum="-99"
-                                                  Text="" />
-                                    <TextBlock Grid.Column="3"
-                                               Margin="4,0,0,0"
-                                               VerticalAlignment="Center"
-                                               Text="{Binding LongShiftSeconds}" />
-                                </Grid>
-                            </MenuFlyout>
+                            <Flyout Placement="LeftEdgeAlignedBottom">
+                                <StackPanel Spacing="10">
+                                    <CheckBox Content="是否显示音乐音量" IsChecked="{Binding IsShowAudioVisualization, Mode=TwoWay}" />
+                                    <CheckBox Content="是否显示播放高亮" IsChecked="{Binding IsShowHighting, Mode=TwoWay}" />
+                                    <CheckBox Content="是否截取前俩位毫秒数"
+                                              IsChecked="{Binding IsUseTwoDigitTimeCode, Mode=TwoWay}"
+                                              IsEnabled="False"
+                                              IsVisible="False" />
+                                    <Grid ColumnDefinitions="Auto, Auto, Auto">
+                                        <TextBlock Grid.Column="0"
+                                                   VerticalAlignment="Center"
+                                                   Text="标记时间偏差" />
+                                        <ui:NumberBox Grid.Column="1"
+                                                      Margin="8,0,0,0"
+                                                      Maximum="999"
+                                                      Minimum="-999"
+                                                      Value="{Binding FlagTimeOffset}" />
+                                        <TextBlock Grid.Column="2"
+                                                   Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Text="ms" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="Auto, Auto, Auto, Auto">
+                                        <TextBlock Grid.Column="0"
+                                                   VerticalAlignment="Center"
+                                                   Text="快进快退时长" />
+                                        <ui:NumberBox Grid.Column="1"
+                                                      Margin="8,0,0,0"
+                                                      Maximum="99"
+                                                      Minimum="-99"
+                                                      ToolTip.Tip="短快进快退时长"
+                                                      Value="{Binding ShortShiftSeconds}" />
+                                        <ui:NumberBox Grid.Column="2"
+                                                      Margin="4,0,0,0"
+                                                      Maximum="99"
+                                                      Minimum="-99"
+                                                      ToolTip.Tip="长快进快退时长"
+                                                      Value="{Binding LongShiftSeconds}" />
+                                        <TextBlock Grid.Column="3"
+                                                   Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Text="s" />
+                                    </Grid>
+                                </StackPanel>
+                            </Flyout>
                         </Button.Flyout>
                     </Button>
                 </StackPanel>

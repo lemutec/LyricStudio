@@ -187,16 +187,59 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     protected bool IsMediaAvailable => AudioPlayer != null;
 
     [ObservableProperty]
+    private bool isShowAudioVisualization = ConfigurationKeys.IsShowAudioVisualization.Get();
+
+    partial void OnIsShowAudioVisualizationChanged(bool value)
+    {
+        ConfigurationKeys.IsShowAudioVisualization.Set(value);
+        Config.Configer?.Save(AppConfig.SettingsFile);
+    }
+
+    [ObservableProperty]
+    private bool isShowHighting = ConfigurationKeys.IsShowHighting.Get();
+
+    partial void OnIsShowHightingChanged(bool value)
+    {
+        ConfigurationKeys.IsShowHighting.Set(value);
+        Config.Configer?.Save(AppConfig.SettingsFile);
+    }
+
+    [Obsolete("It feels worthless")]
+    [ObservableProperty]
     private bool isUseTwoDigitTimeCode = ConfigurationKeys.IsUseTwoDigitTimeCode.Get();
+
+    partial void OnIsUseTwoDigitTimeCodeChanged(bool value)
+    {
+        ConfigurationKeys.IsUseTwoDigitTimeCode.Set(value);
+        Config.Configer?.Save(AppConfig.SettingsFile);
+    }
 
     [ObservableProperty]
     private int flagTimeOffset = ConfigurationKeys.FlagTimeOffset.Get();
 
+    partial void OnFlagTimeOffsetChanged(int value)
+    {
+        ConfigurationKeys.FlagTimeOffset.Set(value);
+        Config.Configer?.Save(AppConfig.SettingsFile);
+    }
+
     [ObservableProperty]
     private double shortShiftSeconds = ConfigurationKeys.ShortShiftSeconds.Get();
 
+    partial void OnShortShiftSecondsChanged(double value)
+    {
+        ConfigurationKeys.ShortShiftSeconds.Set(value);
+        Config.Configer?.Save(AppConfig.SettingsFile);
+    }
+
     [ObservableProperty]
     private double longShiftSeconds = ConfigurationKeys.LongShiftSeconds.Get();
+
+    partial void OnLongShiftSecondsChanged(double value)
+    {
+        ConfigurationKeys.LongShiftSeconds.Set(value);
+        Config.Configer?.Save(AppConfig.SettingsFile);
+    }
 
     [SupportedOSPlatform("Windows")]
     public HomePageViewModel()
@@ -234,9 +277,12 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         CurrentLrcText = line?.LrcText ?? string.Empty;
 
         (LrcLines as IEnumerable<ObservableLrcLine>).ForEach(v => v.IsHightlight = false);
-        if (line is ObservableLrcLine oLine)
+        if (IsShowHighting)
         {
-            oLine.IsHightlight = true;
+            if (line is ObservableLrcLine oLine)
+            {
+                oLine.IsHightlight = true;
+            }
         }
     }
 
