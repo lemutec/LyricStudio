@@ -857,6 +857,66 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
+    public void LineInsertPrev()
+    {
+    }
+
+    [RelayCommand]
+    public void LineInsertNext()
+    {
+    }
+
+    [RelayCommand]
+    public void ContinuousMarkPrev()
+    {
+    }
+
+    [RelayCommand]
+    public void ContinuousMarkNext()
+    {
+    }
+
+    [RelayCommand]
+    public void ShiftTimecodeMinus200()
+    {
+    }
+
+    [RelayCommand]
+    public void ShiftTimecodePlus200()
+    {
+    }
+
+    [RelayCommand]
+    public void CutLine()
+    {
+    }
+
+    [RelayCommand]
+    public void CopyLine()
+    {
+    }
+
+    [RelayCommand]
+    public void PasteLine()
+    {
+    }
+
+    [RelayCommand]
+    public void RepeatLine()
+    {
+    }
+
+    [RelayCommand]
+    public void DeleteLine()
+    {
+    }
+
+    [RelayCommand]
+    public void ResetCurrentTimeMark()
+    {
+    }
+
+    [RelayCommand]
     public void Undo()
     {
     }

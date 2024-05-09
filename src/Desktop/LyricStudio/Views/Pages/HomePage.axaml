@@ -337,6 +337,7 @@
                                 <ListBox Grid.Row="0"
                                          Background="Transparent"
                                          Classes="lyric"
+                                         CornerRadius="5"
                                          DoubleTapped="OnLyricListBoxDoubleTapped"
                                          ItemsSource="{Binding LrcLines}"
                                          SelectedItem="{Binding SelectedlrcLine}">
@@ -347,6 +348,148 @@
                                             </Border>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
+                                    <ListBox.ContextMenu>
+                                        <ContextMenu IsVisible="{Binding LyricText, Converter={StaticResource IsNullOrEmptyStringInvertConverter}}">
+                                            <MenuItem Command="{Binding LineInsertPrevCommand}"
+                                                      FontSize="12"
+                                                      Header="插入（之前）">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:IcoMoonSymbols.LineInsert}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding LineInsertNextCommand}"
+                                                      FontSize="12"
+                                                      Header="插入（之后）">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:IcoMoonSymbols.LineInsert}">
+                                                        <TextBlock.RenderTransform>
+                                                            <ScaleTransform ScaleY="-1" />
+                                                        </TextBlock.RenderTransform>
+                                                    </TextBlock>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <Separator />
+                                            <MenuItem Command="{Binding ShiftTimecodeMinus200Command}"
+                                                      FontSize="12"
+                                                      Header="平移时间标记 -200ms">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.Back}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding ShiftTimecodePlus200Command}"
+                                                      FontSize="12"
+                                                      Header="平移时间标记 +200ms">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.Forward}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding ContinuousMarkPrevCommand}"
+                                                      FontSize="12"
+                                                      Header="使时间连续（之前）">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:IcoMoonSymbols.ContinuousMark}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding ContinuousMarkNextCommand}"
+                                                      FontSize="12"
+                                                      Header="使时间连续（之后）">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource IcoMoonFontFamily}"
+                                                               FontSize="16"
+                                                               Text="{x:Static fui:IcoMoonSymbols.ContinuousMark}">
+                                                        <TextBlock.RenderTransform>
+                                                            <ScaleTransform ScaleY="-1" />
+                                                        </TextBlock.RenderTransform>
+                                                    </TextBlock>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding ResetCurrentTimeMarkCommand}"
+                                                      FontSize="12"
+                                                      Header="重置时间标记">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.History}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <Separator />
+                                            <MenuItem Command="{Binding MoveUpLineCommand}"
+                                                      FontSize="12"
+                                                      Header="行上移">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="16"
+                                                               Text="{x:Static fui:FontSymbols.Up}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding MoveDownLineCommand}"
+                                                      FontSize="12"
+                                                      Header="行下移">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.Down}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <Separator />
+                                            <MenuItem Command="{Binding CutLineCommand}"
+                                                      FontSize="12"
+                                                      Header="剪切行">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.Cut}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding CopyLineCommand}"
+                                                      FontSize="12"
+                                                      Header="复制行">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.Copy}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding PasteLineCommand}"
+                                                      FontSize="12"
+                                                      Header="粘贴行">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.Paste}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <Separator />
+                                            <MenuItem Command="{Binding RepeatLineCommand}"
+                                                      FontSize="12"
+                                                      Header="重复行">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.RepeatAll}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Command="{Binding DeleteLineCommand}"
+                                                      FontSize="12"
+                                                      Header="删除行">
+                                                <MenuItem.Icon>
+                                                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Text="{x:Static fui:FontSymbols.Delete}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </ListBox.ContextMenu>
                                 </ListBox>
                                 <StackPanel Grid.Row="0"
                                             HorizontalAlignment="Center"
@@ -574,7 +717,7 @@
                                 </MenuItem>
                                 <MenuItem Command="{Binding ShiftTimecodeCommand}"
                                           FontSize="12"
-                                          Header="平移时间轴">
+                                          Header="平移时间标记">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
@@ -751,7 +894,7 @@
                             <Flyout Placement="LeftEdgeAlignedBottom">
                                 <StackPanel Spacing="10">
                                     <CheckBox Content="是否显示音乐音量" IsChecked="{Binding IsShowAudioVisualization, Mode=TwoWay}" />
-                                    <CheckBox Content="是否显示播放高亮" IsChecked="{Binding IsShowHighting, Mode=TwoWay}" />
+                                    <CheckBox Content="是否显示高亮播放" IsChecked="{Binding IsShowHighting, Mode=TwoWay}" />
                                     <CheckBox Content="是否截取前俩位毫秒数"
                                               IsChecked="{Binding IsUseTwoDigitTimeCode, Mode=TwoWay}"
                                               IsEnabled="False"

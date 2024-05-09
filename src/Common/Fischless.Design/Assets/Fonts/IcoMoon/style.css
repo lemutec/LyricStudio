@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?uwz9vf');
-  src:  url('fonts/icomoon.eot?uwz9vf#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?uwz9vf') format('truetype'),
-    url('fonts/icomoon.woff?uwz9vf') format('woff'),
-    url('fonts/icomoon.svg?uwz9vf#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?tnopow');
+  src:  url('fonts/icomoon.eot?tnopow#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?tnopow') format('truetype'),
+    url('fonts/icomoon.woff?tnopow') format('woff'),
+    url('fonts/icomoon.svg?tnopow#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-ContinuousMark:before {
+  content: "\e908";
+}
+.icon-LineInsert:before {
+  content: "\e907";
+}
 .icon-MagicWand:before {
   content: "\e906";
 }

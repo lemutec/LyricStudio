@@ -9,4 +9,6 @@ public sealed class IcoMoonSymbols
     public const string Empty = "\xe904";
     public const string Undo = "\xe905";
     public const string MagicWand = "\xe906";
+    public const string LineInsert = "\xe907";
+    public const string ContinuousMark = "\xe908";
 }
