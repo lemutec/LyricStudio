@@ -68,6 +68,7 @@ public partial class App : Application
             services.AddView<HomePage, HomePageViewModel>();
             services.AddView<MediaInfoPage, MediaInfoPageViewModel>();
             services.AddView<PluginPage, PluginPageViewModel>();
+            services.AddDialog<ShareDialog, ShareDialogViewModel>();
         })
         .Build();
 

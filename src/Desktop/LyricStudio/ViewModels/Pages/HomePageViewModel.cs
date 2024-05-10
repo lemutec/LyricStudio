@@ -16,6 +16,7 @@ using LyricStudio.Models;
 using LyricStudio.Models.Audios;
 using LyricStudio.Models.Messages;
 using LyricStudio.Services;
+using LyricStudio.Views;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -1003,6 +1004,27 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     [RelayCommand]
     public void FixKanji()
+    {
+    }
+
+    [RelayCommand]
+    public void CreateShare()
+    {
+        ShareDialog dialog = App.GetService<ShareDialog>();
+
+        if (Mode == LyricEditMode.ListView)
+        {
+            dialog.CodeToShare = string.Join(Environment.NewLine, LrcLines.Select(l => l.ToString()));
+        }
+        else if (Mode == LyricEditMode.TextBox)
+        {
+            dialog.CodeToShare = LyricText ?? string.Empty;
+        }
+        dialog.Show();
+    }
+
+    [RelayCommand]
+    public void OpenShare()
     {
     }
 

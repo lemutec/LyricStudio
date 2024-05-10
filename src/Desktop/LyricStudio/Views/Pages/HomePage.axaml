@@ -888,13 +888,46 @@
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          FontSize="16"
+                                         Glyph="{x:Static fui:FontSymbols.Share}" />
+                        </Button.Content>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="LeftEdgeAlignedBottom">
+                                <MenuItem Command="{Binding CreateShareCommand}"
+                                          FontSize="12"
+                                          Header="创建分享">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.Share}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding OpenShareCommand}"
+                                          FontSize="12"
+                                          Header="打开分享">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                   FontSize="14"
+                                                   Text="{x:Static fui:FontSymbols.GenericScan}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Width="34"
+                            Height="30"
+                            Margin="0,0,0,8"
+                            Padding="0"
+                            ToolTip.Tip="首选项">
+                        <Button.Content>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                         FontSize="16"
                                          Glyph="{x:Static fui:FontSymbols.Settings}" />
                         </Button.Content>
                         <Button.Flyout>
                             <Flyout Placement="LeftEdgeAlignedBottom">
                                 <StackPanel Spacing="10">
                                     <CheckBox Content="是否显示音乐音量" IsChecked="{Binding IsShowAudioVisualization, Mode=TwoWay}" />
-                                    <CheckBox Content="是否显示高亮播放" IsChecked="{Binding IsShowHighting, Mode=TwoWay}" />
+                                    <CheckBox Content="是否显示播放" IsChecked="{Binding IsShowHighting, Mode=TwoWay}" />
                                     <CheckBox Content="是否截取前俩位毫秒数"
                                               IsChecked="{Binding IsUseTwoDigitTimeCode, Mode=TwoWay}"
                                               IsEnabled="False"

@@ -1,0 +1,100 @@
+<fui:FluentWindow x:Class="LyricStudio.Views.ShareDialog"
+                  xmlns="https://github.com/avaloniaui"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:fui="urn:fischless.design"
+                  xmlns:local="clr-namespace:LyricStudio"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:ui="using:FluentAvalonia.UI.Controls"
+                  xmlns:views="clr-namespace:LyricStudio.Views"
+                  xmlns:vm="using:LyricStudio.ViewModels"
+                  Title="分享歌词"
+                  Width="500"
+                  Height="500"
+                  d:Background="#00FFFFFF"
+                  d:DesignHeight="450"
+                  d:DesignWidth="800"
+                  Background="#272727"
+                  DragDrop.AllowDrop="True"
+                  Icon="/Assets/Images/Favicon.ico"
+                  SystemDecorations="Full"
+                  WindowStartupLocation="CenterScreen"
+                  mc:Ignorable="d">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" Spacing="10">
+            <fui:QrCode Width="{Binding QrCodeSize}"
+                        Height="{Binding QrCodeSize}"
+                        Padding="{Binding QrCodePadding}"
+                        CornerRadius="{Binding QrCodeCornerRadius}"
+                        Data="{Binding QrCodeString}"
+                        ErrorCorrection="{Binding QrCodeEccLevel}">
+                <fui:QrCode.Foreground>
+                    <LinearGradientBrush>
+                        <GradientStop Offset="0" Color="{Binding QrCodeForegroundColor1}" />
+                        <GradientStop Offset="1" Color="{Binding QrCodeForegroundColor2}" />
+                    </LinearGradientBrush>
+                </fui:QrCode.Foreground>
+                <fui:QrCode.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Offset="0" Color="{Binding QrCodeBackgroundColor1}" />
+                        <GradientStop Offset="1" Color="{Binding QrCodeBackgroundColor2}" />
+                    </LinearGradientBrush>
+                </fui:QrCode.Background>
+            </fui:QrCode>
+            <StackPanel HorizontalAlignment="Center"
+                        IsVisible="False"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                <Label VerticalAlignment="Center" Content="QRCode Data:" />
+                <TextBox Name="QrDataBox"
+                         Width="{Binding QrCodeSize}"
+                         Text="{Binding QrCodeString, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center"
+                        IsVisible="False"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                <Label VerticalAlignment="Center" Content="ECC Level:" />
+                <ComboBox Name="EccLevelComboBox"
+                          Width="{Binding QrCodeSize}"
+                          SelectedItem="{Binding QrCodeEccLevel, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center"
+                        IsVisible="False"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                <Button Command="{Binding RandomizeDataCommand}" Content="Randomize Data" />
+                <Button Command="{Binding RandomizeColorsCommand}" Content="Randomize Colors" />
+            </StackPanel>
+            <Button HorizontalAlignment="Center"
+                    Command="{Binding ResetQrCodeCommand}"
+                    Content="Reset QRCode"
+                    IsVisible="False" />
+            <StackPanel HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                <Label VerticalAlignment="Center" Content="有效期" />
+                <ComboBox MinWidth="200" SelectedIndex="{Binding ExpirationDateIndex, Mode=TwoWay}">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="1 天" />
+                        <ComboBoxItem Content="3 天" />
+                        <ComboBoxItem Content="7 天" />
+                        <ComboBoxItem Content="永久" />
+                    </ComboBox.Items>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                <Label VerticalAlignment="Center" Content="URL" />
+                <TextBox MinWidth="240"
+                         IsReadOnly="True"
+                         Text="{Binding QrCodeString, Mode=TwoWay}" />
+            </StackPanel>
+            <Button Margin="0,8,0,0"
+                    HorizontalAlignment="Center"
+                    Command="{Binding CreateShareQrCodeCommand}"
+                    Content="创建分享" />
+        </StackPanel>
+    </Grid>
+</fui:FluentWindow>

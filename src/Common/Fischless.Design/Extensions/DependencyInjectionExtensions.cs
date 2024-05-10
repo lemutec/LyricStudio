@@ -12,4 +12,13 @@ public static class DependencyInjectionExtensions
             .AddSingleton<TWindow>()
             .AddSingleton<TViewModel>();
     }
+
+    public static IServiceCollection AddDialog<TWindow, TViewModel>(this IServiceCollection services)
+        where TWindow : class
+        where TViewModel : class
+    {
+        return services
+            .AddTransient<TWindow>()
+            .AddTransient<TViewModel>();
+    }
 }
