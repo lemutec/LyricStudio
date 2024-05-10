@@ -21,6 +21,7 @@ using LyricStudio.Services;
 using LyricStudio.Views;
 using Serilog;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -964,6 +965,21 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void ResetCurrentTimeMark()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        if (SelectedlrcLine.LrcTime.HasValue)
+        {
+            SelectedlrcLine.LrcTime = TimeSpan.Zero;
+            EditinglrcLine = SelectedlrcLine.ToString();
+        }
     }
 
     [RelayCommand]
@@ -1024,6 +1040,30 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void ResetTimeMark()
     {
+        if (Mode == LyricEditMode.ListView)
+        {
+            (LrcLines as IEnumerable<ObservableLrcLine>)
+                .ForEach(line =>
+                {
+                    if (line.LrcTime.HasValue)
+                    {
+                        line.LrcTime = TimeSpan.Zero;
+                    }
+                });
+        }
+        else if (Mode == LyricEditMode.TextBox)
+        {
+            LyricText = LrcHelper.ParseText(LyricText)
+                .ForEach(line =>
+                {
+                    if (line.LrcTime.HasValue)
+                    {
+                        line.LrcTime = TimeSpan.Zero;
+                    }
+                })
+                .Select(line => line.ToString())
+                .Aggregate((current, next) => current + Environment.NewLine + next);
+        }
     }
 
     [RelayCommand]
