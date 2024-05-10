@@ -1097,11 +1097,6 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
             // TODO: Tell you that the clipboard content is not a share link
         }
     }
-
-    [RelayCommand]
-    public void Settings()
-    {
-    }
 }
 
 [ObservableObject]

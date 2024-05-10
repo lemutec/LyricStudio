@@ -352,7 +352,7 @@
                                         <ContextMenu IsVisible="{Binding LyricText, Converter={StaticResource IsNullOrEmptyStringInvertConverter}}">
                                             <MenuItem Command="{Binding LineInsertPrevCommand}"
                                                       FontSize="12"
-                                                      Header="插入（之前）">
+                                                      Header="插入行（之前）">
                                                 <MenuItem.Icon>
                                                     <TextBlock FontFamily="{StaticResource IcoMoonFontFamily}"
                                                                FontSize="14"
@@ -361,7 +361,7 @@
                                             </MenuItem>
                                             <MenuItem Command="{Binding LineInsertNextCommand}"
                                                       FontSize="12"
-                                                      Header="插入（之后）">
+                                                      Header="插入行（之后）">
                                                 <MenuItem.Icon>
                                                     <TextBlock FontFamily="{StaticResource IcoMoonFontFamily}"
                                                                FontSize="14"
@@ -832,7 +832,7 @@
                             Padding="0"
                             Command="{Binding AddLineCommand}"
                             IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
-                            ToolTip.Tip="新增行（选中行下方）">
+                            ToolTip.Tip="插入行（选中行之后）">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          FontSize="16"
@@ -845,7 +845,7 @@
                             Padding="0"
                             Command="{Binding RemoveLineCommand}"
                             IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
-                            ToolTip.Tip="删除当前选中行">
+                            ToolTip.Tip="删除行（选中行）">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          FontSize="16"
@@ -858,7 +858,7 @@
                             Padding="0"
                             Command="{Binding MoveUpLineCommand}"
                             IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
-                            ToolTip.Tip="选中行上移">
+                            ToolTip.Tip="行上移（选中行）">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          FontSize="16"
@@ -871,7 +871,7 @@
                             Padding="0"
                             Command="{Binding MoveDownLineCommand}"
                             IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
-                            ToolTip.Tip="选中行下移">
+                            ToolTip.Tip="行下移（选中行）">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          FontSize="16"
@@ -884,7 +884,7 @@
                             Height="30"
                             Margin="0,0,0,8"
                             Padding="0"
-                            ToolTip.Tip="首选项">
+                            ToolTip.Tip="分享">
                         <Button.Content>
                             <ui:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                          FontSize="16"
