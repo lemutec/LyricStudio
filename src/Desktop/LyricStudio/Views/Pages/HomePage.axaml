@@ -743,7 +743,7 @@
                         </Button.Content>
                         <Button.Flyout>
                             <MenuFlyout Placement="LeftEdgeAlignedTop">
-                                <MenuItem Command="{Binding TranlateCommand}"
+                                <MenuItem Command="{Binding TranslateCommand}"
                                           FontSize="12"
                                           Header="一键翻译">
                                     <MenuItem.Icon>
@@ -753,7 +753,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <Separator />
-                                <MenuItem Command="{Binding TranlateSimplifiedToTraditionalCommand}"
+                                <MenuItem Command="{Binding TranslateSimplifiedToTraditionalCommand}"
                                           FontSize="12"
                                           Header="简体转正體">
                                     <MenuItem.Icon>
@@ -762,7 +762,7 @@
                                                    Text="{x:Static fui:FontSymbols.LocaleLanguage}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding TranlateTraditionalToSimplifiedCommand}"
+                                <MenuItem Command="{Binding TranslateTraditionalToSimplifiedCommand}"
                                           FontSize="12"
                                           Header="正體转简体">
                                     <MenuItem.Icon>
@@ -772,7 +772,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <Separator />
-                                <MenuItem Command="{Binding TranlateKanjiToRomajiCommand}"
+                                <MenuItem Command="{Binding TranslateKanjiToRomajiCommand}"
                                           FontSize="12"
                                           Header="汉字转罗马音">
                                     <MenuItem.Icon>

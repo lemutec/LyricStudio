@@ -14,6 +14,7 @@ using LyricStudio.Core.LyricTrack;
 using LyricStudio.Core.MusicTag;
 using LyricStudio.Core.Player;
 using LyricStudio.Core.ShareCode;
+using LyricStudio.Core.Translators;
 using LyricStudio.Models;
 using LyricStudio.Models.Audios;
 using LyricStudio.Models.Messages;
@@ -1113,22 +1114,26 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    public void Tranlate()
+    public async Task Translate()
+    {
+        string tr = await new Translator()
+            .TranslateAsync("test");
+
+        _ = tr;
+    }
+
+    [RelayCommand]
+    public void TranslateSimplifiedToTraditional()
     {
     }
 
     [RelayCommand]
-    public void TranlateSimplifiedToTraditional()
+    public void TranslateTraditionalToSimplified()
     {
     }
 
     [RelayCommand]
-    public void TranlateTraditionalToSimplified()
-    {
-    }
-
-    [RelayCommand]
-    public void TranlateKanjiToRomaji()
+    public void TranslateKanjiToRomaji()
     {
     }
 
