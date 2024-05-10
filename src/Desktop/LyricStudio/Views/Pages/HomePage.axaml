@@ -927,7 +927,7 @@
                             <Flyout Placement="LeftEdgeAlignedBottom">
                                 <StackPanel Spacing="10">
                                     <CheckBox Content="是否显示音乐音量" IsChecked="{Binding IsShowAudioVisualization, Mode=TwoWay}" />
-                                    <CheckBox Content="是否显示播放" IsChecked="{Binding IsShowHighting, Mode=TwoWay}" />
+                                    <CheckBox Content="是否显示播放高亮" IsChecked="{Binding IsShowHighting, Mode=TwoWay}" />
                                     <CheckBox Content="是否截取前俩位毫秒数"
                                               IsChecked="{Binding IsUseTwoDigitTimeCode, Mode=TwoWay}"
                                               IsEnabled="False"

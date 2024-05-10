@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Fischless.Linq;
+using Fischless.Linq.Collections;
 using Fischless.Mapper;
 using Fischless.Mvvm;
 using Fischless.Win32;
@@ -12,6 +13,7 @@ using LyricStudio.Core.Configuration;
 using LyricStudio.Core.LyricTrack;
 using LyricStudio.Core.MusicTag;
 using LyricStudio.Core.Player;
+using LyricStudio.Core.ShareCode;
 using LyricStudio.Models;
 using LyricStudio.Models.Audios;
 using LyricStudio.Models.Messages;
@@ -25,10 +27,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using static Vanara.PInvoke.Gdi32;
 
 namespace LyricStudio.ViewModels;
 
@@ -203,6 +202,11 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     {
         ConfigurationKeys.IsShowHighting.Set(value);
         Config.Configer?.Save(AppConfig.SettingsFile);
+
+        if (!value)
+        {
+            (LrcLines as IEnumerable<ObservableLrcLine>).ForEach(v => v.IsHightlight = false);
+        }
     }
 
     [Obsolete("It feels worthless")]
@@ -246,7 +250,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     public HomePageViewModel()
     {
         timer.Tick += (_, _) => OnTick();
-        timer.Interval = TimeSpan.FromMicroseconds(20d);
+        timer.Interval = TimeSpan.FromMicroseconds(30d);
         timer.Start();
 
         WeakReferenceMessenger.Default.Register<FileDropMessage>(this, async (sender, msg) =>
@@ -262,28 +266,42 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         timer?.Stop();
     }
 
-    private void OnTick()
+    private async void OnTick()
     {
         if (!IsMediaAvailable)
         {
             return;
         }
-        SyncHightlight();
+        await SyncCurrentLyricAndHightlight();
     }
 
-    private void SyncHightlight()
+    private async Task SyncCurrentLyricAndHightlight()
     {
-        LrcLine line = LrcHelper.GetNearestLrc(LrcLines, TimeSpan.FromSeconds(CurrentTime));
-
-        CurrentLrcText = line?.LrcText ?? string.Empty;
-
-        (LrcLines as IEnumerable<ObservableLrcLine>).ForEach(v => v.IsHightlight = false);
         if (IsShowHighting)
         {
+            LrcLine line = LrcHelper.GetNearestLrc(LrcLines, TimeSpan.FromSeconds(CurrentTime));
+
+            CurrentLrcText = line?.LrcText ?? string.Empty;
+
+            (LrcLines as IEnumerable<ObservableLrcLine>).ForEach(v => v.IsHightlight = false);
             if (line is ObservableLrcLine oLine)
             {
                 oLine.IsHightlight = true;
             }
+        }
+        else
+        {
+            //LrcLine line = LrcHelper.GetNearestLrc(LrcLines, TimeSpan.FromSeconds(CurrentTime));
+
+            //CurrentLrcText = line?.LrcText ?? string.Empty;
+
+            LrcLine line = await Task.Run(() =>
+            {
+                IEnumerable<LrcLine> lrcLines = LrcLines.Select(l => new LrcLine(l));
+                LrcLine line = LrcHelper.GetNearestLrc(lrcLines, TimeSpan.FromSeconds(CurrentTime));
+                return line;
+            });
+            CurrentLrcText = line?.LrcText ?? string.Empty;
         }
     }
 
@@ -312,15 +330,26 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
             // Auto load lyric/subtitle/text file
             if (lyricFile == null)
             {
-                string? lyricFileHatena = Path.ChangeExtension(musicFile, "lrc");
+                bool autoLoadLrc = false;
 
-                if (File.Exists(lyricFileHatena))
+                if (Mode == LyricEditMode.ListView)
                 {
-                    lyricFile = lyricFileHatena;
+                    if (LrcLines.IsEmpty())
+                    {
+                        autoLoadLrc = true;
+                    }
                 }
-                else
+                else if (Mode == LyricEditMode.TextBox)
                 {
-                    lyricFileHatena = Path.ChangeExtension(musicFile, "ass");
+                    if (string.IsNullOrWhiteSpace(LyricText))
+                    {
+                        autoLoadLrc = true;
+                    }
+                }
+
+                if (autoLoadLrc)
+                {
+                    string? lyricFileHatena = Path.ChangeExtension(musicFile, "lrc");
 
                     if (File.Exists(lyricFileHatena))
                     {
@@ -328,11 +357,20 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                     }
                     else
                     {
-                        lyricFileHatena = Path.ChangeExtension(musicFile, "txt");
+                        lyricFileHatena = Path.ChangeExtension(musicFile, "ass");
 
                         if (File.Exists(lyricFileHatena))
                         {
                             lyricFile = lyricFileHatena;
+                        }
+                        else
+                        {
+                            lyricFileHatena = Path.ChangeExtension(musicFile, "txt");
+
+                            if (File.Exists(lyricFileHatena))
+                            {
+                                lyricFile = lyricFileHatena;
+                            }
                         }
                     }
                 }
@@ -547,8 +585,19 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
     private void OnPositionChanged(object? sender, double position)
     {
-        CurrentTime = position * TotalTime;
-        Position = position;
+        double currentTime4update = position * TotalTime;
+
+        // Time offset >= 0.5s
+        if (Math.Abs(CurrentTime - currentTime4update) >= 0.5d)
+        {
+            CurrentTime = currentTime4update;
+        }
+
+        // Position offset >= 0.25%
+        if (Math.Abs(Position - position) >= 0.0025d)
+        {
+            Position = position;
+        }
     }
 
     [RelayCommand]
@@ -1024,8 +1073,29 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    public void OpenShare()
+    public async Task OpenShare()
     {
+        string? text = await App.GetService<IClipboardService>().GetTextAsync();
+
+        if (text?.Contains("sharelrc") ?? false)
+        {
+            string url = CodeCopy.ParsePublicUrl(text);
+            string code = await CodeCopy.GetCode(url);
+
+            if (Mode == LyricEditMode.ListView)
+            {
+                lrcManager.LoadText(code);
+                LrcLines.Reset(lrcManager.LrcList.Select(v => MapperProvider.Map<LrcLine, ObservableLrcLine>(v)));
+            }
+            else if (Mode == LyricEditMode.TextBox)
+            {
+                LyricText = code;
+            }
+        }
+        else
+        {
+            // TODO: Tell you that the clipboard content is not a share link
+        }
     }
 
     [RelayCommand]
