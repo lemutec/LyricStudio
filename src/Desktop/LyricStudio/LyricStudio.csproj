@@ -18,6 +18,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <Watch Remove="Views\Dialogs\ShareDialog.axaml" />
+	  <Watch Remove="Views\Dialogs\ShiftTimecodeDialog.axaml" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
@@ -60,6 +61,9 @@
 	  <ProjectReference Include="..\..\Player\FFME.Avalonia\FFME.Avalonia.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Update="Views\Dialogs\ShiftTimecodeDialog.axaml.cs">
+	    <DependentUpon>ShiftTimecodeDialog.axaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Dialogs\ShareDialog.axaml.cs">
 	    <DependentUpon>ShareDialog.axaml</DependentUpon>
 	  </Compile>
