@@ -70,6 +70,7 @@ public partial class App : Application
             services.AddView<PluginPage, PluginPageViewModel>();
             services.AddDialog<ShareDialog, ShareDialogViewModel>();
             services.AddDialog<ShiftTimecodeDialog, ShiftTimecodeDialogViewModel>();
+            services.AddDialog<RomanizationDialog, RomanizationDialogViewModel>();
         })
         .Build();
 

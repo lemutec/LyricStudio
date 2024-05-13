@@ -774,7 +774,7 @@
                                 <Separator />
                                 <MenuItem Command="{Binding TranslateKanjiToRomajiCommand}"
                                           FontSize="12"
-                                          Header="汉字转罗马音">
+                                          Header="日文转罗马音">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"

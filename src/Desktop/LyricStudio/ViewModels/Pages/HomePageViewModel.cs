@@ -6,6 +6,7 @@ using Fischless.Linq;
 using Fischless.Linq.Collections;
 using Fischless.Mapper;
 using Fischless.Mvvm;
+using Fischless.Romanization;
 using Fischless.Win32;
 using Fischless.Win32.SystemDialog;
 using LyricStudio.Core.AudioTrack;
@@ -1133,13 +1134,102 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    public void TranslateKanjiToRomaji()
+    public async Task TranslateKanjiToRomaji()
     {
+        RomanizationDialog dialog = App.GetService<RomanizationDialog>();
+        IRomanizationDialogSettings? settings = await dialog.GetRomanizationSettingsAsync();
+
+        if (settings == null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (Mode == LyricEditMode.ListView)
+            {
+                foreach (ObservableLrcLine line in LrcLines)
+                {
+                    if (!line.LrcTime.HasValue)
+                    {
+                        continue;
+                    }
+
+                    string? roman = await RomanConverter.Convert(line.LrcText, settings.Mode);
+
+                    if (settings.LineType == RomanizationLineType.Replace)
+                    {
+                        line.LrcText = roman;
+                    }
+                    else if (settings.LineType == RomanizationLineType.Append)
+                    {
+                        line.LrcText = $"{line.LrcText}  {roman}";
+                    }
+                }
+            }
+            else if (Mode == LyricEditMode.TextBox)
+            {
+                IEnumerable<LrcLine> lrcLines = LrcHelper.ParseText(LyricText ?? string.Empty);
+
+                foreach (LrcLine line in lrcLines)
+                {
+                    if (!line.LrcTime.HasValue)
+                    {
+                        continue;
+                    }
+
+                    string? roman = await RomanConverter.Convert(line.LrcText, settings.Mode);
+
+                    if (settings.LineType == RomanizationLineType.Replace)
+                    {
+                        line.LrcText = roman;
+                    }
+                    else if (settings.LineType == RomanizationLineType.Append)
+                    {
+                        line.LrcText = $"{line.LrcText}  {roman}";
+                    }
+                }
+
+                LyricText = string.Join(Environment.NewLine, lrcLines.Select(l => l.ToString()));
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Information(e.ToString());
+        }
     }
 
     [RelayCommand]
-    public void FixKanji()
+    public async Task FixKanji()
     {
+        if (Mode == LyricEditMode.ListView)
+        {
+            foreach (ObservableLrcLine line in LrcLines)
+            {
+                if (!line.LrcTime.HasValue)
+                {
+                    continue;
+                }
+
+                line.LrcText = await KanjiConverter.Convert(line.LrcText);
+            }
+        }
+        else if (Mode == LyricEditMode.TextBox)
+        {
+            IEnumerable<LrcLine> lrcLines = LrcHelper.ParseText(LyricText ?? string.Empty);
+
+            foreach (LrcLine line in lrcLines)
+            {
+                if (!line.LrcTime.HasValue)
+                {
+                    continue;
+                }
+
+                line.LrcText = await KanjiConverter.Convert(line.LrcText);
+            }
+
+            LyricText = string.Join(Environment.NewLine, lrcLines.Select(l => l.ToString()));
+        }
     }
 
     [RelayCommand]

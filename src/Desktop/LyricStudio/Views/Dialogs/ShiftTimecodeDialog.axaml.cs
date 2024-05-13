@@ -1,14 +1,17 @@
 ﻿using Fischless.Design.Controls;
 using FluentAvalonia.UI.Controls;
 using LyricStudio.ViewModels;
-using System;
 using System.Threading.Tasks;
 
 namespace LyricStudio.Views;
 
-public partial class ShiftTimecodeDialog : FluentWindow
+public partial class ShiftTimecodeDialog : FluentContentDialog
 {
-    public ShiftTimecodeDialogViewModel ViewModel { get; }
+    public new ShiftTimecodeDialogViewModel ViewModel
+    {
+        get => base.ViewModel as ShiftTimecodeDialogViewModel;
+        protected set => base.ViewModel = value;
+    }
 
     public ShiftTimecodeDialog() : this(App.GetService<ShiftTimecodeDialogViewModel>())
     {
@@ -18,13 +21,6 @@ public partial class ShiftTimecodeDialog : FluentWindow
     {
         DataContext = ViewModel = viewModel;
         InitializeComponent();
-
-        ViewModel.RequestClose += RequestClose;
-    }
-
-    private void RequestClose(object? sender, ContentDialogResult e)
-    {
-        Close(e);
     }
 
     public async Task<double?> GetShiftTimeAsync()

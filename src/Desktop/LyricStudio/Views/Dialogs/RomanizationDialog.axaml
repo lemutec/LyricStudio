@@ -1,4 +1,4 @@
-<fui:FluentContentDialog x:Class="LyricStudio.Views.ShiftTimecodeDialog"
+<fui:FluentContentDialog x:Class="LyricStudio.Views.RomanizationDialog"
                          xmlns="https://github.com/avaloniaui"
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,7 @@
                          xmlns:ui="using:FluentAvalonia.UI.Controls"
                          xmlns:views="clr-namespace:LyricStudio.Views"
                          xmlns:vm="using:LyricStudio.ViewModels"
-                         Title="时间偏移"
+                         Title="日文转罗马音"
                          Width="280"
                          Height="200"
                          d:Background="#00FFFFFF"
@@ -26,11 +26,38 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Spacing="10">
-            <TextBlock Text="输入时间偏移（s）" />
-            <ui:NumberBox MinWidth="260"
-                          Maximum="99999"
-                          Minimum="-99999"
-                          Value="{Binding ShiftTime, Mode=TwoWay}" />
+            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Text="模式" />
+                <ComboBox Grid.Row="0"
+                          Grid.Column="1"
+                          MinWidth="200"
+                          Margin="8,0,0,0"
+                          SelectedIndex="{Binding ModeIndex, Mode=TwoWay}">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="罗马音" />
+                        <ComboBoxItem Content="平假名" />
+                        <ComboBoxItem Content="片假名" />
+                    </ComboBox.Items>
+                </ComboBox>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="0,8,0,0"
+                           VerticalAlignment="Center"
+                           Text="行设定" />
+                <ComboBox Grid.Row="1"
+                          Grid.Column="1"
+                          MinWidth="200"
+                          Margin="8,8,0,0"
+                          SelectedIndex="{Binding LineTypeIndex, Mode=TwoWay}">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="行尾添加" />
+                        <ComboBoxItem Content="整行替换" />
+                    </ComboBox.Items>
+                </ComboBox>
+            </Grid>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button Command="{Binding AcceptCommand}">
                     <Button.Content>
