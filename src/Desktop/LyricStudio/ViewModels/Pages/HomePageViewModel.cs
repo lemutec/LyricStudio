@@ -968,21 +968,101 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void ContinuousMarkPrev()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+
+        if (index - 1 < 0)
+        {
+            return;
+        }
+
+        var prevLine = LrcLines[index - 1];
+        if (SelectedlrcLine.LrcTime.HasValue && prevLine.LrcTime.HasValue)
+        {
+            SelectedlrcLine.LrcTime = prevLine.LrcTime;
+            EditinglrcLine = SelectedlrcLine.ToString();
+        }
     }
 
     [RelayCommand]
     public void ContinuousMarkNext()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+
+        if (index + 1 >= LrcLines.Count())
+        {
+            return;
+        }
+
+        var nextLine = LrcLines[index - 1];
+        if (SelectedlrcLine.LrcTime.HasValue && nextLine.LrcTime.HasValue)
+        {
+            SelectedlrcLine.LrcTime = LrcLines[index + 1].LrcTime;
+            EditinglrcLine = SelectedlrcLine.ToString();
+        }
     }
 
     [RelayCommand]
     public void ShiftTimecodeMinus200()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        if (SelectedlrcLine.LrcTime.HasValue)
+        {
+            SelectedlrcLine.LrcTime += TimeSpan.FromSeconds(-0.2d);
+            if (SelectedlrcLine.LrcTime < TimeSpan.Zero)
+            {
+                SelectedlrcLine.LrcTime = TimeSpan.Zero;
+            }
+            EditinglrcLine = SelectedlrcLine.ToString();
+        }
     }
 
     [RelayCommand]
     public void ShiftTimecodePlus200()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        if (SelectedlrcLine.LrcTime.HasValue)
+        {
+            SelectedlrcLine.LrcTime += TimeSpan.FromSeconds(0.2d);
+            EditinglrcLine = SelectedlrcLine.ToString();
+        }
     }
 
     [RelayCommand]
@@ -1038,16 +1118,49 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void MoveUpLine()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+
+        if (index - 1 < 0)
+        {
+            return;
+        }
+
+        LrcLines.Move(index, index - 1);
+        SelectedlrcLine = LrcLines[index - 1];
     }
 
     [RelayCommand]
     public void MoveDownLine()
     {
-    }
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
 
-    [RelayCommand]
-    public void ShowInfo()
-    {
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+
+        if (index + 1 >= LrcLines.Count())
+        {
+            return;
+        }
+
+        LrcLines.Move(index, index + 1);
+        SelectedlrcLine = LrcLines[index + 1];
     }
 
     [RelayCommand]
