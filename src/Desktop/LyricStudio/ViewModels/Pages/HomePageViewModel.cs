@@ -1117,20 +1117,80 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public async Task Translate()
     {
-        string tr = await new Translator()
-            .TranslateAsync("test");
+        Translator translator = new();
 
-        _ = tr;
+        if (Mode == LyricEditMode.ListView)
+        {
+            foreach (ObservableLrcLine line in LrcLines)
+            {
+                if (!line.LrcTime.HasValue)
+                {
+                    continue;
+                }
+
+                string? translated = await translator.TranslateAsync(line.LrcText);
+                line.LrcText = $"{line.LrcText}  {translated}";
+            }
+        }
+        else if (Mode == LyricEditMode.TextBox)
+        {
+            IEnumerable<LrcLine> lrcLines = LrcHelper.ParseText(LyricText ?? string.Empty);
+
+            foreach (LrcLine line in lrcLines)
+            {
+                if (!line.LrcTime.HasValue)
+                {
+                    continue;
+                }
+
+                string? translated = await translator.TranslateAsync(line.LrcText);
+                line.LrcText = $"{line.LrcText}  {translated}";
+            }
+
+            LyricText = string.Join(Environment.NewLine, lrcLines.Select(l => l.ToString()));
+        }
     }
 
     [RelayCommand]
-    public void TranslateSimplifiedToTraditional()
+    public void TranslateToTraditional()
     {
+        if (Mode == LyricEditMode.ListView)
+        {
+            foreach (ObservableLrcLine line in LrcLines)
+            {
+                if (!line.LrcTime.HasValue)
+                {
+                    continue;
+                }
+
+                line.LrcText = ChineseConverter.ToTraditional(line.LrcText);
+            }
+        }
+        else if (Mode == LyricEditMode.TextBox)
+        {
+            LyricText = ChineseConverter.ToTraditional(LyricText);
+        }
     }
 
     [RelayCommand]
-    public void TranslateTraditionalToSimplified()
+    public void TranslateToSimplified()
     {
+        if (Mode == LyricEditMode.ListView)
+        {
+            foreach (ObservableLrcLine line in LrcLines)
+            {
+                if (!line.LrcTime.HasValue)
+                {
+                    continue;
+                }
+
+                line.LrcText = ChineseConverter.ToSimplified(line.LrcText);
+            }
+        }
+        else if (Mode == LyricEditMode.TextBox)
+        {
+            LyricText = ChineseConverter.ToSimplified(LyricText);
+        }
     }
 
     [RelayCommand]

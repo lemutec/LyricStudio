@@ -753,18 +753,18 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <Separator />
-                                <MenuItem Command="{Binding TranslateSimplifiedToTraditionalCommand}"
+                                <MenuItem Command="{Binding TranslateToTraditionalCommand}"
                                           FontSize="12"
-                                          Header="简体转正體">
+                                          Header="中文转正體">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
                                                    Text="{x:Static fui:FontSymbols.LocaleLanguage}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding TranslateTraditionalToSimplifiedCommand}"
+                                <MenuItem Command="{Binding TranslateToSimplifiedCommand}"
                                           FontSize="12"
-                                          Header="正體转简体">
+                                          Header="中文转简体">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"
