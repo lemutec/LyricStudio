@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Ude;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LyricStudio.Core.LyricTrack;
 

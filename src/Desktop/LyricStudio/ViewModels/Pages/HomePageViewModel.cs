@@ -911,11 +911,58 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void LineInsertPrev()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+
+        if (index - 1 < 0)
+        {
+            index = 0;
+        }
+
+        LrcLines.Insert(index, new ObservableLrcLine()
+        {
+            LrcTime = TimeSpan.Zero,
+            LrcText = string.Empty,
+        });
+        SelectedlrcLine = LrcLines[index];
     }
 
     [RelayCommand]
     public void LineInsertNext()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+
+        index++;
+        if (index > LrcLines.Count())
+        {
+            index = LrcLines.Count();
+        }
+
+        LrcLines.Insert(index, new ObservableLrcLine()
+        {
+            LrcTime = TimeSpan.Zero,
+            LrcText = string.Empty,
+        });
+        SelectedlrcLine = LrcLines[index];
     }
 
     [RelayCommand]
@@ -959,11 +1006,6 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    public void DeleteLine()
-    {
-    }
-
-    [RelayCommand]
     public void ResetCurrentTimeMark()
     {
         if (SelectedlrcLine == null)
@@ -994,16 +1036,6 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    public void AddLine()
-    {
-    }
-
-    [RelayCommand]
-    public void RemoveLine()
-    {
-    }
-
-    [RelayCommand]
     public void MoveUpLine()
     {
     }
@@ -1016,6 +1048,23 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public void ShowInfo()
     {
+    }
+
+    [RelayCommand]
+    public void RemoveLine()
+    {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+        LrcLines.RemoveAt(index);
     }
 
     /// <summary>

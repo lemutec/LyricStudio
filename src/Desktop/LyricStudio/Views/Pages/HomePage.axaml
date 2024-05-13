@@ -479,7 +479,7 @@
                                                                Text="{x:Static fui:FontSymbols.RepeatAll}" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
-                                            <MenuItem Command="{Binding DeleteLineCommand}"
+                                            <MenuItem Command="{Binding RemoveLineCommand}"
                                                       FontSize="12"
                                                       Header="删除行">
                                                 <MenuItem.Icon>
@@ -830,7 +830,7 @@
                             Height="30"
                             Margin="0,8,0,0"
                             Padding="0"
-                            Command="{Binding AddLineCommand}"
+                            Command="{Binding LineInsertNextCommand}"
                             IsVisible="{Binding Mode, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter={x:Static vm:LyricEditMode.ListView}}"
                             ToolTip.Tip="插入行（选中行之后）">
                         <Button.Content>
