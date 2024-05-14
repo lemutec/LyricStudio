@@ -48,4 +48,12 @@ public partial class HomePage : UserControl
     {
         ViewModel.PlaySeekLyric();
     }
+
+    private void OnLyricListBoxKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Space)
+        {
+            ViewModel.PlaySeekLyric();
+        }
+    }
 }

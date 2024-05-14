@@ -22,6 +22,7 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="QRCoder" Version="1.5.1" />
+		<PackageReference Include="Markdown.Avalonia.Tight" Version="11.0.2" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Fischless.Win32\Fischless.Win32.csproj" />

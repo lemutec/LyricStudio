@@ -7,6 +7,11 @@ public class FluentWindow : Window
 {
     public FluentWindow()
     {
+        ApplyFluentStyling();
+    }
+
+    private void ApplyFluentStyling()
+    {
         _ = WindowBackdrop.PrepareBackground(this, WindowBackdropType.Mica);
         _ = WindowBackdrop.ApplyBackdrop(this, WindowBackdropType.Mica);
         Activated += OnActivated;

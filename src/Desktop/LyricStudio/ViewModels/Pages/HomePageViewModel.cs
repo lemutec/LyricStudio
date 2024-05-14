@@ -30,6 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
+using Fischless.Design.Controls;
 
 namespace LyricStudio.ViewModels;
 
@@ -500,7 +501,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    public void Play()
+    public void PlayOrPause()
     {
         if (!IsMediaAvailable)
         {
@@ -526,10 +527,18 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                 IsPlaying = true;
                 AudioPlayer.Volume = (int)(Volume * 100d);
                 AudioPlayer.Rate = Rate;
-                IsPlaying = true;
                 AudioPlayer.Play();
                 break;
         }
+    }
+
+    [RelayCommand]
+    public void Play()
+    {
+        IsPlaying = true;
+        AudioPlayer.Volume = (int)(Volume * 100d);
+        AudioPlayer.Rate = Rate;
+        AudioPlayer.Play();
     }
 
     [RelayCommand]
@@ -872,11 +881,14 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         if (Mode == LyricEditMode.ListView)
         {
             string? text = string.Join(Environment.NewLine, LrcLines.Select(l => l.ToString()));
-            await App.GetService<IClipboardService>().SetTextAsync(text ?? string.Empty);
+
+            await App.GetService<IClipboardService>()
+                .SetTextAsync(text ?? string.Empty);
         }
         else if (Mode == LyricEditMode.TextBox)
         {
-            await App.GetService<IClipboardService>().SetTextAsync(LyricText ?? string.Empty);
+            await App.GetService<IClipboardService>()
+                .SetTextAsync(LyricText ?? string.Empty);
         }
     }
 
@@ -952,9 +964,9 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         int index = LrcLines.IndexOf(SelectedlrcLine);
 
         index++;
-        if (index > LrcLines.Count())
+        if (index > LrcLines.Count)
         {
-            index = LrcLines.Count();
+            index = LrcLines.Count;
         }
 
         LrcLines.Insert(index, new ObservableLrcLine()
@@ -1008,7 +1020,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
         int index = LrcLines.IndexOf(SelectedlrcLine);
 
-        if (index + 1 >= LrcLines.Count())
+        if (index + 1 >= LrcLines.Count)
         {
             return;
         }
@@ -1066,23 +1078,100 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    public void CutLine()
+    public async Task CutLine()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        await App.GetService<IClipboardService>()
+            .SetTextAsync(SelectedlrcLine.ToString() ?? string.Empty);
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+        LrcLines.RemoveAt(index);
     }
 
     [RelayCommand]
-    public void CopyLine()
+    public async Task CopyLine()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        await App.GetService<IClipboardService>()
+            .SetTextAsync(SelectedlrcLine.ToString() ?? string.Empty);
     }
 
     [RelayCommand]
-    public void PasteLine()
+    public async Task PasteLine()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        string? text = await App.GetService<IClipboardService>().GetTextAsync();
+
+        if (text != null)
+        {
+            IEnumerable<LrcLine> lines = LrcHelper.ParseText(text);
+
+            if (lines.Any())
+            {
+                LrcLine line = lines.First();
+
+                if (line.LrcTime.HasValue)
+                {
+                    SelectedlrcLine.LrcTime = line.LrcTime;
+                }
+                SelectedlrcLine.LrcText = line.LrcText;
+            }
+        }
     }
 
     [RelayCommand]
     public void RepeatLine()
     {
+        if (SelectedlrcLine == null)
+        {
+            return;
+        }
+
+        if (Mode != LyricEditMode.ListView)
+        {
+            return;
+        }
+
+        int index = LrcLines.IndexOf(SelectedlrcLine);
+
+        index++;
+        if (index > LrcLines.Count)
+        {
+            index = LrcLines.Count;
+        }
+
+        LrcLines.Insert(index, new ObservableLrcLine()
+        {
+            LrcTime = SelectedlrcLine.LrcTime,
+            LrcText = SelectedlrcLine.LrcText,
+        });
     }
 
     [RelayCommand]
@@ -1106,13 +1195,15 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    public void Undo()
+    public async Task Undo()
     {
+        await MessageBox.WarnAsync(new NotSupportedException().Message, "Undo");
     }
 
     [RelayCommand]
-    public void Redo()
+    public async Task Redo()
     {
+        await MessageBox.WarnAsync(new NotSupportedException().Message, "Redo");
     }
 
     [RelayCommand]
@@ -1154,7 +1245,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
         int index = LrcLines.IndexOf(SelectedlrcLine);
 
-        if (index + 1 >= LrcLines.Count())
+        if (index + 1 >= LrcLines.Count)
         {
             return;
         }

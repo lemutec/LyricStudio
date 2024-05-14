@@ -90,7 +90,7 @@
                                             Height="34"
                                             Margin="8,0,0,0"
                                             Padding="1"
-                                            Command="{Binding PlayCommand}"
+                                            Command="{Binding PlayOrPauseCommand}"
                                             CornerRadius="9"
                                             ToolTip.Tip="播放/暂停">
                                         <Button.Content>
@@ -340,6 +340,7 @@
                                          CornerRadius="5"
                                          DoubleTapped="OnLyricListBoxDoubleTapped"
                                          ItemsSource="{Binding LrcLines}"
+                                         KeyDown="OnLyricListBoxKeyDown"
                                          SelectedItem="{Binding SelectedlrcLine}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
