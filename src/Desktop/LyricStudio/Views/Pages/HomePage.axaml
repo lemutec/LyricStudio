@@ -783,7 +783,7 @@
                                 </MenuItem>
                                 <MenuItem Command="{Binding FixKanjiCommand}"
                                           FontSize="12"
-                                          Header="纠正日文汉字">
+                                          Header="日文纠正汉字">
                                     <MenuItem.Icon>
                                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                    FontSize="14"

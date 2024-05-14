@@ -1,4 +1,4 @@
-﻿namespace Romanization;
+﻿namespace Fischless.Romanization;
 
 /// <summary>
 /// The class for romanizing Japanese text. (Rōmaji)

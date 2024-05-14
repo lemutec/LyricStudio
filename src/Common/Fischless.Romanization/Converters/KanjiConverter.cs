@@ -1,5 +1,4 @@
-﻿using Kawazu;
-using System.Text;
+﻿using System.Text;
 
 namespace Fischless.Romanization;
 

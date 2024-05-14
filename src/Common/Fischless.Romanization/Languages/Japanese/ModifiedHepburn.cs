@@ -1,7 +1,7 @@
 ﻿using Fischless.Romanization.Internal;
 using System.Diagnostics.Contracts;
 
-namespace Romanization;
+namespace Fischless.Romanization;
 
 public static partial class Japanese
 {
