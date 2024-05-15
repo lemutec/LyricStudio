@@ -1,6 +1,8 @@
 # FFME.Avalonia
 
-Ported from [WangsYi/ffme.avalonia](WangsYi/ffme.avalonia).
+Audio Player Ported from [WangsYi/ffme.avalonia](WangsYi/ffme.avalonia).
+
+VideoRender is disabled at [VideoRenderer](FFME.Avalonia/Rendering/VideoRenderer.cs).
 
 ## Install FFmpeg
 

@@ -1,14 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Threading;
 using FFME.Avalonia.Common;
-using System.Runtime.InteropServices;
 
 namespace FFME.Rendering;
 
 using Container;
-using Diagnostics;
 using Engine;
 using FFmpeg.AutoGen;
 using Platform;
@@ -99,6 +96,7 @@ internal sealed class VideoRenderer : VideoRendererBase
         var block = BeginRenderingCycle(mediaBlock);
         if (block == null) return;
 
+#if false
         Dispatcher.UIThread.Invoke(() =>
         {
             try
@@ -137,6 +135,7 @@ internal sealed class VideoRenderer : VideoRendererBase
             }
         },
         DispatcherPriority.Normal);
+#endif
     }
 
     #endregion MediaRenderer Methods
