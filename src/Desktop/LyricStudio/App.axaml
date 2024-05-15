@@ -5,13 +5,6 @@
              xmlns:sty="using:FluentAvalonia.Styling"
              RequestedThemeVariant="Default">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="avares://LoadingIndicators.Avalonia/LoadingIndicators.axaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
     <Application.Styles>
         <FluentTheme />
         <sty:FluentAvaloniaTheme PreferUserAccentColor="True" />

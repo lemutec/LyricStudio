@@ -44,7 +44,6 @@
 		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="TagLibSharp" Version="2.3.0" />
-		<PackageReference Include="LoadingIndicators.Avalonia" Version="11.0.10" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Ude.NetStandard" Version="1.2.0" />
 		<PackageReference Include="GuiLabs.Undo" Version="1.0.2" />

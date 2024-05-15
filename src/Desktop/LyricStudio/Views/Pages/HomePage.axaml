@@ -7,7 +7,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fui="urn:fischless.design"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:li="using:LoadingIndicators.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mui="urn:fischless.globalization"
              xmlns:player="using:LyricStudio.Core.Player"
@@ -243,9 +242,9 @@
                             CornerRadius="5"
                             IsVisible="{Binding MusicFilePath, Converter={StaticResource IsNullOrEmptyStringInvertConverter}}">
                         <Grid>
-                            <li:LoadingIndicator IsActive="{Binding IsReading, Mode=OneWay}}"
-                                                 Mode="Arc"
-                                                 SpeedRatio="3" />
+                            <fui:LoadingIndicator IsActive="{Binding IsReading, Mode=OneWay}}"
+                                                  Mode="Arc"
+                                                  SpeedRatio="3" />
                             <ScrollViewer Width="168" IsVisible="{Binding IsReading, Mode=OneWay, Converter={StaticResource BoolInverter}}">
                                 <Grid Margin="8"
                                       HorizontalAlignment="Center"

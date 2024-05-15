@@ -1,0 +1,94 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:Fischless.Design.Controls">
+
+    <Design.PreviewWith>
+        <Border Width="128"
+                Height="128"
+                Background="#333333">
+            <c:LoadingIndicator BorderBrush="DarkRed"
+                                BorderThickness="1"
+                                Foreground="Chartreuse"
+                                IsActive="True"
+                                Mode="Arc"
+                                SpeedRatio="1"
+                                Theme="{DynamicResource Arc}" />
+        </Border>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="Arc" TargetType="c:LoadingIndicator">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="#CC119EDA" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="MinWidth" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MaxWidth" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="ClipToBounds" Value="True" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        IsVisible="{TemplateBinding IsActive}">
+
+                    <Grid Background="Transparent">
+                        <Grid.RenderTransform>
+                            <ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+                        </Grid.RenderTransform>
+
+                        <Canvas Opacity="0.7">
+                            <Canvas.Styles>
+                                <Style Selector="c|LoadingIndicator:inactive /template/ Canvas" />
+
+                                <Style Selector="c|LoadingIndicator:active /template/ Canvas">
+                                    <Style.Animations>
+                                        <Animation IterationCount="Infinite"
+                                                   SpeedRatio="{Binding $parent[c:LoadingIndicator].SpeedRatio}"
+                                                   Duration="0:0:3.000">
+
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="RotateTransform.Angle" Value="0" />
+                                            </KeyFrame>
+
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="RotateTransform.Angle" Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                    </Style.Animations>
+                                </Style>
+                            </Canvas.Styles>
+
+                            <Path Stroke="{TemplateBinding Foreground}" StrokeThickness="5">
+
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathGeometry.Transform>
+                                            <TranslateTransform X="15" Y="-1" />
+                                        </PathGeometry.Transform>
+
+                                        <PathGeometry.Figures>
+                                            <PathFigure IsClosed="False" StartPoint="0,0">
+
+                                                <PathFigure.Segments>
+                                                    <ArcSegment IsLargeArc="True"
+                                                                Point="16,16"
+                                                                Size="16,16"
+                                                                SweepDirection="CounterClockwise" />
+                                                </PathFigure.Segments>
+                                            </PathFigure>
+                                        </PathGeometry.Figures>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>
