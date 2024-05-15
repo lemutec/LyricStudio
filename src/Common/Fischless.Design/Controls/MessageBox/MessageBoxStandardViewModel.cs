@@ -184,9 +184,9 @@ public partial class MessageBoxStandardViewModel : AbstractMessageBoxViewModel
         CloseRequested?.Invoke(Result);
     }
 
-    public void SetButtonResult(MessageBoxResult bdName)
+    public void SetButtonResult(MessageBoxResult result)
     {
-        Result = bdName;
+        Result = result;
     }
 
     public async void ButtonClick(string parameter)

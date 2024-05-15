@@ -122,7 +122,7 @@ public static class MessageBox
             });
 
         await messageBox.ShowDialog(owner);
-        return MessageBoxResult.None;
+        return messageBox.Result;
     }
 
     private static Window? GetActiveWindow()
