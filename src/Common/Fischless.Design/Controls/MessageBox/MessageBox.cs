@@ -6,98 +6,98 @@ namespace Fischless.Design.Controls;
 
 public static class MessageBox
 {
-    public static Task<MessageBoxResult> InfoAsync(string messageBoxText)
-        => ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> InfoAsync(string messageBoxText)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> InfoAsync(string messageBoxText, string caption)
-     => ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> InfoAsync(string messageBoxText, string caption)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> InfoAsync(string messageBoxText, string caption, MessageBoxButton button)
-     => ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> InfoAsync(string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> InfoAsync(Window? owner, string messageBoxText)
-      => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> InfoAsync(Window? owner, string messageBoxText)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> InfoAsync(Window? owner, string messageBoxText, string caption)
-      => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> InfoAsync(Window? owner, string messageBoxText, string caption)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> InfoAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
-        => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> InfoAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> WarnAsync(string messageBoxText)
-        => ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Warning);
+    public static async Task<MessageBoxResult> WarnAsync(string messageBoxText)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Warning);
 
-    public static Task<MessageBoxResult> WarnAsync(string messageBoxText, string caption)
-     => ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
+    public static async Task<MessageBoxResult> WarnAsync(string messageBoxText, string caption)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
 
-    public static Task<MessageBoxResult> WarnAsync(string messageBoxText, string caption, MessageBoxButton button)
-     => ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Warning);
+    public static async Task<MessageBoxResult> WarnAsync(string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Warning);
 
-    public static Task<MessageBoxResult> WarnAsync(Window? owner, string messageBoxText)
-      => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Warning);
+    public static async Task<MessageBoxResult> WarnAsync(Window? owner, string messageBoxText)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Warning);
 
-    public static Task<MessageBoxResult> WarnAsync(Window? owner, string messageBoxText, string caption)
-      => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
+    public static async Task<MessageBoxResult> WarnAsync(Window? owner, string messageBoxText, string caption)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
 
-    public static Task<MessageBoxResult> WarnAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
-        => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Warning);
+    public static async Task<MessageBoxResult> WarnAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Warning);
 
-    public static Task<MessageBoxResult> ErrorAsync(string messageBoxText)
-        => ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Error);
+    public static async Task<MessageBoxResult> ErrorAsync(string messageBoxText)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Error);
 
-    public static Task<MessageBoxResult> ErrorAsync(string messageBoxText, string caption)
-     => ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+    public static async Task<MessageBoxResult> ErrorAsync(string messageBoxText, string caption)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
 
-    public static Task<MessageBoxResult> ErrorAsync(string messageBoxText, string caption, MessageBoxButton button)
-     => ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Error);
+    public static async Task<MessageBoxResult> ErrorAsync(string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Error);
 
-    public static Task<MessageBoxResult> ErrorAsync(Window? owner, string messageBoxText)
-      => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Error);
+    public static async Task<MessageBoxResult> ErrorAsync(Window? owner, string messageBoxText)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Error);
 
-    public static Task<MessageBoxResult> ErrorAsync(Window? owner, string messageBoxText, string caption)
-      => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+    public static async Task<MessageBoxResult> ErrorAsync(Window? owner, string messageBoxText, string caption)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
 
-    public static Task<MessageBoxResult> ErrorAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
-        => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Error);
+    public static async Task<MessageBoxResult> ErrorAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Error);
 
-    public static Task<MessageBoxResult> QuestionAsync(string messageBoxText)
-        => ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.YesNo, MessageBoxImage.Question);
+    public static async Task<MessageBoxResult> QuestionAsync(string messageBoxText)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-    public static Task<MessageBoxResult> QuestionAsync(string messageBoxText, string caption)
-     => ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+    public static async Task<MessageBoxResult> QuestionAsync(string messageBoxText, string caption)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-    public static Task<MessageBoxResult> QuestionAsync(string messageBoxText, string caption, MessageBoxButton button)
-     => ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Question);
+    public static async Task<MessageBoxResult> QuestionAsync(string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Question);
 
-    public static Task<MessageBoxResult> QuestionAsync(Window? owner, string messageBoxText)
-      => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.YesNo, MessageBoxImage.Question);
+    public static async Task<MessageBoxResult> QuestionAsync(Window? owner, string messageBoxText)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-    public static Task<MessageBoxResult> QuestionAsync(Window? owner, string messageBoxText, string caption)
-      => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+    public static async Task<MessageBoxResult> QuestionAsync(Window? owner, string messageBoxText, string caption)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-    public static Task<MessageBoxResult> QuestionAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
-        => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Question);
+    public static async Task<MessageBoxResult> QuestionAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Question);
 
-    public static Task<MessageBoxResult> ShowAsync(string messageBoxText)
-        => ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> ShowAsync(string messageBoxText)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> ShowAsync(string messageBoxText, string caption)
-        => ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> ShowAsync(string messageBoxText, string caption)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> ShowAsync(string messageBoxText, string caption, MessageBoxButton button)
-        => ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> ShowAsync(string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> ShowAsync(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
-        => ShowAsync(GetActiveWindow(), messageBoxText, caption, button, icon);
+    public static async Task<MessageBoxResult> ShowAsync(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
+        => await ShowAsync(GetActiveWindow(), messageBoxText, caption, button, icon);
 
-    public static Task<MessageBoxResult> ShowAsync(Window? owner, string messageBoxText)
-        => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> ShowAsync(Window? owner, string messageBoxText)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, null, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> ShowAsync(Window? owner, string messageBoxText, string caption)
-        => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> ShowAsync(Window? owner, string messageBoxText, string caption)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    public static Task<MessageBoxResult> ShowAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
-        => ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Information);
+    public static async Task<MessageBoxResult> ShowAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button)
+        => await ShowAsync(owner ?? GetActiveWindow(), messageBoxText, caption, button, MessageBoxImage.Information);
 
     public static async Task<MessageBoxResult> ShowAsync(Window? owner, string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
     {
@@ -129,8 +129,7 @@ public static class MessageBox
     {
         if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            return desktop.Windows
-                .FirstOrDefault(window => window.IsActive && window.ShowActivated);
+            return desktop.Windows.FirstOrDefault(window => window.IsActive && window.ShowActivated) ?? desktop.MainWindow;
         }
 
         return null;

@@ -1584,7 +1584,8 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         }
         else
         {
-            await MessageBox.ErrorAsync("the clipboard content is not a share link");
+            await Task.Delay(1); // Waiting for context menu closed
+            Toast.Error("剪贴板未包含分享链接");
         }
     }
 }

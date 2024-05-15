@@ -13,6 +13,7 @@ public static class LoadingBox
     {
         owner ??= GetActiveWindow();
 
+        // TODO: messageBoxText/caption
         LoadingDialog dialog = new()
         {
             Icon = owner?.Icon,
@@ -27,8 +28,7 @@ public static class LoadingBox
     {
         if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            return desktop.Windows
-                .FirstOrDefault(window => window.IsActive && window.ShowActivated);
+            return desktop.Windows.FirstOrDefault(window => window.IsActive && window.ShowActivated) ?? desktop.MainWindow;
         }
 
         return null;

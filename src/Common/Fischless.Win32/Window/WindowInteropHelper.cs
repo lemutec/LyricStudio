@@ -1,5 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Platform;
+using Avalonia.VisualTree;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Versioning;
@@ -53,5 +55,46 @@ public sealed class WindowInteropHelper
                 Handle = handle;
             }
         }
+    }
+
+    public WindowInteropHelper(TopLevel topLevel)
+    {
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+        {
+            if (topLevel is Window window)
+            {
+                _window = window;
+
+                IWindowBaseImpl? platformImpl = window.PlatformImpl;
+
+                if (platformImpl.GetType().GetProperty("Hwnd", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(platformImpl) is nint handle)
+                {
+                    Handle = handle;
+                }
+            }
+            else
+            {
+                if (topLevel.PlatformImpl is IPopupImpl popupImpl)
+                {
+                    if (popupImpl.GetType().GetProperty("Hwnd", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(popupImpl) is nint handle)
+                    {
+                        Handle = handle;
+                    }
+                }
+            }
+        }
+    }
+
+    public static nint GetHwndForControl(Control control)
+    {
+        if (control is TopLevel)
+        {
+            return new WindowInteropHelper(control as TopLevel).Handle;
+        }
+        else if (control is Visual visual && visual.GetVisualRoot() is TopLevel topLevel)
+        {
+            return new WindowInteropHelper(topLevel).Handle;
+        }
+        return IntPtr.Zero;
     }
 }
