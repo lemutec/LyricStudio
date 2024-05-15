@@ -1584,7 +1584,7 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         }
         else
         {
-            // TODO: Tell you that the clipboard content is not a share link
+            await MessageBox.ErrorAsync("the clipboard content is not a share link");
         }
     }
 }
