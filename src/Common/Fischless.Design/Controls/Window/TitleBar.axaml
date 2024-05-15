@@ -1,0 +1,69 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:Fischless.Design.Controls">
+    <Design.PreviewWith>
+        <Border Width="32"
+                Height="32"
+                Background="#333333">
+            <c:TitleBar />
+        </Border>
+    </Design.PreviewWith>
+    <ControlTheme x:Key="TitleBarx" TargetType="c:TitleBar">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="16,4,16,4" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Height" Value="48" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Top"
+                          Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Margin="{TemplateBinding Padding}"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Custom application icon  -->
+                            <ContentPresenter Height="16"
+                                              Margin="0,0,12,0"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Icon}"
+                                              Focusable="False" />
+
+                            <!--  Main application title  -->
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       Text="{TemplateBinding Title}" />
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Additional header content  -->
+                            <ContentPresenter Grid.Column="1"
+                                              HorizontalAlignment="Right"
+                                              Content="{TemplateBinding Header}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>
