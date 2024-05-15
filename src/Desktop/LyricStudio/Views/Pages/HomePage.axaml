@@ -242,7 +242,8 @@
                             CornerRadius="5"
                             IsVisible="{Binding MusicFilePath, Converter={StaticResource IsNullOrEmptyStringInvertConverter}}">
                         <Grid>
-                            <fui:LoadingIndicator IsActive="{Binding IsReading, Mode=OneWay}}"
+                            <fui:LoadingIndicator BorderThickness="1"
+                                                  IsActive="{Binding IsReading, Mode=OneWay}}"
                                                   Mode="Arc"
                                                   SpeedRatio="3" />
                             <ScrollViewer Width="168" IsVisible="{Binding IsReading, Mode=OneWay, Converter={StaticResource BoolInverter}}">
