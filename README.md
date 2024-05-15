@@ -10,7 +10,7 @@ Support to get lyrics from NetEase Cloud, etc.
 
 Base on Avalonia.
 
-Support Windows OS and Mac OS.
+Support Windows OS and Mac OS (Coming soon ...).
 
 ## Thanks
 
