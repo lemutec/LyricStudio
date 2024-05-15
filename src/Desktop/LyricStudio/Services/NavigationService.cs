@@ -1,5 +1,4 @@
-﻿using Fischless.Design.Controls;
-using FluentAvalonia.Core;
+﻿using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Media.Animation;
 using LyricStudio.Views;
@@ -27,23 +26,37 @@ public sealed class NavigationService : INavigationService
     public void SetNavigationView(NavigationView navigationView)
     {
         NavigationView = navigationView;
-        NavigationView.SelectionChanged += NavigationView_SelectionChanged;
+        NavigationView.ItemInvoked += NavigationView_ItemInvoked;
+    }
+
+    private void NavigationView_ItemInvoked(object? sender, NavigationViewItemInvokedEventArgs e)
+    {
+        Navigate((e.InvokedItemContainer as NavigationViewItem).Tag as Type);
     }
 
     public void Navigate(Type navigateTo, object? extraData = null)
     {
-        var types = NavigationView.MenuItems.Select(o => (o as NavigationViewItem).Tag as Type);
-        NavigationView.SelectedItem = NavigationView.MenuItems[types.IndexOf(navigateTo)];
+        {
+            var types = NavigationView.MenuItems.Select(o => (o as NavigationViewItem).Tag as Type);
+
+            if (types.Contains(navigateTo))
+            {
+                NavigationView.SelectedItem = NavigationView.MenuItems[types.IndexOf(navigateTo)];
+            }
+        }
+        {
+            var types = NavigationView.FooterMenuItems.Select(o => (o as NavigationViewItem).Tag as Type);
+
+            if (types.Contains(navigateTo))
+            {
+                NavigationView.SelectedItem = NavigationView.FooterMenuItems[types.IndexOf(navigateTo)];
+            }
+        }
         Frame?.Navigate(navigateTo, extraData, ContentTransitions);
     }
 
     public void Navigate(NavigationViewItemInvokedEventArgs e)
     {
         throw new NotImplementedException();
-    }
-
-    private void NavigationView_SelectionChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
-    {
-        Navigate((e.SelectedItem as NavigationViewItem).Tag as Type);
     }
 }

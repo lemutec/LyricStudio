@@ -68,6 +68,7 @@ public partial class App : Application
             services.AddView<HomePage, HomePageViewModel>();
             services.AddView<MediaInfoPage, MediaInfoPageViewModel>();
             services.AddView<PluginPage, PluginPageViewModel>();
+            services.AddView<SettingsPage, SettingsPageViewModel>();
             services.AddDialog<ShareDialog, ShareDialogViewModel>();
             services.AddDialog<ShiftTimecodeDialog, ShiftTimecodeDialogViewModel>();
             services.AddDialog<RomanizationDialog, RomanizationDialogViewModel>();

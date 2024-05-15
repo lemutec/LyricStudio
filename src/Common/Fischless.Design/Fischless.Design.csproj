@@ -25,6 +25,6 @@
 		<PackageReference Include="Markdown.Avalonia.Tight" Version="11.0.2" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Fischless.Win32\Fischless.Win32.csproj" />
+		<ProjectReference Include="..\Fischless.Win32\Fischless.Win32.csproj" />
 	</ItemGroup>
 </Project>
