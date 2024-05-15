@@ -5,7 +5,10 @@
              xmlns:local="clr-namespace:Fischless.Design.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <Border Background="#333" CornerRadius="8">
+    <Border Background="#2B2B2B"
+            BorderBrush="#1B1B1B"
+            BorderThickness="1"
+            CornerRadius="8">
         <Grid Margin="8"
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
