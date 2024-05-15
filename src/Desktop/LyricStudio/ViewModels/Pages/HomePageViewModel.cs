@@ -1,7 +1,7 @@
-﻿using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Fischless.Design.Controls;
 using Fischless.Linq;
 using Fischless.Linq.Collections;
 using Fischless.Mapper;
@@ -29,8 +29,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Threading.Tasks;
-using Fischless.Design.Controls;
 
 namespace LyricStudio.ViewModels;
 
@@ -43,7 +43,8 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [NotifyPropertyChangedFor(nameof(IsMediaAvailable))]
     private IAudioPlayer audioPlayer = new FFMEAudioPlayer();
 
-    private readonly DispatcherTimer timer = new();
+    private readonly Task timer = null!;
+    private CancellationTokenSource timerTokenSource = null!;
 
     private readonly LrcManager lrcManager = new();
 
@@ -252,9 +253,15 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     [SupportedOSPlatform("Windows")]
     public HomePageViewModel()
     {
-        timer.Tick += (_, _) => OnTick();
-        timer.Interval = TimeSpan.FromMicroseconds(30d);
-        timer.Start();
+        timerTokenSource = new();
+        timer = Task.Factory.StartNew(() =>
+        {
+            while (!timerTokenSource.Token.IsCancellationRequested)
+            {
+                OnTick();
+                Thread.Sleep(30);
+            }
+        }, TaskCreationOptions.LongRunning);
 
         WeakReferenceMessenger.Default.Register<FileDropMessage>(this, async (sender, msg) =>
         {
@@ -266,19 +273,19 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
     public void Dispose()
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
-        timer?.Stop();
+        timerTokenSource?.Cancel();
     }
 
-    private async void OnTick()
+    private void OnTick()
     {
         if (!IsMediaAvailable)
         {
             return;
         }
-        await SyncCurrentLyricAndHightlight();
+        SyncCurrentLyricAndHightlight();
     }
 
-    private async Task SyncCurrentLyricAndHightlight()
+    private void SyncCurrentLyricAndHightlight()
     {
         if (IsShowHighting)
         {
@@ -294,17 +301,11 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
         }
         else
         {
-            //LrcLine line = LrcHelper.GetNearestLrc(LrcLines, TimeSpan.FromSeconds(CurrentTime));
-
-            //CurrentLrcText = line?.LrcText ?? string.Empty;
-
-            LrcLine line = await Task.Run(() =>
+            if (Mode == LyricEditMode.ListView)
             {
-                IEnumerable<LrcLine> lrcLines = LrcLines.Select(l => new LrcLine(l));
-                LrcLine line = LrcHelper.GetNearestLrc(lrcLines, TimeSpan.FromSeconds(CurrentTime));
-                return line;
-            });
-            CurrentLrcText = line?.LrcText ?? string.Empty;
+                LrcLine line = LrcHelper.GetNearestLrc(LrcLines, TimeSpan.FromSeconds(CurrentTime));
+                CurrentLrcText = line?.LrcText ?? string.Empty;
+            }
         }
     }
 
