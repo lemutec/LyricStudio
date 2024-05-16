@@ -11,6 +11,22 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-        <TextBlock Margin="8" Text="敬请期待" />
+        <StackPanel Margin="8" Spacing="10">
+            <Expander MinHeight="46">
+                <Grid>
+                    <TextBlock Text="a" />
+                </Grid>
+            </Expander>
+            <fui:Card MinHeight="46">
+                <Grid>
+                    <TextBlock Text="a" />
+                </Grid>
+            </fui:Card>
+            <fui:CardAction MinHeight="46">
+                <Grid>
+                    <TextBlock Text="a" />
+                </Grid>
+            </fui:CardAction>
+        </StackPanel>
     </Grid>
 </UserControl>

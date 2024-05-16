@@ -8,7 +8,7 @@
             <c:TitleBar />
         </Border>
     </Design.PreviewWith>
-    <ControlTheme x:Key="TitleBarx" TargetType="c:TitleBar">
+    <ControlTheme x:Key="{x:Type c:TitleBar}" TargetType="c:TitleBar">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
         <Setter Property="VerticalAlignment" Value="Top" />
