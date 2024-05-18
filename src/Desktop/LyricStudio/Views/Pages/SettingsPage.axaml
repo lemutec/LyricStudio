@@ -11,22 +11,133 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-        <StackPanel Margin="8" Spacing="10">
-            <Expander MinHeight="46">
-                <Grid>
-                    <TextBlock Text="a" />
-                </Grid>
-            </Expander>
-            <fui:Card MinHeight="46">
-                <Grid>
-                    <TextBlock Text="a" />
-                </Grid>
-            </fui:Card>
-            <fui:CardAction MinHeight="46">
-                <Grid>
-                    <TextBlock Text="a" />
-                </Grid>
-            </fui:CardAction>
-        </StackPanel>
+        <Image MaxWidth="200"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               Opacity="0.5"
+               RenderOptions.BitmapInterpolationMode="HighQuality"
+               Source="/Assets/Images/UI_SummerTimeV2_Img_Island05.png" />
+        <ScrollViewer>
+            <StackPanel Margin="8" Spacing="10">
+                <TextBlock Margin="3,0,0,0"
+                           FontSize="14"
+                           Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                           Text="关于程序" />
+                <fui:Card MinHeight="65">
+                    <Grid ColumnDefinitions="Auto, *">
+                        <Image Grid.Column="0"
+                               Height="30"
+                               Margin="16,0,0,0"
+                               RenderOptions.BitmapInterpolationMode="HighQuality"
+                               Source="/Assets/Images/Favicon.ico" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="13" Text="Lyric Studio" />
+                                    <Border Margin="4,0,0,0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Background="#30FFFFFF"
+                                            CornerRadius="4">
+                                        <TextBlock Padding="4,2,4,2"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="12"
+                                                   Opacity="0.9"
+                                                   Text="预览版" />
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock FontSize="13"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           Text="v0.0.1" />
+                            </StackPanel>
+                            <StackPanel Margin="16,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Button Padding="6,4"
+                                        Command="{Binding CheckUpdateCommand}"
+                                        Content="检查更新"
+                                        FontSize="12" />
+                                <Button Margin="8,0,0,0"
+                                        Padding="6,4"
+                                        Command="{Binding CheckLicenseCommand}"
+                                        Content="许可信息"
+                                        FontSize="12" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </fui:Card>
+                <TextBlock Margin="3,0,0,0"
+                           FontSize="14"
+                           Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                           Text="全局设定" />
+                <fui:Card MinHeight="65">
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <ui:FontIcon MinWidth="30"
+                                     Margin="16,0,0,0"
+                                     FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                     FontSize="24"
+                                     Glyph="{x:Static fui:FontSymbols.LocaleLanguage}" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="16,0,0,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="语言" />
+                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="Language" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2"
+                                    Margin="0,0,24,0"
+                                    VerticalAlignment="Center">
+                            <ComboBox SelectedIndex="{Binding LanguageIndex, Mode=TwoWay}">
+                                <ComboBox.Items>
+                                    <ComboBoxItem Content="简体中文" Tag="zh" />
+                                    <ComboBoxItem Content="日本語" Tag="ja" />
+                                    <ComboBoxItem Content="English" Tag="en" />
+                                </ComboBox.Items>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                </fui:Card>
+                <TextBlock Margin="3,0,0,0"
+                           FontSize="14"
+                           Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                           Text="数据储存" />
+                <fui:CardAction MinHeight="65" Command="{Binding OpenSpecialFolderCommand}">
+                    <Grid ColumnDefinitions="Auto, *">
+                        <ui:FontIcon MinWidth="30"
+                                     Margin="16,0,0,0"
+                                     FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                     FontSize="24"
+                                     Glyph="{x:Static fui:FontSymbols.OpenFolderHorizontal}" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="16,0,0,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="用户数据" />
+                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="本地记录的用户数据" />
+                        </StackPanel>
+                    </Grid>
+                </fui:CardAction>
+                <fui:CardAction MinHeight="65" Command="{Binding OpenLogsFolderCommand}">
+                    <Grid ColumnDefinitions="Auto, *">
+                        <ui:FontIcon MinWidth="30"
+                                     Margin="16,0,0,0"
+                                     FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                     FontSize="24"
+                                     Glyph="{x:Static fui:FontSymbols.OpenFolderHorizontal}" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="16,0,0,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="应用日志" />
+                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="本地记录的应用日志" />
+                        </StackPanel>
+                    </Grid>
+                </fui:CardAction>
+                <!--
+				<Expander MinHeight="60">
+                    <Grid>
+                        <TextBlock Text="" />
+                    </Grid>
+                </Expander>
+                -->
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
