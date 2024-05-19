@@ -6,6 +6,14 @@ Support for translations, Japanese Romanization, Chinese Traditional and Simplif
 
 Support to get lyrics from NetEase Cloud, etc.
 
+## Screen Shot
+
+<img src="./assets/image-20240519081333234.png" alt="image-20240519081333234" style="zoom:50%;" />
+
+<img src="./assets/image-20240519081424946.png" alt="image-20240519081424946" style="zoom:50%;" />
+
+<img src="./assets/image-20240519081355714.png" alt="image-20240519081355714" style="zoom:50%;" />
+
 ## Framework
 
 Base on Avalonia.
