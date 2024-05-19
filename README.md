@@ -1,8 +1,8 @@
 # LyricStudio
 
-LyricStudio is a lyrics editing workstation, you can experience the fluent experience of .lrc format lyrics editing.
+LyricStudio is a lyrics editing workstation for editing `.lrc` format lyrics.
 
-Support for AI and other translations, Japanese romanization, Chinese traditional and simplified conversion, Japanese moji error detection.
+Support for translations, Japanese Romanization, Chinese Traditional and Simplified conversion, etc.
 
 Support to get lyrics from NetEase Cloud, etc.
 
@@ -10,7 +10,7 @@ Support to get lyrics from NetEase Cloud, etc.
 
 Base on Avalonia.
 
-Support Windows OS and Mac OS (Coming soon ...).
+Support Windows 10/11 and MacOS (TBD).
 
 ## Thanks
 
