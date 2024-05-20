@@ -101,33 +101,10 @@ public partial class MessageBoxStandardViewModel : AbstractMessageBoxViewModel
                 ButtonClick(MessageBoxResult.None);
                 return;
 
-            //case MessageBoxResult.Default:
-            //    {
-            //        if (IsCancelShowed)
-            //        {
-            //            ButtonClick(MessageBoxResult.Cancel);
-            //            return;
-            //        }
-
-            //        if (IsAbortShowed)
-            //        {
-            //            ButtonClick(MessageBoxResult.Abort);
-            //            return;
-            //        }
-
-            //        if (IsNoShowed)
-            //        {
-            //            ButtonClick(MessageBoxResult.No);
-            //            return;
-            //        }
-            //    }
-            //    break;
-
             default:
-                throw new ArgumentOutOfRangeException();
+                ButtonClick(MessageBoxResult.None);
+                return;
         }
-
-        ButtonClick(MessageBoxResult.None);
     }
 
     private void EnterClick()

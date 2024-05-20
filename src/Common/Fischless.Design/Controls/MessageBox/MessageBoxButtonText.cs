@@ -21,6 +21,7 @@ public class MessageBoxButtonText
                 MessageBoxResult.No => User32.DialogBoxCommand.IDNO,
                 MessageBoxResult.Abort => User32.DialogBoxCommand.IDABORT,
                 MessageBoxResult.Cancel => User32.DialogBoxCommand.IDCANCEL,
+                _ => User32.DialogBoxCommand.IDIGNORE,
             });
         }
 

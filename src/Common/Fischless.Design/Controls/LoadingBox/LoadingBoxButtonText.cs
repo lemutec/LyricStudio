@@ -13,6 +13,7 @@ public class LoadingBoxButtonText
             return User32.GetString(button switch
             {
                 LoadingBoxResult.Cancel => User32.DialogBoxCommand.IDCANCEL,
+                _ => User32.DialogBoxCommand.IDIGNORE,
             });
         }
 
