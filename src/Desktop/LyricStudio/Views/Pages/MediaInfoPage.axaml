@@ -21,6 +21,6 @@
                  FontSize="12"
                  Text="{Binding MediaInfo}"
                  TextWrapping="Wrap"
-                 Watermark="{mui:Lang MediaInfoDropHint}" />
+                 Watermark="{I18N MediaInfoDropHint}" />
     </Grid>
 </UserControl>

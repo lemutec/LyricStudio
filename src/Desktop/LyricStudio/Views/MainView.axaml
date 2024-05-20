@@ -20,18 +20,18 @@
                            OpenPaneLength="200"
                            PaneDisplayMode="Auto">
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="{mui:Lang HomePage}" Tag="{x:Type views:HomePage}">
+                <ui:NavigationViewItem Content="{I18N HomePage}" Tag="{x:Type views:HomePage}">
                     <ui:NavigationViewItem.IconSource>
                         <!--<ui:SymbolIconSource Symbol="Home" />-->
                         <ui:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="{x:Static fui:FontSymbols.Home}" />
                     </ui:NavigationViewItem.IconSource>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="{mui:Lang MediaInfo}" Tag="{x:Type views:MediaInfoPage}">
+                <ui:NavigationViewItem Content="{I18N MediaInfo}" Tag="{x:Type views:MediaInfoPage}">
                     <ui:NavigationViewItem.IconSource>
                         <ui:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="{x:Static fui:FontSymbols.Tag}" />
                     </ui:NavigationViewItem.IconSource>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="{mui:Lang Plugin}" Tag="{x:Type views:PluginPage}">
+                <ui:NavigationViewItem Content="{I18N Plugin}" Tag="{x:Type views:PluginPage}">
                     <ui:NavigationViewItem.IconSource>
                         <ui:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="{x:Static fui:FontSymbols.Puzzle}" />
                     </ui:NavigationViewItem.IconSource>

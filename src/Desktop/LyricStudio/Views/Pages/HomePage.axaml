@@ -547,7 +547,7 @@
                              Classes="static"
                              FontFamily="avares://Fischless.Design/Assets/Fonts/FiraCode-Regular.ttf#Fira Code, avares://Fischless.Design/Assets/Fonts/MiSans-Regular.ttf#MiSans"
                              Text="{Binding EditinglrcLine, Mode=TwoWay}"
-                             Watermark="{mui:Lang CurrentLyric}" />
+                             Watermark="{I18N CurrentLyric}" />
                 </Grid>
                 <Grid Grid.Row="1"
                       Margin="0,8,0,0"
