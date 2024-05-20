@@ -9,7 +9,7 @@
     </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="LibNMeCab" Version="0.10.1" />
+		<PackageReference Include="LibNMeCab" Version="0.10.2" />
 		<PackageReference Include="LibNMeCab.IpaDicBin" Version="0.10.0" />
 	</ItemGroup>
 	
