@@ -55,7 +55,8 @@ public static partial class LrcHelper
         detector.DataEnd();
 
         string detectedCharset = detector.Charset;
-        return File.ReadAllText(path, Encoding.GetEncoding(detectedCharset));
+        Encoding encoding = string.IsNullOrWhiteSpace(detectedCharset) ? Encoding.UTF8 : Encoding.GetEncoding(detectedCharset);
+        return File.ReadAllText(path, encoding);
     }
 
     public static IEnumerable<LrcLine> ParseText(string text)
