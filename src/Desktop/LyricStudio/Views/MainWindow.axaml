@@ -18,7 +18,7 @@
                   DragDrop.AllowDrop="True"
                   Icon="/Assets/Images/Favicon.ico"
                   SystemDecorations="Full"
-                  WindowStartupLocation="CenterScreen"
+                  WindowStartupLocation="Manual"
                   mc:Ignorable="d">
     <Grid>
         <fui:ServiceLocator Type="{x:Type views:MainView}" />
