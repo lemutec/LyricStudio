@@ -1,3 +1,6 @@
+[![GitHub downloads](https://img.shields.io/github/downloads/lemutec/LyricStudio/total)](https://github.com/lemutec/LyricStudio/releases)
+[![GitHub downloads](https://img.shields.io/github/downloads/lemutec/LyricStudio/latest/total)](https://github.com/lemutec/LyricStudio/releases)
+
 # LyricStudio
 
 LyricStudio is a lyrics editing workstation for editing `.lrc` format lyrics.
