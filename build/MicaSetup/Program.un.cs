@@ -12,8 +12,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("LyricStudio Uninst")]
 [assembly: AssemblyCompany("Lemutec")]
 [assembly: AssemblyCopyright("Under MIT License. Copyright (c) Lemutec Contributors.")]
-[assembly: AssemblyVersion("0.1.1.0")]
-[assembly: AssemblyFileVersion("0.1.1.0")]
+[assembly: AssemblyVersion("0.1.2.0")]
+[assembly: AssemblyFileVersion("0.1.2.0")]
 
 namespace MicaSetup;
 
@@ -45,7 +45,7 @@ internal class Program
                 option.KeyName = "LyricStudio";
                 option.DisplayName = "LyricStudio";
                 option.DisplayIcon = "LyricStudio.exe";
-                option.DisplayVersion = "2.0.1.0";
+                option.DisplayVersion = "0.1.2.0";
                 option.Publisher = "Lemutec";
                 option.AppName = "LyricStudio";
                 option.SetupName = $"LyricStudio {Mui("UninstallProgram")}";
