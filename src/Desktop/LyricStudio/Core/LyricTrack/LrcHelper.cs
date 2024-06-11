@@ -34,7 +34,7 @@ public static partial class LrcHelper
     /// <summary>
     /// Such as [al:album]
     /// </summary>
-    [GeneratedRegex(@"\[\w+\:.+\]")]
+    [GeneratedRegex(@"\[\w+\:.*\]")]
     public static partial Regex LrcInfoRegex();
 
     /// <summary>
@@ -108,16 +108,7 @@ public static partial class LrcHelper
                     {
                         string lrc = LyricRegex().Match(line).ToString();
 
-                        foreach (string match in matches)
-                        {
-                            lrcList.Add(
-                                new LrcLine(
-                                    ParseTimeSpan(match.ToString().Trim('[', ']')),
-                                    lrc
-                                )
-                            );
-                        }
-
+                        lrcList.AddRange(matches.Select(match => new LrcLine(ParseTimeSpan(match.ToString().Trim('[', ']')), lrc)));
                         multiLrc = true;
                     }
                     // Normal line like [00:00.000]
@@ -128,9 +119,7 @@ public static partial class LrcHelper
                     // Info line
                     else if (LrcInfoRegex().IsMatch(line))
                     {
-                        lrcList.Add(
-                            new LrcLine(null, LrcInfoRegex().Match(line).ToString().Trim('[', ']'))
-                        );
+                        lrcList.Add(new LrcLine(null, LrcInfoRegex().Match(line).ToString().Trim('[', ']')));
                     }
                     // Not an empty line but no any timecode was found, so add an empty timecode
                     else

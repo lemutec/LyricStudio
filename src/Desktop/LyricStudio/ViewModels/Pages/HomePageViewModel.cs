@@ -323,7 +323,9 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
 
             if (lyricFile == null)
             {
-                lyricFile = fileNames.Where(f => !string.IsNullOrWhiteSpace(f) && (new FileInfo(f).Extension?.Equals(".ass", StringComparison.OrdinalIgnoreCase) ?? false)).FirstOrDefault();
+                lyricFile = fileNames.Where(f => !string.IsNullOrWhiteSpace(f) &&
+                    ((new FileInfo(f).Extension?.Equals(".ass", StringComparison.OrdinalIgnoreCase) ?? false)
+                    || (new FileInfo(f).Extension?.Equals(".krc", StringComparison.OrdinalIgnoreCase) ?? false))).FirstOrDefault();
             }
 
             if (lyricFile == null && musicFile == null)
@@ -387,6 +389,20 @@ public partial class HomePageViewModel : ObservableObject, IDisposable
                 if (Path.GetExtension(lyricFile).Equals(".ass", StringComparison.OrdinalIgnoreCase))
                 {
                     if (Ass2lrc.AssToLyric(LrcHelper.ReadAllText(lyricFile), out string lyricText))
+                    {
+                        lyricFile = Path.ChangeExtension(lyricFile, "lrc");
+
+                        LyricText = lyricText;
+                        IsSaved = false;
+                    }
+                    else
+                    {
+                        lyricFile = null;
+                    }
+                }
+                else if (Path.GetExtension(lyricFile).Equals(".krc", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (Krc2lrc.KrcToLyric(File.ReadAllBytes(lyricFile), out string lyricText))
                     {
                         lyricFile = Path.ChangeExtension(lyricFile, "lrc");
 

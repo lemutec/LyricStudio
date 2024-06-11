@@ -7,6 +7,7 @@ namespace LyricStudio.Core.LyricTrack;
 public partial class LrcManager
 {
     /// <summary>
+    /// TODO
     /// https://github.com/KirillOsenkov/Undo/blob/main/src/MinimalSample/Program.cs
     /// </summary>
     private readonly ActionManager actionManager = new();

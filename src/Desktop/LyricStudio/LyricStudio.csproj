@@ -47,6 +47,7 @@
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Ude.NetStandard" Version="1.2.0" />
 		<PackageReference Include="GuiLabs.Undo" Version="1.0.2" />
+		<PackageReference Include="SharpZipLib" Version="1.4.2" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(DefineConstants.Contains(VLC))'">
 		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
