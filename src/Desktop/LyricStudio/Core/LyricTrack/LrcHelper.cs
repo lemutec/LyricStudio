@@ -11,7 +11,7 @@ namespace LyricStudio.Core.LyricTrack;
 
 public static partial class LrcHelper
 {
-    public static HashSet<string> LyricExtensions { get; } = [".lrc", ".txt", ".ass"];
+    public static HashSet<string> LyricExtensions { get; } = [".lrc", ".krc", ".txt", ".ass"];
 
     /// <summary>
     /// Clear all Time Mark [00:00.000]
