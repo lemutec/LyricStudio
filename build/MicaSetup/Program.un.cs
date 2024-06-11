@@ -12,8 +12,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("LyricStudio Uninst")]
 [assembly: AssemblyCompany("Lemutec")]
 [assembly: AssemblyCopyright("Under MIT License. Copyright (c) Lemutec Contributors.")]
-[assembly: AssemblyVersion("0.0.1.0")]
-[assembly: AssemblyFileVersion("0.0.1.0")]
+[assembly: AssemblyVersion("0.1.1.0")]
+[assembly: AssemblyFileVersion("0.1.1.0")]
 
 namespace MicaSetup;
 

@@ -13,7 +13,6 @@ for /f "usebackq delims=" %%i in (`powershell -NoLogo -NoProfile -Command ^"%scr
 echo currnet version is %version%
 cd /d %~dp0
 
-set version=0.1.0.0
 echo [build app using vs2022]
 cd ..\src\
 dotnet restore
