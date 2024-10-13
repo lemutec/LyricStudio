@@ -43,7 +43,7 @@ public static partial class MuiLanguage
 
             if (cultureInfo.NumberFormat.NumberDecimalSeparator != ".")
             {
-                Debug.WriteLine($"[MuiLanguageManager] Protect number decimal seprator from diff culture '{cultureInfo.TwoLetterISOLanguageName}', so set culture to 'en'.");
+                Debug.WriteLine($"[MuiLanguageManager] Protect number decimal separator from diff culture '{cultureInfo.TwoLetterISOLanguageName}', so set culture to 'en'.");
                 Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
             }
             else
