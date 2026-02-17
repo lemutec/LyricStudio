@@ -19,7 +19,7 @@
 		<Watch Include="**\*.axaml" />
 	</ItemGroup>
 	<PropertyGroup>
-		<AvaloniaVersion>11.1.0-beta1</AvaloniaVersion>
+		<AvaloniaVersion>11.1.0</AvaloniaVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
