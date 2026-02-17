@@ -1,0 +1,52 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Common/">
+    <Project Path="Common/Fischless.Design/Fischless.Design.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Common/Fischless.Globalization/Fischless.Globalization.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Common/Fischless.Linq/Fischless.Linq.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Common/Fischless.Mapper/Fischless.Mapper.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Common/Fischless.Mvvm/Fischless.Mvvm.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Common/Fischless.Romanization/Fischless.Romanization.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Common/Fischless.Win32/Fischless.Win32.csproj">
+      <Platform Project="x64" />
+    </Project>
+  </Folder>
+  <Folder Name="/Deploy/">
+    <Project Path="../build/MicaSetup/MicaSetup.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../build/MicaSetup/MicaSetup.Uninst.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+  </Folder>
+  <Folder Name="/Desktop/">
+    <Project Path="Desktop/LyricStudio/LyricStudio.csproj">
+      <Platform Project="x64" />
+    </Project>
+  </Folder>
+  <Folder Name="/Player/">
+    <Project Path="Player/FFME.Avalonia/FFME.Avalonia.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Player/FFME.MediaElement/FFME.MediaElement.shproj" />
+    <Project Path="Player/FFME/FFME.shproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+</Solution>
